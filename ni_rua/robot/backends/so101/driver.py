@@ -502,7 +502,14 @@ class OpenCVCameraSource(CameraSource):
         capture.set(cv2.CAP_PROP_FPS, self.config["fps"])
         if not capture.isOpened():
             capture.release()
-            raise RuntimeError(f"so101_camera_unavailable:{self.camera_id}:opened={self.binding['opened']!r}")
+            if sys.platform == "darwin":
+                hint = (
+                    "; on macOS, verify terminal Camera permission in System Settings -> Privacy & Security -> Camera "
+                    "and check bindings with `ni-rua-so101 cameras`"
+                )
+            else:
+                hint = "; verify camera permissions/availability and check bindings with `ni-rua-so101 cameras`"
+            raise RuntimeError(f"so101_camera_unavailable:{self.camera_id}:opened={self.binding['opened']!r}{hint}")
         if self.binding["mode"] != "index":
             # The resolved index is valid only for the device list it came from (a camera plugged or unplugged
             # meanwhile shifts it): re-read the list after opening and refuse if it changed.

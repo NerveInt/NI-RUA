@@ -45,7 +45,7 @@ tar xzf "$TGZ" -C "$T/unpacked"
 UP="$T/unpacked/package"
 say "tarball: $TGZ ($(tar tzf "$TGZ" | wc -l | tr -d ' ') files)"
 check "tarball has no test/ directory" bash -c "! tar tzf '$TGZ' | grep -q '^package/test/'"
-for f in package.json README.md LICENSE .mcp.json .codex-mcp.json codex-models.direct.json hooks/hooks.json hooks/on-compact.mjs manifest.generated.json .claude-plugin/plugin.json .claude-plugin/marketplace.json .codex-plugin/plugin.json opencode/plugin.js skills/ni-rua-robot/SKILL.md skills/ni-rua-experiments/SKILL.md bin/cli.mjs; do
+for f in package.json README.md LICENSE .mcp.json .codex-mcp.json codex-models.direct.json hooks/hooks.json hooks/on-compact.mjs manifest.generated.json .claude-plugin/plugin.json .claude-plugin/marketplace.json .codex-plugin/plugin.json opencode/plugin.js skills/ni-rua-robot/SKILL.md skills/ni-rua-experiments/SKILL.md bin/cli.mjs bin/runtime.mjs bin/setup.mjs bin/gateway.mjs bin/dry-run-server.mjs bin/doctor-checks.mjs; do
   check "tarball has $f" test -f "$UP/$f"
 done
 CLI="$UP/bin/cli.mjs"

@@ -9,7 +9,7 @@ description = "Agent harness for embodied manipulation: a model-led Codex sessio
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{name = "Nerve Intelligence"}]
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
   "aiohttp==3.13.2",
   "openai-codex==0.160.0",
@@ -35,6 +35,7 @@ Repository = "https://github.com/NerveInt/NI-RUA.git"
 
 [project.scripts]
 ni-rua = "ni_rua.apps.gateway.cli:main"
+ni-rua-so101 = "ni_rua.apps.so101_cli:main"
 ni-rua-queue = "ni_rua.apps.evaluation.queue:main"
 ni-rua-report = "ni_rua.apps.evaluation.report:main"
 ni-rua-audit = "ni_rua.apps.evaluation.audit:main"
@@ -45,7 +46,7 @@ namespaces = false
 
 [tool.setuptools.package-data]
 ni_rua = ["web_assets/*", "reference_sources/**/*"]
-"ni_rua.core" = ["default_config.json"]
+"ni_rua.core" = ["default_config.json", "so101_standalone.json", "so101.example.json", "so101_board.json"]
 "ni_rua.cortex.session" = ["codex_responses.json", "codex_models.json"]
 "ni_rua.cortex.context" = ["robodojo_task_rules.json", "task_instruction_overrides.json"]
 "ni_rua.apps.library" = ["experiment_group_relations.json"]

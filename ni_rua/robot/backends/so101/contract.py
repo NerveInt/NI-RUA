@@ -726,9 +726,11 @@ def validate_grip_guard(mapping, deployment):
         raise ValueError(f"invalid_grip_guard_preset: {preset} (presets on this SO-101: "
                          f"{', '.join(gripper.preset_margins_m)})")
     if preset not in (None, "none") and gripper.empty_close_aperture_m is None:
-        raise ValueError("unsupported_capability: grip_guard_preset requires the measured empty-close fingertip gap "
-                         "gripper.empty_close_aperture_m (m) in the SO-101 deployment; use explicit min_aperture_m / "
-                         "max_aperture_m (m) instead")
+        raise ValueError(
+            "unsupported_capability: grip_guard_preset requires the measured empty-close fingertip gap "
+            "gripper.empty_close_aperture_m (m) in the SO-101 deployment (measure with an empty goal-0 close and set "
+            "gripper.empty_close_aperture_m in so101.local.json, or use explicit min_aperture_m / max_aperture_m (m))"
+        )
     return validate_grip_guard_fields(mapping, **guard_parameters(deployment))
 
 

@@ -22,6 +22,8 @@ def build(output):
         shutil.copytree(root / "ni_rua", stage / "ni_rua",
                         ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "web_assets", "reference_sources"))
         shutil.copy2(root / "configs/ni-rua.json", stage / "ni_rua/core/default_config.json")
+        for preset_file in ("so101_standalone.json", "so101.example.json", "so101_board.json"):
+            shutil.copy2(root / "configs" / preset_file, stage / "ni_rua/core" / preset_file)
         shutil.copytree(root / "third_party", stage / "ni_rua/reference_sources/third_party",
                         ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
         subprocess.run(["node", str(root / "web/build.mjs"), "--outdir", str(stage / "ni_rua/web_assets")], check=True)
@@ -31,7 +33,9 @@ def build(output):
         wheel, = wheel_directory.glob("*.whl")
         with zipfile.ZipFile(wheel) as archive:
             expected = {"ni_rua/web_assets/index.html", "ni_rua/web_assets/app.js",
-                        "ni_rua/core/default_config.json", "ni_rua/cortex/session/codex_models.json",
+                        "ni_rua/core/default_config.json", "ni_rua/core/so101_standalone.json",
+                        "ni_rua/core/so101.example.json", "ni_rua/core/so101_board.json",
+                        "ni_rua/apps/so101_cli.py", "ni_rua/cortex/session/codex_models.json",
                         "ni_rua/reference_sources/third_party/codex/LICENSE",
                         "ni_rua/reference_sources/third_party/codex/NOTICE",
                         "ni_rua/web_assets/library.html", "ni_rua/core/storage/read_models.py",

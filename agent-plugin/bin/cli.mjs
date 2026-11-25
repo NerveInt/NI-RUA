@@ -12,6 +12,10 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { runStackChecks } from "./doctor-checks.mjs";
+import { runGateway } from "./gateway.mjs";
+import { ESTOP_WARNING } from "./runtime.mjs";
+import { runSetup } from "./setup.mjs";
 
 const PACKAGE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PKG = JSON.parse(fs.readFileSync(path.join(PACKAGE_ROOT, "package.json"), "utf8"));
@@ -29,7 +33,10 @@ const OPENCODE_MEDIA_IMAGE = MANIFEST.opencode_media_image;
 const CODEX_DIRECT_CATALOG = MANIFEST.codex_direct_catalog || "codex-models.direct.json";
 const CODEX_CODE_MODE_ONLY = new Set(MANIFEST.codex_code_mode_only_models || []);
 const VERIFIED = MANIFEST.verified_hosts;
-const GATEWAY_HINT = "mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external --config <config> --run-dir <fresh dir>";
+const GATEWAY_HINT = [
+  "ni-rua-plugin gateway --dry-run          # zero-hardware MCP connectivity test",
+  "       ni-rua-plugin gateway --config so101     # local CPU SO-101 arm",
+].join("\n");
 
 class UserError extends Error {}
 
@@ -45,11 +52,18 @@ function realPathOrResolve(target) {
 
 // ---------------------------------------------------------------- arguments
 function parseArgs(argv) {
-  const opts = { _: [] };
-  const valued = new Set(["scope", "port", "claude-bin", "codex-bin", "opencode-bin"]);
-  const flags = new Set(["no-host-env", "no-allow", "no-direct-catalog", "force", "help"]);
+  const opts = { _: [], extra: [] };
+  const valued = new Set([
+    "scope", "port", "claude-bin", "codex-bin", "opencode-bin",
+    "config", "run-dir", "prompt", "gateway-url",
+  ]);
+  const flags = new Set([
+    "no-host-env", "no-allow", "no-direct-catalog", "force", "help",
+    "so101", "skip-gateway", "dry-run", "json",
+  ]);
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
+    if (arg === "--") { opts.extra.push(...argv.slice(i + 1)); break; }
     if (!arg.startsWith("--")) { opts._.push(arg); continue; }
     const [name, inline] = arg.slice(2).split(/=(.*)/s, 2);
     if (flags.has(name)) { opts[name] = true; continue; }
@@ -65,6 +79,9 @@ function parseArgs(argv) {
   }
   if (opts.scope !== undefined && !["user", "project", "local"].includes(opts.scope)) {
     throw new UserError(`--scope must be user, project or local, got ${opts.scope}`);
+  }
+  if (opts["gateway-url"] !== undefined) {
+    try { new URL(opts["gateway-url"]); } catch { throw new UserError(`--gateway-url must be a valid URL, got ${opts["gateway-url"]}`); }
   }
   return opts;
 }
@@ -773,6 +790,8 @@ function installClaude(opts, record) {
     }
   }
   out(`Claude Code: installed ${PLUGIN_ID} (scope ${scope}). Start the gateway first, then a Claude Code session.`);
+  out("Next: run `ni-rua-plugin doctor` and `ni-rua-plugin gateway --dry-run` (or `--config so101`).");
+  out(ESTOP_WARNING);
 }
 
 function installCodex(opts, record) {
@@ -825,6 +844,8 @@ function installCodex(opts, record) {
   if (codexChange) { entry.config = codexChange; saveRecord(record); }
   else if (entry.config) { delete entry.config; saveRecord(record); }
   out(`Codex: installed ${PLUGIN_ID}. Start the gateway before the Codex session: Codex does not retry a session that started without it.`);
+  out("Next: run `ni-rua-plugin doctor` and `ni-rua-plugin gateway --dry-run` (or `--config so101`).");
+  out(ESTOP_WARNING);
 }
 
 function installOpencode(opts, record) {
@@ -852,6 +873,8 @@ function installOpencode(opts, record) {
   record.installs[key] = { host: "opencode", version: PKG.version, dir, config: plan.change };
   saveRecord(record);
   out("OpenCode: configured. The plugin loads at the first session in a project; restart OpenCode if it was running.");
+  out("Next: run `ni-rua-plugin doctor` and `ni-rua-plugin gateway --dry-run` (or `--config so101`).");
+  out(ESTOP_WARNING);
 }
 
 function install(host, opts) {
@@ -958,8 +981,8 @@ async function mcpPost(url, body) {
   return messages.find((m) => m.id === body.id) ?? messages[0] ?? null;
 }
 
-async function probeGateway(port) {
-  const url = `http://127.0.0.1:${port}/mcp`;
+async function probeGateway(target) {
+  const url = typeof target === "string" && /^https?:\/\//i.test(target) ? target : `http://127.0.0.1:${target}/mcp`;
   const init = await mcpPost(url, { jsonrpc: "2.0", id: 1, method: "initialize", params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "ni-rua-plugin-doctor", version: PKG.version } } });
   if (!init?.result) throw new Error("initialize returned no result");
   await mcpPost(url, { jsonrpc: "2.0", method: "notifications/initialized" }).catch(() => null);
@@ -1024,7 +1047,13 @@ function checkCodexDirectCatalog(line, record) {
 
 async function doctor(opts) {
   let failed = false;
-  const line = (status, text) => { out(`[${status}] ${text}`); if (status === "FAIL") failed = true; };
+  const jsonMode = Boolean(opts.json);
+  const checks = [];
+  const line = (status, text) => {
+    checks.push({ status, message: text });
+    if (!jsonMode) out(`[${status}] ${text}`);
+    if (status === "FAIL") failed = true;
+  };
   const record = loadRecord();
   const nodeMajor = Number(process.versions.node.split(".")[0]);
   line(nodeMajor >= 18 ? "ok" : "FAIL", `node ${process.versions.node} (needs >= 18)`);
@@ -1114,33 +1143,54 @@ async function doctor(opts) {
     }
   } catch (error) { line("warn", `opencode: ${error.message}`); }
 
+  runStackChecks({ line, so101: Boolean(opts.so101), cwd: process.cwd() });
+
   const port = opts.port ?? record.port ?? DEFAULT_PORT;
+  const customUrl = opts["gateway-url"];
+  const gatewayUrl = customUrl ?? `http://127.0.0.1:${port}/mcp`;
+  const gatewayLabel = customUrl ?? `127.0.0.1:${port}`;
   try {
-    const probe = await probeGateway(port);
-    line("ok", `gateway on 127.0.0.1:${port}: MCP initialize + tools/list answered, ${probe.names.length} tools${probe.instructions ? ", instructions present" : ""}`);
+    const probe = await probeGateway(gatewayUrl);
+    line("ok", `gateway on ${gatewayLabel}: MCP initialize + tools/list answered, ${probe.names.length} tools${probe.instructions ? ", instructions present" : ""}`);
     line(probe.names.includes("run_begin") ? "ok" : "warn", probe.names.includes("run_begin") ? "gateway offers run_begin (external backend)" : "gateway has no run_begin tool: it was not started with --agent-backend external");
   } catch (error) {
-    line("warn", `no MCP gateway answered on 127.0.0.1:${port} (${error.cause?.code ?? error.message}). Start one, from an NI-RUA checkout, before the agent session:\n       ${GATEWAY_HINT}\n       (the MCP port is agent.external.mcp_port / --external-mcp-port, default ${DEFAULT_PORT}; --agent-backend external needs an NI-RUA version that has the external backend)`);
+    line("warn", `no MCP gateway answered on ${gatewayLabel} (${error.cause?.code ?? error.message}). Start one before the agent session:\n       ${GATEWAY_HINT}\n       (the MCP port is agent.external.mcp_port / --external-mcp-port, default ${DEFAULT_PORT})`);
+  }
+  if (jsonMode) {
+    out(JSON.stringify({ ok: !failed, package: PKG.name, version: PKG.version, gateway_url: gatewayUrl, checks }, null, 2));
   }
   return failed ? 1 : 0;
 }
 
 // ---------------------------------------------------------------- main
-const USAGE = `ni-rua-plugin ${PKG.version}
+const USAGE = `ni-rua-plugin ${PKG.version} (${PKG.name})
 usage:
+  ni-rua-plugin setup <claude|codex|opencode|all> [--so101] [--skip-gateway] [--scope user|project|local] [--port N] [--force]
+  ni-rua-plugin gateway [--dry-run] [--config <preset|path>] [--port N] [--run-dir D] [--prompt T] [-- ...extra]
   ni-rua-plugin install <claude|codex|opencode> [--scope user|project|local] [--port N] [--no-host-env] [--no-allow] [--no-direct-catalog] [--force]
   ni-rua-plugin uninstall <claude|codex|opencode> [--scope user|project|local]
-  ni-rua-plugin doctor [--port N]
+  ni-rua-plugin doctor [--port N] [--gateway-url URL] [--so101] [--json]
   host executables: --claude-bin P, --codex-bin P, --opencode-bin P (default: first on PATH)
   --scope applies to Claude Code only; --no-host-env skips the four Claude Code env keys; --no-allow skips the
   permissions.allow entry; --no-direct-catalog skips writing model_catalog_json into Codex config.toml; --force
-  replaces a durable copy of the same version that has different content.`;
+  replaces a durable copy or recreates managed Python envs.`;
 
 async function main(argv) {
   const opts = parseArgs(argv);
   const [command, host] = opts._;
   if (opts.help || !command) { out(USAGE); return opts.help ? 0 : 1; }
   if (command === "doctor") return doctor(opts);
+  if (command === "gateway") {
+    return runGateway({ opts, extraArgs: opts.extra, defaultMcpPort: DEFAULT_PORT, version: PKG.version, out, UserError });
+  }
+  if (command === "setup") {
+    if (![...HOSTS, "all"].includes(host)) throw new UserError(`setup needs a host: ${HOSTS.join(", ")}, or all`);
+    if (process.platform === "win32") throw new UserError("Windows is supported only through WSL");
+    if (opts.scope !== undefined && host !== "claude" && host !== "all") throw new UserError("--scope applies to Claude Code only");
+    if (opts["no-direct-catalog"] && host !== "codex" && host !== "all") throw new UserError("--no-direct-catalog applies to Codex only");
+    runSetup({ target: host, opts, hosts: HOSTS, findHostExecutable: findExecutable, installHost: install, out, run, UserError });
+    return 0;
+  }
   if (command !== "install" && command !== "uninstall") throw new UserError(`unknown command ${command}\n${USAGE}`);
   if (!HOSTS.includes(host)) throw new UserError(`${command} needs a host: ${HOSTS.join(", ")}`);
   if (process.platform === "win32") throw new UserError("Windows is supported only through WSL");

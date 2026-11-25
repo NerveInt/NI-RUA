@@ -23,9 +23,21 @@
 
 ---
 
-## 2. 安装环境与构建 Web 控制台
+## 2. 安装环境
 
-NI-RUA 将主控执行环境（`NI-RUA`）与 SO-101 硬件驱动环境（`so101`）严格隔离。**严禁创建 `.venv`。**
+### 方式 A — 一键零克隆安装（推荐）
+
+需要 **Node >= 18** 与 **Python >= 3.12**（或 `uv`）。命令会自动安装 `@nerveint/ni-rua-plugin` 并在 `~/.local/share/ni-rua/envs/{gateway,so101}` 下创建两个隔离的 Python 3.12 环境（规避 `openai-codex` 与 `lerobot` 上游的 `packaging`/`numpy` 版本冲突）：
+
+```bash
+npx -y @nerveint/ni-rua-plugin setup claude --so101   # 或：codex | opencode | all
+npm i -g @nerveint/ni-rua-plugin                      # 可选：全局保留 `ni-rua-plugin` 命令
+ni-rua-plugin doctor --so101
+```
+
+### 方式 B — 从源码安装（Mamba / Conda）
+
+在源码仓库中，NI-RUA 将主控执行环境（`ni-rua`）与 SO-101 硬件驱动环境（`so101`）严格隔离。**严禁在仓库内创建 `.venv`。**
 
 ```bash
 git clone https://github.com/NerveInt/NI-RUA.git
@@ -36,7 +48,7 @@ mamba env create -f environment.yml
 
 # 2. 创建独立的 SO-101 真机硬件 Worker 环境（LeRobot 0.6.1、SciPy、OpenCV ArUco）
 mamba env create -f environment.so101.yml
-# 若已有 Python >= 3.11 环境，也可手动安装依赖：
+# 若已有 Python >= 3.12 环境，也可手动安装依赖：
 # pip install -r requirements-so101.txt
 
 # 3. 构建 Web 真机控制台与标定页面（Node 22）
@@ -47,9 +59,9 @@ npm --prefix web ci && npm --prefix web run build
 > 如需开启自动纯动作 H.264 视频录制，请确保 `so101` 环境（或 `PATH`）中可用 `ffmpeg` 与 `ffprobe`（含 `libx264`）。在 macOS 上，若你的 pip 镜像缺少 `openai-codex` / `openai-codex-cli-bin`，可从官方 PyPI 安装固定版本：
 > `mamba run -n ni-rua python -m pip install --index-url https://pypi.org/simple openai-codex-cli-bin==0.160.0 openai-codex==0.160.0`。
 
-### 可选：打包并安装独立 `ni_rua` CLI（Wheel）
+### 可选：打包并安装独立 `ni-rua-harness` Wheel
 
-如果你希望直接运行 `ni_rua`、`ni-rua-queue`、`ni-rua-report`、`ni-rua-audit` 命令，请使用 `scripts/build_package.py` 构建包含前端资源的完整 wheel（切勿直接使用 `pip wheel .`）：
+如果你希望从源码直接运行 `ni-rua`、`ni-rua-so101`、`ni-rua-queue`、`ni-rua-report`、`ni-rua-audit` 命令，请使用 `scripts/build_package.py` 构建包含前端资源与内置预设的完整 wheel（切勿直接使用 `pip wheel .`）：
 
 ```bash
 mamba run -n ni-rua python scripts/build_package.py --output dist
@@ -75,23 +87,30 @@ mamba run -n so101 lerobot-calibrate \
 
 ### 3.2 查看并绑定稳定的相机 `unique_id`
 
-OpenCV 的数字索引（`0`、`1`）会在插拔 USB 或重启后漂移。必须使用 [`scripts/so101_cameras.py`](../../scripts/so101_cameras.py) 绑定相机硬件唯一标识 **`unique_id`**。请务必使用 **`so101`** 解释器运行该脚本（macOS 下 AVFoundation 的索引排序规则取决于 Worker 所用 OpenCV 版本）：
+OpenCV 的数字索引（`0`、`1`）会在插拔 USB 或重启后漂移。必须使用 `ni-rua-so101 cameras`（或源码仓库中的 [`scripts/so101_cameras.py`](../../scripts/so101_cameras.py)）绑定相机硬件唯一标识 **`unique_id`**。请务必使用 **`so101`** 解释器运行该命令（macOS 下 AVFoundation 的索引排序规则取决于 Worker 所用 OpenCV 版本）：
 
 ```bash
+# 通过 wheel / 一键安装：
+ni-rua-so101 cameras
+# 或在源码仓库中运行：
 mamba run -n so101 python scripts/so101_cameras.py
 ```
 
 脚本会列出当前每台相机的 `opencv` 索引、`transport`、`unique_id` 与 `name / model`：
 
-- **区分两台同型号 USB 相机：** 拔掉其中一台（或逐台插入）再运行 `so101_cameras.py`，即可确认哪条 `unique_id` 对应 `wrist`、哪条对应 `fixed`。
+- **区分两台同型号 USB 相机：** 拔掉其中一台（或逐台插入）再运行 `ni-rua-so101 cameras`，即可确认哪条 `unique_id` 对应 `wrist`、哪条对应 `fixed`。
 - **macOS：** `unique_id` 是 AVFoundation 的 `uniqueID`（如 `0x1340001b170209`）。USB 相机的 `unique_id` 包含物理 USB 端口信息，因此请保持每台相机插在固定 USB 口上。
 - **Linux：** 绑定脚本输出的 `/dev/v4l/by-id/...-video-index0`（或 `/dev/v4l/by-path/...-video-index0`）完整路径。
 
-### 3.3 复制并配置 `configs/so101.local.json`
+### 3.3 生成并配置 `so101.local.json`
 
-从模板 [`configs/so101.example.json`](../../configs/so101.example.json) 复制生成本地部署文件 `configs/so101.local.json`（已被 Git 忽略）：
+推荐使用 `ni-rua-so101 init-config` 向导（自动探测 USB 串口与 UVC 相机并写入 `~/.config/ni-rua/so101.local.json`），或在源码仓库中从模板 [`configs/so101.example.json`](../../configs/so101.example.json) 复制生成被 Git 忽略的 `configs/so101.local.json`：
 
 ```bash
+# 零克隆 / wheel 用法（写入 ~/.config/ni-rua/so101.local.json）：
+ni-rua-so101 init-config
+
+# 或在源码仓库中复制模板：
 cp configs/so101.example.json configs/so101.local.json
 ```
 
@@ -172,9 +191,15 @@ NI-RUA 为 SO-101 提供了两套网关默认配置：
 
 ### 5.1 首次上电机台调试验收（约 1.5 分钟）
 
-清空桌面，手边准备好物理 12 V 电源开关，在具有相机权限的终端中运行 [`scripts/so101_commission.py`](../../scripts/so101_commission.py)：
+清空桌面，手边准备好物理 12 V 电源开关，在具有相机权限的终端中运行 `ni-rua-so101 commission`（或源码仓库中的 [`scripts/so101_commission.py`](../../scripts/so101_commission.py)）：
 
 ```bash
+# 通过 wheel / 一键安装：
+ni-rua-so101 commission \
+  --deployment ~/.config/ni-rua/so101.local.json \
+  --out ~/.cache/ni-rua/so101/commission
+
+# 或在源码仓库中运行：
 PYTHONPATH=. mamba run -n so101 python scripts/so101_commission.py \
   --deployment configs/so101.local.json \
   --out ~/.cache/ni-rua/so101/commission
@@ -184,18 +209,18 @@ PYTHONPATH=. mamba run -n so101 python scripts/so101_commission.py \
 
 ### 5.2 运行方式 A：Agent 插件模式（`--agent-backend external`）
 
-1. 将插件安装到你的智能体 CLI（仅需执行一次）：
+1. 安装插件并核验整套依赖（仅需执行一次）：
    ```bash
-   node agent-plugin/bin/cli.mjs install claude   # 或：codex | opencode
-   node agent-plugin/bin/cli.mjs doctor
+   npx -y @nerveint/ni-rua-plugin setup claude --so101   # 或：codex | opencode | all
+   ni-rua-plugin doctor --so101
    ```
-2. 启动 NI-RUA 网关（`configs/so101_standalone.json` 开箱即支持单机纯 CPU 运行；若尚未生成 `camera_calibration.json`，请额外加上 `--observation-profile rgb_proprio_v1`）：
+2. 启动 NI-RUA 网关（`--config so101` 使用内置 `so101_standalone.json` 纯 CPU 运行；若尚未生成 `camera_calibration.json`，会自动补全 `--observation-profile rgb_proprio_v1`）：
    ```bash
-   mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external \
-     --config configs/so101_standalone.json \
+   ni-rua-plugin gateway --config so101 \
      --port 8781 --run-dir runs/so101-demo \
      --prompt "Describe the table, move the gripper straight up 2 cm, verify it, and move it back."
    ```
+   *（在源码仓库中也可运行 `mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external --config configs/so101_standalone.json ...`。）*
 3. 在另一个终端启动你的智能体（`claude`、`codex` 或 `opencode`）并输入：
    `Operate the robot through the ni_rua MCP tools.`
 
@@ -210,7 +235,7 @@ mamba run -n ni-rua python -u -m ni_rua.apps.gateway \
   --prompt "Describe the table, move the gripper straight up 2 cm, verify it, and move it back."
 ```
 
-*（若已通过 wheel 安装，可将 `mamba run -n ni-rua python -u -m ni_rua.apps.gateway` 简写为 `ni_rua`。）*
+*（若已安装 `ni-rua-harness` wheel，可将 `mamba run -n ni-rua python -u -m ni_rua.apps.gateway` 简写为 `ni-rua` 并使用 `--config so101`。）*
 
 ### 5.4 控制台安全控制（`http://127.0.0.1:8781/console?lang=zh-CN`）
 
@@ -231,13 +256,11 @@ mamba run -n ni-rua python -u -m ni_rua.apps.gateway \
 
 在依赖 3D 坐标、`pixel_plane`、`triangulate` 或桌面抓取任务之前，请先完成引导式标定：
 
-1. 启动网关。**首次尚未生成 `camera_calibration.json` 时**，务必加上 `--observation-profile rgb_proprio_v1`：
+1. 启动网关。**首次尚未生成 `camera_calibration.json` 时**，`ni-rua-plugin gateway --config so101` 会自动补全 `--observation-profile rgb_proprio_v1`（若直接调用 `ni-rua`，需显式附加该参数）：
    ```bash
-   mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external \
-     --config configs/so101_standalone.json --observation-profile rgb_proprio_v1 \
-     --port 8781 --run-dir runs/so101-calib
+   ni-rua-plugin gateway --config so101 --port 8781 --run-dir runs/so101-calib
    ```
 2. 在浏览器打开 **<http://127.0.0.1:8781/calibration?lang=zh-CN>**。
-3. 按照 **[SO-101 标定指南](so101-calibration.zh-CN.md)** 打印 1:1 比例 ChArUco 标定板并依次完成 S0–S6 步骤。
+3. 使用 `ni-rua-so101 charuco-board` 生成 1:1 比例 ChArUco 标定板并按照 **[SO-101 标定指南](so101-calibration.zh-CN.md)** 依次完成 S0–S6 步骤。
 
-S6 应用通过后，系统会自动将配置文件从无标定状态（`rgb_proprio_v1`）升级为已标定状态（`rgb_proprio_calibrated_v1`），并原子写入相机内外参、手眼变换、关节零偏与标定桌面高度。后续日常运行只需传入 `--config configs/so101_standalone.json` 即可。
+S6 应用通过后，系统会自动将配置文件从无标定状态（`rgb_proprio_v1`）升级为已标定状态（`rgb_proprio_calibrated_v1`），并原子写入相机内外参、手眼变换、关节零偏与标定桌面高度。后续日常运行只需传入 `--config so101`（或 `--config configs/so101_standalone.json`）即可。

@@ -41,7 +41,7 @@ INDEX_RULES = {
                                      "uniqueID (OpenCV >= 4.7.0, cap_avfoundation_mac.mm)",
     "v4l2_node": "OpenCV V4L2 opens the node /dev/videoN; identity bindings open that node path",
 }
-HELPER = "scripts/so101_cameras.py lists the present devices and their unique IDs"
+HELPER = "run `ni-rua-so101 cameras` (or `scripts/so101_cameras.py`) to list the present devices and their unique IDs"
 
 
 class CameraBindingError(RuntimeError):

@@ -270,7 +270,9 @@ test("the package files set excludes tests and the manifests agree on version an
   for (const manifest of [".claude-plugin/plugin.json", ".codex-plugin/plugin.json"]) {
     assert.equal(JSON.parse(fs.readFileSync(new URL(`../${manifest}`, import.meta.url), "utf8")).version, pkg.version, manifest);
   }
-  assert.equal(pkg.name, "ni-rua-agent-plugin");
+  assert.equal(pkg.name, "@nerveint/ni-rua-plugin");
+  assert.equal(pkg.private, undefined);
+  assert.deepEqual(pkg.publishConfig, { access: "public" });
   assert.deepEqual(pkg.bin, { "ni-rua-plugin": "bin/cli.mjs" });
   assert.deepEqual(pkg.exports, { ".": "./opencode/plugin.js" });
   assert.equal(pkg.type, "module");

@@ -167,8 +167,11 @@ class SO101Adapter:
         self.calibration_error = None
         if self.calibrated:
             if not self.calibration_path or not Path(self.calibration_path).is_file():
-                raise ValueError("so101_camera_calibration_missing: calibrated observation profile requires "
-                                 "camera_calibration_file; use observation_profile rgb_proprio_v1 until calibrated")
+                raise ValueError(
+                    f"so101_camera_calibration_missing: camera_calibration_file ({self.calibration_path or 'unset'}) "
+                    "not found for calibrated observation profile; for cold-start calibration, launch with "
+                    "`--observation-profile rgb_proprio_v1` and open `/calibration` in the workbench UI"
+                )
             self.camera_calibration, self.calibration_identity = self._load_calibration(self.calibration_path)
         elif self.calibration_path and Path(self.calibration_path).is_file():
             # Uncalibrated profile: the file is never published, but its identity is shown to the operator.

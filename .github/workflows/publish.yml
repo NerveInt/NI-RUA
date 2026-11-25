@@ -1,0 +1,196 @@
+# NI-RUA automated release pipeline ($0 OIDC Trusted Publishing).
+#
+# One-time setup (no long-lived API tokens or secrets required):
+#   1. npmjs.com (@nerveint/ni-rua-plugin):
+#      - Ensure the free @nerveint npm organization exists (and publish v0.1.0 once if needed).
+#      - Package Settings -> Trusted Publishers -> GitHub Actions:
+#          Owner: NerveInt | Repository: NI-RUA | Workflow: publish.yml
+#   2. pypi.org (ni-rua-harness):
+#      - Account -> Publishing -> Add a new pending publisher (or Project Settings -> Publishing):
+#          PyPI Project Name: ni-rua-harness | Owner: NerveInt | Repository: NI-RUA | Workflow: publish.yml
+#
+# Triggering a release:
+#   - Push a version tag matching pyproject.toml and agent-plugin/package.json (e.g., `git tag -a v0.1.0 -m "v0.1.0" && git push nerveint v0.1.0`).
+#   - Or run manually via Actions -> "Publish Release" -> workflow_dispatch (`dry_run: true` verifies & builds without publishing).
+
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Verify and build artifacts without publishing to npm or PyPI"
+        required: true
+        type: boolean
+        default: true
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Verify & Build Artifacts
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify version parity across manifests and tag
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import tomllib
+
+          pyproject = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+          py_version = pyproject["project"]["version"]
+          pkg_version = json.loads(Path("agent-plugin/package.json").read_text(encoding="utf-8"))["version"]
+          manifest_version = json.loads(Path("agent-plugin/manifest.generated.json").read_text(encoding="utf-8"))["version"]
+          claude_version = json.loads(Path("agent-plugin/.claude-plugin/plugin.json").read_text(encoding="utf-8"))["version"]
+          codex_version = json.loads(Path("agent-plugin/.codex-plugin/plugin.json").read_text(encoding="utf-8"))["version"]
+
+          versions = {
+              "pyproject.toml": py_version,
+              "agent-plugin/package.json": pkg_version,
+              "agent-plugin/manifest.generated.json": manifest_version,
+              "agent-plugin/.claude-plugin/plugin.json": claude_version,
+              "agent-plugin/.codex-plugin/plugin.json": codex_version,
+          }
+          if len(set(versions.values())) != 1:
+              raise SystemExit(f"Version mismatch across manifests: {versions}")
+
+          if os.environ.get("GITHUB_REF_TYPE") == "tag":
+              tag = os.environ["GITHUB_REF_NAME"]
+              expected_tag = f"v{py_version}"
+              if tag != expected_tag:
+                  raise SystemExit(f"Git tag {tag!r} does not match package version {expected_tag!r}")
+          print(f"Version parity verified: {py_version}")
+          PY
+
+      - name: Install Python build and runtime dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python - <<'PY'
+          from pathlib import Path
+          import subprocess
+          import sys
+          import tomllib
+
+          deps = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["dependencies"]
+          subprocess.check_call([sys.executable, "-m", "pip", "install", *deps])
+          PY
+
+      - name: Build and verify Web console
+        shell: bash
+        run: |
+          npm --prefix web ci
+          npm --prefix web run check
+          npm --prefix web run build
+
+      - name: Verify generated agent-plugin manifests and run npm tests
+        shell: bash
+        run: |
+          python scripts/gen_agent_plugin_codex_mcp.py --check
+          npm --prefix agent-plugin test
+          bash agent-plugin/test/tarball-check.sh
+
+      - name: Build and verify standalone Python wheel
+        shell: bash
+        run: |
+          python scripts/build_package.py --output dist
+          python scripts/check_package.py dist/*.whl
+
+      - name: Upload built wheel artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-wheel
+          path: dist/*.whl
+          if-no-files-found: error
+
+  publish-npm:
+    name: Publish @nerveint/ni-rua-plugin to npm (OIDC)
+    needs: verify
+    if: ${{ github.event_name == 'push' || inputs.dry_run == false }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Ensure npm 11+ for OIDC Trusted Publishing
+        shell: bash
+        run: npm install -g npm@11
+
+      - name: Publish npm package with provenance
+        working-directory: agent-plugin
+        shell: bash
+        run: npm publish --provenance --access public
+
+  publish-pypi:
+    name: Publish ni-rua-harness to PyPI (OIDC)
+    needs: verify
+    if: ${{ github.event_name == 'push' || inputs.dry_run == false }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Download built wheel artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-wheel
+          path: dist/
+
+      - name: Publish Python wheel to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+
+  github-release:
+    name: Create GitHub Release
+    needs:
+      - publish-npm
+      - publish-pypi
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download built wheel artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-wheel
+          path: dist/
+
+      - name: Create GitHub Release with wheel asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.whl
+          generate_release_notes: true

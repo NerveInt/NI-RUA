@@ -38,7 +38,8 @@ test("doctor without a gateway says how to start one", async () => {
     const result = box.run(["doctor", "--port", String(port)]);
     assert.equal(result.status, 0, result.out);
     assert.match(result.stdout, new RegExp(`\\[warn\\] no MCP gateway answered on 127\\.0\\.0\\.1:${port}`));
-    assert.match(result.stdout, /mamba run -n ni-rua python -u -m ni_rua\.apps\.gateway --agent-backend external/);
+    assert.match(result.stdout, /ni-rua-plugin gateway --dry-run/);
+    assert.match(result.stdout, /ni-rua-plugin gateway --config so101/);
     assert.match(result.stdout, /\[warn\] claude: ni_rua@ni_rua is not listed/);
     assert.match(result.stdout, /\[warn\] opencode: no NI-RUA plugin in /);
   } finally {

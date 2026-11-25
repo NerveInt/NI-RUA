@@ -23,9 +23,21 @@ Before touching software, verify the physical setup:
 
 ---
 
-## 2. Environment Installation & Web Build
+## 2. Environment Installation
 
-NI-RUA isolates the main Harness environment (`NI-RUA`) from the SO-101 LeRobot driver environment (`so101`). Do **not** create a `.venv`.
+### Option A — One-Line Zero-Clone Setup (Recommended)
+
+Requires **Node >= 18** and **Python >= 3.12** (or `uv`). This installs `@nerveint/ni-rua-plugin` and creates two isolated Python 3.12 environments under `~/.local/share/ni-rua/envs/{gateway,so101}` (avoiding upstream `packaging`/`numpy` dependency conflicts between `openai-codex` and `lerobot`):
+
+```bash
+npx -y @nerveint/ni-rua-plugin setup claude --so101   # or: codex | opencode | all
+npm i -g @nerveint/ni-rua-plugin                      # optional: keep `ni-rua-plugin` on PATH
+ni-rua-plugin doctor --so101
+```
+
+### Option B — From Source (Mamba / Conda)
+
+From a git checkout, NI-RUA isolates the main Harness environment (`ni-rua`) from the SO-101 LeRobot driver environment (`so101`). Do **not** create a `.venv` inside the repo.
 
 ```bash
 git clone https://github.com/NerveInt/NI-RUA.git
@@ -36,7 +48,7 @@ mamba env create -f environment.yml
 
 # 2. Create the isolated SO-101 hardware worker environment (LeRobot 0.6.1, SciPy, OpenCV ArUco)
 mamba env create -f environment.so101.yml
-# Or inside an existing Python >= 3.11 environment:
+# Or inside an existing Python >= 3.12 environment:
 # pip install -r requirements-so101.txt
 
 # 3. Build the Web operator console & calibration UI (Node 22)
@@ -47,9 +59,9 @@ npm --prefix web ci && npm --prefix web run build
 > Make sure `ffmpeg` and `ffprobe` (with `libx264`) are available inside the `so101` environment (or on `PATH`) if you want automatic motion-only H.264 video recording. On macOS, if a configured pip mirror lacks `openai-codex` / `openai-codex-cli-bin`, install them from official PyPI:
 > `mamba run -n ni-rua python -m pip install --index-url https://pypi.org/simple openai-codex-cli-bin==0.160.0 openai-codex==0.160.0`.
 
-### Optional: Build & Install the Standalone `ni_rua` Wheel
+### Optional: Build & Install the Standalone `ni-rua-harness` Wheel
 
-If you prefer calling `ni_rua` directly instead of `mamba run -n ni-rua python -m ni_rua.apps.gateway`, build the complete wheel (which bundles the built web assets) using `scripts/build_package.py` (never plain `pip wheel .`):
+If you prefer calling `ni-rua` / `ni-rua-so101` directly from source, build the complete wheel (which bundles web assets and config presets) using `scripts/build_package.py` (never plain `pip wheel .`):
 
 ```bash
 mamba run -n ni-rua python scripts/build_package.py --output dist
@@ -57,7 +69,7 @@ mamba run -n ni-rua python scripts/check_package.py dist/*.whl
 mamba run -n ni-rua python -m pip install dist/*.whl
 ```
 
-This installs `ni_rua`, `ni-rua-queue`, `ni-rua-report`, and `ni-rua-audit` into your `ni-rua` environment.
+This installs `ni-rua`, `ni-rua-so101`, `ni-rua-queue`, `ni-rua-report`, and `ni-rua-audit` into your `ni-rua` environment.
 
 ---
 
@@ -77,23 +89,30 @@ mamba run -n so101 lerobot-calibrate \
 
 ### 3.2 Inspect and Bind Deterministic Camera `unique_id`s
 
-OpenCV numeric indices (`0`, `1`) shift whenever a USB camera is replugged or enumerates in a different order. Always bind cameras by physical **`unique_id`** using [`scripts/so101_cameras.py`](../../scripts/so101_cameras.py), run with the **`so101`** interpreter (because OpenCV's AVFoundation index rule on macOS depends on the worker's OpenCV version):
+OpenCV numeric indices (`0`, `1`) shift whenever a USB camera is replugged or enumerates in a different order. Always bind cameras by physical **`unique_id`** using `ni-rua-so101 cameras` (or [`scripts/so101_cameras.py`](../../scripts/so101_cameras.py) from a checkout), run with the **`so101`** interpreter (because OpenCV's AVFoundation index rule on macOS depends on the worker's OpenCV version):
 
 ```bash
+# Installed wheel / one-line setup:
+ni-rua-so101 cameras
+# Or from a source checkout:
 mamba run -n so101 python scripts/so101_cameras.py
 ```
 
 The command prints every camera's `opencv` index, `transport`, `unique_id`, and `name / model`:
 
-- **Two identical cameras:** Unplug one (or plug them in one at a time) and re-run `so101_cameras.py` to see which `unique_id` belongs to `wrist` vs. `fixed`.
+- **Two identical cameras:** Unplug one (or plug them in one at a time) and re-run `ni-rua-so101 cameras` to see which `unique_id` belongs to `wrist` vs. `fixed`.
 - **macOS:** `unique_id` is the AVFoundation `uniqueID` (e.g., `0x1340001b170209`). For USB cameras it encodes the USB port—keep each camera plugged into the same USB port.
 - **Linux:** Use the `/dev/v4l/by-id/...-video-index0` (or `/dev/v4l/by-path/...-video-index0`) symlink printed by the script.
 
-### 3.3 Create and Configure `configs/so101.local.json`
+### 3.3 Create and Configure `so101.local.json`
 
-Copy the annotated template [`configs/so101.example.json`](../../configs/so101.example.json) to the Git-ignored deployment file `configs/so101.local.json`:
+Use the interactive wizard from `ni-rua-so101` (detects USB serial ports and UVC cameras and writes `~/.config/ni-rua/so101.local.json`), or copy the annotated template [`configs/so101.example.json`](../../configs/so101.example.json) to the Git-ignored `configs/so101.local.json` in a checkout:
 
 ```bash
+# Zero-clone / wheel workflow (writes ~/.config/ni-rua/so101.local.json):
+ni-rua-so101 init-config
+
+# Or from a source checkout:
 cp configs/so101.example.json configs/so101.local.json
 ```
 
@@ -174,9 +193,15 @@ See [SO-101 Integration §9](../development/so101-integration.md#9-distributed-d
 
 ### 5.1 First-Power-On Commissioning (~1.5 min)
 
-Clear the tabletop, keep a hand near your physical 12 V cutoff switch, and run [`scripts/so101_commission.py`](../../scripts/so101_commission.py) from a terminal with camera access:
+Clear the tabletop, keep a hand near your physical 12 V cutoff switch, and run `ni-rua-so101 commission` (or [`scripts/so101_commission.py`](../../scripts/so101_commission.py) from a checkout) from a terminal with camera access:
 
 ```bash
+# Installed wheel / one-line setup:
+ni-rua-so101 commission \
+  --deployment ~/.config/ni-rua/so101.local.json \
+  --out ~/.cache/ni-rua/so101/commission
+
+# Or from a source checkout:
 PYTHONPATH=. mamba run -n so101 python scripts/so101_commission.py \
   --deployment configs/so101.local.json \
   --out ~/.cache/ni-rua/so101/commission
@@ -186,18 +211,18 @@ This runs the real `SO101Adapter` through preflight, moves to the ready pose, st
 
 ### 5.2 Run Mode A: Agent Plugin Mode (`--agent-backend external`)
 
-1. Install the plugin into your host CLI once:
+1. Install the plugin and verify the stack once:
    ```bash
-   node agent-plugin/bin/cli.mjs install claude   # or: codex | opencode
-   node agent-plugin/bin/cli.mjs doctor
+   npx -y @nerveint/ni-rua-plugin setup claude --so101   # or: codex | opencode | all
+   ni-rua-plugin doctor --so101
    ```
-2. Start the NI-RUA gateway (`configs/so101_standalone.json` runs standalone on CPU; add `--observation-profile rgb_proprio_v1` if `camera_calibration.json` does not exist yet):
+2. Start the NI-RUA gateway (`--config so101` uses the bundled `so101_standalone.json` on pure CPU and automatically enables `--observation-profile rgb_proprio_v1` if `camera_calibration.json` does not exist yet):
    ```bash
-   mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external \
-     --config configs/so101_standalone.json \
+   ni-rua-plugin gateway --config so101 \
      --port 8781 --run-dir runs/so101-demo \
      --prompt "Describe the table, move the gripper straight up 2 cm, verify it, and move it back."
    ```
+   *(From a checkout, you can also run `mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external --config configs/so101_standalone.json ...`.)*
 3. Launch your agent (`claude`, `codex`, or `opencode`) in another terminal and tell it:
    `Operate the robot through the ni_rua MCP tools.`
 
@@ -212,7 +237,7 @@ mamba run -n ni-rua python -u -m ni_rua.apps.gateway \
   --prompt "Describe the table, move the gripper straight up 2 cm, verify it, and move it back."
 ```
 
-*(If you installed the wheel, `mamba run -n ni-rua python -u -m ni_rua.apps.gateway` can be replaced with `ni_rua`.)*
+*(If you installed the `ni-rua-harness` wheel, `mamba run -n ni-rua python -u -m ni_rua.apps.gateway` can be replaced with `ni-rua` and `--config so101`.)*
 
 ### 5.4 Console Safety Controls (`http://127.0.0.1:8781/console?lang=en`)
 
@@ -233,13 +258,11 @@ Open **<http://127.0.0.1:8781/console?lang=en>** in your browser during any run:
 
 Before trusting 3D coordinates, `pixel_plane`, `triangulate`, or `robot_action` table tasks, complete the guided S0–S6 calibration:
 
-1. Start the gateway. On a **first uncalibrated run** (no `camera_calibration.json` yet), include `--observation-profile rgb_proprio_v1`:
+1. Start the gateway. On a **first uncalibrated run** (no `camera_calibration.json` yet), `ni-rua-plugin gateway --config so101` automatically enables `--observation-profile rgb_proprio_v1` (pass it explicitly when invoking `ni-rua` directly):
    ```bash
-   mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external \
-     --config configs/so101_standalone.json --observation-profile rgb_proprio_v1 \
-     --port 8781 --run-dir runs/so101-calib
+   ni-rua-plugin gateway --config so101 --port 8781 --run-dir runs/so101-calib
    ```
 2. Open **<http://127.0.0.1:8781/calibration?lang=en>** in your browser.
-3. Follow the **[SO-101 Calibration Guide](so101-calibration.md)** to print an exact 1:1 ChArUco board and step through S0–S6.
+3. Generate the exact 1:1 printable ChArUco board with `ni-rua-so101 charuco-board` and follow the **[SO-101 Calibration Guide](so101-calibration.md)** to step through S0–S6.
 
-Once S6 applies cleanly, your deployment automatically switches from uncalibrated `rgb_proprio_v1` to `rgb_proprio_calibrated_v1` with calibrated intrinsics, hand-eye transforms, fixed-camera extrinsics, joint zero-offsets, and table height. Subsequent runs only need `--config configs/so101_standalone.json`.
+Once S6 applies cleanly, your deployment automatically switches from uncalibrated `rgb_proprio_v1` to `rgb_proprio_calibrated_v1` with calibrated intrinsics, hand-eye transforms, fixed-camera extrinsics, joint zero-offsets, and table height. Subsequent runs only need `--config so101` (or `--config configs/so101_standalone.json`).

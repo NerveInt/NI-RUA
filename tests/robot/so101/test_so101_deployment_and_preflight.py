@@ -618,5 +618,207 @@ class SO101StandaloneCpuClosedLoopTests(unittest.TestCase):
         self.assertNotIn("curobo", sys.modules)
 
 
+class SO101PackagingCliAndActionableErrorTests(unittest.TestCase):
+    def test_bundled_config_presets_and_user_deployment_fallback(self):
+        root = Path(self.enterContext(tempfile.TemporaryDirectory(prefix="ni-rua-preset-"))).resolve()
+        # 源码仓内预设解析应与直接传入配置文件等价
+        via_preset = Config.load("so101", environ={}, ignore_local=True)
+        via_alias = Config.load("so101_standalone", environ={}, ignore_local=True)
+        via_path = Config.load(CONFIGS_ROOT / "so101_standalone.json", environ={}, ignore_local=True)
+        self.assertEqual(via_preset, via_alias)
+        self.assertEqual(via_preset, via_path)
+        self.assertEqual(
+            Config.load("ni-rua", environ={}, ignore_local=True),
+            Config.load(CONFIGS_ROOT / "ni-rua.json", environ={}, ignore_local=True),
+        )
+
+        # 模拟无 git 源码仓的已安装 wheel 布局（仅含 core 内置 JSON）
+        pkg_core = root / "site-packages" / "ni_rua" / "core"
+        pkg_core.mkdir(parents=True)
+        (pkg_core / "default_config.json").write_text((CONFIGS_ROOT / "ni-rua.json").read_text(encoding="utf-8"), encoding="utf-8")
+        for name in ("so101_standalone.json", "so101.example.json", "so101_board.json"):
+            (pkg_core / name).write_text((CONFIGS_ROOT / name).read_text(encoding="utf-8"), encoding="utf-8")
+
+        fake_home = root / "home"
+        fake_home.mkdir()
+        work_dir = root / "empty-cwd"
+        work_dir.mkdir()
+        orig_cwd = os.getcwd()
+        self.addCleanup(os.chdir, orig_cwd)
+        os.chdir(work_dir)
+
+        with mock.patch("ni_rua.core.config.__file__", str(pkg_core / "config" / "__init__.py")), \
+                mock.patch("ni_rua.core.config.LOCAL_CONFIG_PATH", root / "absent.local.json"), \
+                mock.patch.dict(os.environ, {"HOME": str(fake_home)}):
+            wheel_so101 = Config.load("so101", environ={}, ignore_local=True)
+            self.assertEqual(wheel_so101.backend.environment, "so101_real")
+            self.assertEqual(wheel_so101.backend.robot_model_id, "so101")
+            self.assertEqual(
+                wheel_so101.backend.deployment,
+                str((fake_home / ".config/ni-rua/so101.local.json").resolve()),
+            )
+            # 当 CWD 存在 configs/so101.local.json 时优先使用 CWD 路径
+            cwd_dep = work_dir / "configs" / "so101.local.json"
+            cwd_dep.parent.mkdir(parents=True)
+            cwd_dep.write_text("{}", encoding="utf-8")
+            wheel_so101_cwd = Config.load("so101", environ={}, ignore_local=True)
+            self.assertEqual(wheel_so101_cwd.backend.deployment, str(cwd_dep.resolve()))
+
+    def test_so101_cli_detect_ports_init_config_cameras_and_charuco_board(self):
+        import io
+        from contextlib import redirect_stdout
+        from ni_rua.apps import so101_cli
+
+        # 串口探测：macOS 与 Linux by-id 去重
+        darwin_ports = so101_cli.detect_serial_ports(
+            platform="darwin",
+            glob_fn=lambda pat: ["/dev/tty.usbmodem58760431541"] if "usbmodem" in pat else [],
+        )
+        self.assertEqual(darwin_ports, [{"port": "/dev/tty.usbmodem58760431541", "source": "usbmodem"}])
+
+        root = Path(self.enterContext(tempfile.TemporaryDirectory(prefix="ni-rua-so101-cli-"))).resolve()
+        target_dev = root / "ttyACM0"
+        target_dev.write_text("", encoding="utf-8")
+        by_id_link = root / "usb-feetech"
+        by_id_link.symlink_to(target_dev)
+        linux_ports = so101_cli.detect_serial_ports(
+            platform="linux",
+            glob_fn=lambda pat: [str(by_id_link)] if "by-id" in pat else ([str(target_dev)] if "ACM" in pat else []),
+        )
+        self.assertEqual(linux_ports, [{"port": str(by_id_link), "source": "by-id"}])
+
+        # init-config 非交互模式：优先 USB 相机、校验并写出合法部署配置、支持 --force 备份
+        fake_inventory = {
+            "platform": "darwin",
+            "opencv_version": "4.13.0",
+            "index_rule": "avfoundation_sorted_unique_id",
+            "index_rule_error": None,
+            "error": None,
+            "devices": [
+                {"index": 0, "path": None, "name": "FaceTime HD Camera", "model": "Apple", "transport": "bltn", "unique_ids": ["builtin-uuid"]},
+                {"index": 1, "path": None, "name": "USB Wrist Cam", "model": "UVC", "transport": "usb", "unique_ids": ["0x11000001"]},
+                {"index": 2, "path": None, "name": "USB Fixed Cam", "model": "UVC", "transport": "usb", "unique_ids": ["0x12000002"]},
+            ],
+        }
+        out_path = root / "so101.local.json"
+        parser = so101_cli.build_parser()
+
+        # 无可用串口且未传 --port 时应快速报错
+        with self.assertRaises(SystemExit) as caught:
+            so101_cli.cmd_init_config(
+                parser.parse_args(["init-config", "--non-interactive", "--output", str(out_path)]),
+                list_devices=lambda: fake_inventory,
+                list_ports=lambda: [],
+            )
+        self.assertIn("so101_serial_port_not_found", str(caught.exception))
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            rc = so101_cli.cmd_init_config(
+                parser.parse_args(["init-config", "--non-interactive", "--output", str(out_path), "--json"]),
+                list_devices=lambda: fake_inventory,
+                list_ports=lambda: darwin_ports,
+            )
+        self.assertEqual(rc, 0)
+        summary = json.loads(buf.getvalue())
+        self.assertEqual(summary["port"], "/dev/tty.usbmodem58760431541")
+        loaded = load_deployment(out_path)
+        self.assertEqual(loaded["cameras"]["wrist"]["unique_id"], "0x11000001")
+        self.assertEqual(loaded["cameras"]["fixed"]["unique_id"], "0x12000002")
+
+        # 未加 --force 拒绝覆盖；加 --force 后保存 .bak 备份
+        with self.assertRaises(SystemExit) as exists_err:
+            so101_cli.cmd_init_config(
+                parser.parse_args(["init-config", "--non-interactive", "--output", str(out_path)]),
+                list_devices=lambda: fake_inventory,
+                list_ports=lambda: darwin_ports,
+            )
+        self.assertIn("so101_config_exists", str(exists_err.exception))
+
+        buf2 = io.StringIO()
+        with redirect_stdout(buf2):
+            rc2 = so101_cli.cmd_init_config(
+                parser.parse_args(["init-config", "--non-interactive", "--force", "--output", str(out_path), "--json"]),
+                list_devices=lambda: fake_inventory,
+                list_ports=lambda: darwin_ports,
+            )
+        self.assertEqual(rc2, 0)
+        self.assertTrue(Path(json.loads(buf2.getvalue())["backup"]).is_file())
+
+        # cameras 子命令核验部署绑定（匹配成功返回 0，缺失返回 1）
+        cam_out = io.StringIO()
+        with mock.patch.object(so101_cli, "list_video_devices", return_value=fake_inventory), redirect_stdout(cam_out):
+            self.assertEqual(so101_cli.main(["cameras", "--deployment", str(out_path), "--json"]), 0)
+        missing_inventory = {**fake_inventory, "devices": []}
+        with mock.patch.object(so101_cli, "list_video_devices", return_value=missing_inventory), redirect_stdout(io.StringIO()):
+            self.assertEqual(so101_cli.main(["cameras", "--deployment", str(out_path)]), 1)
+
+        # charuco-board 子命令可直接使用内置 so101_board 预设渲染 PNG + PDF
+        board_dir = root / "board"
+        with redirect_stdout(io.StringIO()):
+            self.assertEqual(
+                so101_cli.main(["charuco-board", "--board-config", "so101_board", "--px-per-mm", "4", "--output-dir", str(board_dir)]),
+                0,
+            )
+        self.assertTrue((board_dir / "so101_charuco_board.png").is_file())
+        self.assertTrue((board_dir / "so101_charuco_board.pdf").is_file())
+
+    def test_so101_cold_start_actionable_errors(self):
+        from ni_rua.robot.backends.so101 import contract
+        from ni_rua.robot.backends.so101.driver import OpenCVCameraSource
+
+        root = Path(self.enterContext(tempfile.TemporaryDirectory(prefix="ni-rua-so101-err-"))).resolve()
+        dep_doc = json.loads(EXAMPLE.read_text(encoding="utf-8"))
+        dep_doc["camera_calibration_file"] = str(root / "missing_camera_calibration.json")
+        dep_path = root / "so101.local.json"
+        dep_path.write_text(json.dumps(dep_doc), encoding="utf-8")
+
+        # 1. 冷启动缺少 camera_calibration.json：明确提示 --observation-profile rgb_proprio_v1 与 /calibration
+        cfg = Config.from_dict({
+            "backend": {"environment": "so101_real", "robot_model_id": "so101", "deployment": str(dep_path)},
+            "features": {"observation_profile": "rgb_proprio_calibrated_v1"},
+        })
+        with self.assertRaises(ValueError) as cal_err:
+            RobotBackend(config=cfg, run_dir=root / "run")
+        msg = str(cal_err.exception)
+        self.assertIn("so101_camera_calibration_missing", msg)
+        self.assertIn("--observation-profile rgb_proprio_v1", msg)
+        self.assertIn("/calibration", msg)
+
+        # 2. 12V 舵机断电与部分电机 ID 失联：明确提示 12V 供电/断电排查
+        deployment = load_deployment(dep_path)
+        with self.assertRaises(PreflightError) as power_err:
+            run_preflight(FakeBus(ping=None), calibrated=lambda: True, deployment=deployment,
+                          limits_rad=LIMITS, to_rad=lambda _n, d: math.radians(d))
+        self.assertEqual(power_err.exception.code, "servo_power_off")
+        self.assertIn("12V", power_err.exception.detail)
+        self.assertIn("1,2,3,4,5,6", power_err.exception.detail)
+
+        with self.assertRaises(PreflightError) as missing_err:
+            run_preflight(FakeBus(ping={1: 777, 2: 777}), calibrated=lambda: True, deployment=deployment,
+                          limits_rad=LIMITS, to_rad=lambda _n, d: math.radians(d))
+        self.assertEqual(missing_err.exception.code, "servo_missing")
+        self.assertIn("12V", missing_err.exception.detail)
+
+        # 3. macOS 相机打开失败：明确提示终端 Camera 权限与 ni-rua-so101 cameras
+        cam = OpenCVCameraSource("wrist", deployment["cameras"]["wrist"], Clock())
+        cam.binding = {"mode": "index", "opened": 0, "api": "avfoundation"}
+        fake_cap = mock.MagicMock()
+        fake_cap.isOpened.return_value = False
+        with mock.patch("ni_rua.robot.backends.so101.driver.sys.platform", "darwin"), \
+                mock.patch("cv2.VideoCapture", return_value=fake_cap):
+            with self.assertRaises(RuntimeError) as cam_err:
+                cam.start()
+        self.assertIn("so101_camera_unavailable:wrist", str(cam_err.exception))
+        self.assertIn("Camera permission", str(cam_err.exception))
+        self.assertIn("ni-rua-so101 cameras", str(cam_err.exception))
+
+        # 4. 未测量 empty_close_aperture_m 时使用 grip_guard_preset：提示在 so101.local.json 实测配置
+        with self.assertRaises(ValueError) as guard_err:
+            contract.validate_grip_guard({"grip_guard_preset": "non_empty"}, deployment)
+        self.assertIn("empty_close_aperture_m", str(guard_err.exception))
+        self.assertIn("so101.local.json", str(guard_err.exception))
+
+
 if __name__ == "__main__":
     unittest.main()

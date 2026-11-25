@@ -13,6 +13,7 @@ from .hooks import (
     validate_task_notes,
 )
 from .loader import (
+    BUNDLED_CONFIG_PRESETS,
     CLI_FIELDS,
     CLI_OPTIONS,
     CLI_OPTIONS_BY_DEST,
@@ -25,12 +26,15 @@ from .loader import (
     QUEUE_CASE_OPTIONS,
     QUEUE_CLI_OPTIONS,
     RUN_FIELDS,
+    USER_SO101_DEPLOYMENT_PATH,
     _expand_profiles,
     _legacy_environment,
     _read_json,
+    bundled_config_path,
     cli_overrides,
     migrate_v1_to_v2,
     namespace_values,
+    resolve_config_source,
 )
 from .sections import (
     ANTHROPIC_BASE_URL,
@@ -94,7 +98,7 @@ from .thresholds import (
 _DEFAULT_FEATURES = FeaturesConfig()
 
 __all__ = [
-    'ANTHROPIC_BASE_URL', 'AgentConfig', 'AnalysisConfig', 'BackendConfig', 'CLI_FIELDS', 'CLI_OPTIONS',
+    'ANTHROPIC_BASE_URL', 'AgentConfig', 'AnalysisConfig', 'BUNDLED_CONFIG_PRESETS', 'BackendConfig', 'CLI_FIELDS', 'CLI_OPTIONS',
     'CATALOGUE_DELIVERY_ABSENT', 'CLI_OPTIONS_BY_DEST', 'ClaudeCodeConfig', 'CliOptionSpec', 'Config', 'ConfigError', 'DEFAULT_PROFILES_DIR',
     'DEFAULT_SUBPROCESS_THREAD_ENV', 'ENV_NAME_PATTERN', 'EVIDENCE_UPSTREAM_WIRES', 'EXTERNAL_PERCEPTION_FIELDS',
     'EmbodimentConfig', 'EvidenceConfig', 'ExternalConfig', 'FEATURE_ABSENT_VALUES', 'FEATURE_FIELDS', 'FeaturesConfig', 'ImagesConfig',
@@ -102,7 +106,7 @@ __all__ = [
     'OomRetryConfig', 'OpenCodeConfig', 'PolicyConfig', 'QUEUE_CASE_OPTIONS', 'QUEUE_CLI_OPTIONS', 'QueueConfig',
     'REPLY_DELIVERY_ABSENT', 'RETIRED_FEATURE_FIELDS', 'RUN_FIELDS', 'RemoteConfig', 'RemoteServiceConfig', 'RunConfig',
     'SUPPORT_Z_FROM_PROFILE', 'SUPPORT_Z_RANGE_M', 'SceneConfig', 'Section', 'ThresholdMap',
-    'TransportRecoveryConfig', 'UpstreamConfig', 'cli_overrides', 'expand_profiles', 'migrate_v1_to_v2',
-    'motion_thresholds', 'namespace_values', 'option', 'register_profile_expander',
-    'register_task_notes_validator', 'validate_task_notes',
+    'TransportRecoveryConfig', 'USER_SO101_DEPLOYMENT_PATH', 'UpstreamConfig', 'bundled_config_path', 'cli_overrides',
+    'expand_profiles', 'migrate_v1_to_v2', 'motion_thresholds', 'namespace_values', 'option',
+    'register_profile_expander', 'register_task_notes_validator', 'resolve_config_source', 'validate_task_notes',
 ]

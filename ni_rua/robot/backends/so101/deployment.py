@@ -820,6 +820,11 @@ def load_deployment(path):
     path = Path(path).expanduser().resolve()
     try:
         document = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError as error:
+        raise ValueError(
+            f"so101_deployment_unreadable:{path.name}: {error} "
+            f"(run `ni-rua-so101 init-config --output {path}` to generate a deployment file)"
+        ) from error
     except (OSError, ValueError) as error:
         raise ValueError(f"so101_deployment_unreadable:{path.name}: {error}") from error
     return validate_deployment(document, base=path.parent)

@@ -47,6 +47,9 @@ assert (static_directory() / "app.js").is_file()
 assert (package / "runtime/policy/policy_workers/pi05_arx_manifest.json").is_file()
 assert (package / "runtime/policy/policy_workers/pi05_arx_client.py").is_file()
 assert (package / "core/default_config.json").is_file()
+assert (package / "core/so101_standalone.json").is_file()
+assert (package / "core/so101.example.json").is_file()
+assert (package / "core/so101_board.json").is_file()
 catalog = json.loads(CATALOG_PATH.read_text())
 assert catalog['version'] == 2 and len(catalog['tasks']) == 54
 for task, entry in catalog['tasks'].items():
@@ -110,13 +113,34 @@ store = Store("smoke-records", {})
 reference = store.put_artifact(b"package integrity", "test", "text/plain")
 assert store.resolve_artifact(reference)[1] == b"package integrity"
 store.close()
-for module in ("ni_rua.apps.gateway", "ni_rua.apps.evaluation.queue", "ni_rua.apps.evaluation.report", "ni_rua.apps.evaluation.audit"):
+# Validate bundled preset resolution (--config so101 / so101_standalone / ni-rua) outside the git checkout.
+so101_cfg = Config.load("so101", environ={})
+assert so101_cfg.backend.environment == "so101_real"
+assert so101_cfg.backend.robot_model_id == "so101"
+assert so101_cfg.features.external_perception is False
+assert so101_cfg.backend.deployment == str(Path("~/.config/ni-rua/so101.local.json").expanduser().resolve())
+assert Config.load("so101_standalone", environ={}) == so101_cfg
+assert Config.load("ni-rua", environ={}) == config
+# Validate ni-rua-so101 init-config can read bundled so101.example.json and emit a valid deployment outside checkout.
+from ni_rua.apps.so101_cli import main as so101_cli_main
+from ni_rua.robot.backends.so101.deployment import load_deployment
+generated_so101 = Path("generated-so101.local.json")
+assert so101_cli_main(["init-config", "--non-interactive", "--port", "/dev/ttyACM0", "--output", str(generated_so101)]) == 0
+loaded_so101 = load_deployment(generated_so101)
+assert loaded_so101["port"] == "/dev/ttyACM0"
+for module in ("ni_rua.apps.gateway", "ni_rua.apps.so101_cli", "ni_rua.apps.evaluation.queue", "ni_rua.apps.evaluation.report", "ni_rua.apps.evaluation.audit"):
     sys.argv = [module, "--help"]
     try:
         runpy.run_module(module, run_name="__main__")
     except SystemExit as result:
         assert result.code in (None, 0), (module, result.code)
-print("Installed wheel: config defaults and precedence, archived config, imports, CLI, Web, policy, pinned reference and Store checks passed")
+for subcommand in ("cameras", "commission", "charuco-board", "init-config"):
+    try:
+        so101_cli_main([subcommand, "--help"])
+    except SystemExit as result:
+        assert result.code in (None, 0), (subcommand, result.code)
+assert (installation / "bin/ni-rua-so101").is_file()
+print("Installed wheel: config defaults, bundled presets, SO-101 CLI, archived config, imports, CLI, Web, policy, pinned reference and Store checks passed")
 '''
 
 

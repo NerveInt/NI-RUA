@@ -44,6 +44,14 @@ from .thresholds import MOTION_THRESHOLD_FIELDS
 LOCAL_CONFIG_PATH = Path(__file__).resolve().parents[3] / 'configs/ni-rua.local.json'
 # Provider profiles directory used while agent.profiles_dir is null (git-ignored; ni_rua/cortex/agents/profiles.py).
 DEFAULT_PROFILES_DIR = Path(__file__).resolve().parents[3] / 'configs/profiles'
+# 零克隆 wheel 安装的默认 SO-101 机器部署配置路径（运行时按 HOME 展开）
+USER_SO101_DEPLOYMENT_PATH = Path('~/.config/ni-rua/so101.local.json')
+# --config 内置预设名 -> (源码仓 configs/ 文件名, wheel 内置 ni_rua/core/ 文件名)
+BUNDLED_CONFIG_PRESETS = {
+    'so101': ('so101_standalone.json', 'so101_standalone.json'),
+    'so101_standalone': ('so101_standalone.json', 'so101_standalone.json'),
+    'ni-rua': ('ni-rua.json', 'default_config.json'),
+}
 
 # 多核服务器高并发（默认 60 路）下抑制各子进程默认按逻辑核数拉满线程池导致触碰 cgroup pids.max
 DEFAULT_SUBPROCESS_THREAD_ENV = {
@@ -120,6 +128,50 @@ def _config_paths():
         repo_root = pkg_file.parents[2]
     local_path = Path(getattr(pkg, 'LOCAL_CONFIG_PATH', LOCAL_CONFIG_PATH))
     return core_dir, repo_root, local_path
+
+
+def bundled_config_path(checkout_name: str, packaged_name: str | None = None, *, core_dir=None, repo_root=None) -> Path:
+    """定位随源码仓 configs/ 或已安装 wheel 内置的 JSON 配置文件。"""
+    if core_dir is None or repo_root is None:
+        default_core, default_repo, _ = _config_paths()
+        core_dir = default_core if core_dir is None else Path(core_dir)
+        repo_root = default_repo if repo_root is None else Path(repo_root)
+    checkout_path = repo_root / 'configs' / checkout_name
+    if checkout_path.is_file():
+        return checkout_path
+    packaged_path = core_dir / (packaged_name or checkout_name)
+    if packaged_path.is_file():
+        return packaged_path
+    raise ConfigError(f'bundled_config_missing:{checkout_name}')
+
+
+def resolve_config_source(selected, *, core_dir=None, repo_root=None) -> Path:
+    """将 --config 预设名（so101 / so101_standalone / ni-rua）或文件路径解析为实际 Path。"""
+    selected_str = str(selected)
+    candidate = Path(selected_str).expanduser()
+    if selected_str in BUNDLED_CONFIG_PRESETS and not candidate.is_file():
+        checkout_name, packaged_name = BUNDLED_CONFIG_PRESETS[selected_str]
+        return bundled_config_path(checkout_name, packaged_name, core_dir=core_dir, repo_root=repo_root)
+    return Path(selected)
+
+
+def _resolve_config_path_field(schema, key: str, raw: str, *, source: Path, core_dir: Path) -> str:
+    """解析配置中的路径字段；对相对 so101.local.json 支持 CWD configs/ 与 ~/.config/ni-rua/ 回退。"""
+    rel = Path(raw).expanduser()
+    if schema is BackendConfig and key == 'deployment' and not rel.is_absolute() and raw == 'so101.local.json':
+        user_fallback = USER_SO101_DEPLOYMENT_PATH.expanduser().resolve()
+        cwd_candidate = (Path.cwd() / 'configs' / raw).resolve()
+        if source.parent.resolve() == core_dir.resolve():
+            return str(cwd_candidate) if cwd_candidate.is_file() else str(user_fallback)
+        sibling = (source.parent / rel).resolve()
+        if sibling.is_file():
+            return str(sibling)
+        if cwd_candidate.is_file():
+            return str(cwd_candidate)
+        if user_fallback.is_file():
+            return str(user_fallback)
+        return str(sibling)
+    return str((source.parent / rel).resolve())
 
 
 def _read_json(path):
@@ -251,7 +303,7 @@ class Config(Section):
         if not ignore_local and local_path.exists():
             sources.append(local_path)
         if selected:
-            sources.append(Path(selected))
+            sources.append(resolve_config_source(selected, core_dir=core_dir, repo_root=repo_root))
         for source in sources:
             source = source.expanduser().resolve()
             document = migrate_v1_to_v2(_read_json(source))
@@ -275,7 +327,7 @@ class Config(Section):
                     elif tuple_inner is not None and isinstance(tuple_inner, type) and is_dataclass(tuple_inner) and isinstance(part, list):
                         part = [normalize(entry, tuple_inner) for entry in part]
                     elif item.metadata.get('path') and isinstance(part, str):
-                        part = str((source.parent / Path(part).expanduser()).resolve()) if part.strip() else part
+                        part = _resolve_config_path_field(schema, key, part, source=source, core_dir=core_dir) if part.strip() else part
                     out[key] = part
                 return out
 

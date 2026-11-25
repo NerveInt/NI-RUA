@@ -59,10 +59,18 @@ def run_preflight(bus, *, calibrated, deployment, limits_rad, to_rad, port_exist
     record("servo_presence", not missing and not wrong_model, expected_ids=sorted(expected),
            found=dict(sorted(found.items())), missing_ids=missing)
     if not found:
-        fail("servo_power_off", "no servo answered the broadcast ping while the USB port is present; "
-                                "check the 12 V servo supply and the cable to the first servo")
+        expected_ids = ",".join(map(str, sorted(expected)))
+        fail(
+            "servo_power_off",
+            f"no servo (motor ids {expected_ids}) answered the broadcast ping while the USB port is present; "
+            "check the 12V servo power supply / power cutoff (E-STOP) and the cable to the first servo",
+        )
     if missing:
-        fail("servo_missing", "servo ids " + ",".join(map(str, missing)) + " did not answer; check the daisy-chain cabling")
+        fail(
+            "servo_missing",
+            "servo ids " + ",".join(map(str, missing))
+            + " did not answer; check the 12V servo power supply / power cutoff and the daisy-chain cabling",
+        )
     if wrong_model:
         fail("servo_model_mismatch", f"unexpected model numbers {wrong_model}")
 

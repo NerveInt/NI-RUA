@@ -28,55 +28,55 @@ Only the `external` backend binds the plugin port (`agent.external.mcp_port` / `
 | What | The `external` agent backend: `--agent-backend external` brings up the robot, the `Harness` and the existing [`NiRuaMcpServer`](../../ni_rua/cortex/agents/mcp_server.py) on a fixed loopback port, launches no agent and no model relay, and your own agent drives the run through MCP. | The `ni-rua-experiments` skill teaches your agent to run single gateways, `ni-rua-queue`, `ni-rua-report`, `ni-rua-audit` and the experiment library by the rules in [AGENTS.md](../../AGENTS.md). |
 | Code | [`ni_rua/cortex/agents/external/`](../../ni_rua/cortex/agents/external/session.py), [`run_bracket.py`](../../ni_rua/runtime/tools/plugins/run_bracket.py) | [`agent-plugin/skills/ni-rua-experiments/SKILL.md`](../../agent-plugin/skills/ni-rua-experiments/SKILL.md); no new Python |
 | Actors it can run | Your own agent, interactively | Queue cases keep NI-RUA-hosted actors (`codex`, `claude_code`, `opencode`) |
-| Prerequisites | A checkout, the `ni-rua` environment, the robot environment | A checkout, the `ni-rua` environment, a provider profile in `configs/profiles/`, the pinned agent runtime of the chosen backend, and a GPU host for RoboDojo benchmarks (a laptop can still replay, report and audit) |
+| Prerequisites | `@nerveint/ni-rua-plugin` + `ni-rua-harness` (auto-installed into isolated Python 3.12 envs via `setup`, or a local checkout) and the robot environment | A checkout, the `ni-rua` environment, a provider profile in `configs/profiles/`, the pinned agent runtime of the chosen backend, and a GPU host for RoboDojo benchmarks (a laptop can still replay, report and audit) |
 
 An external run is interactive-only and not queueable: the queue refuses `agent_backend="external"` (`external_backend_not_queueable`, [`queue.py`](../../ni_rua/apps/evaluation/queue.py)), because nobody would attach an agent to a queued case. Put external runs in no manifest.
 
-## What the package contains and what you install separately
+## What the package contains and what `setup` installs
 
-The npm package [`agent-plugin/`](../../agent-plugin/README.md) (`name` `ni-rua-agent-plugin`, installer binary `ni-rua-plugin`, no dependencies) holds the per-host manifests with HTTP MCP entries to `http://127.0.0.1:8790/mcp`, two skills (`ni-rua-robot` for the actor, `ni-rua-experiments` for the operator) and the installer (`install`, `uninstall`, `doctor`). It contains no Python and no robot software.
+The npm package [`agent-plugin/`](../../agent-plugin/README.md) (published as `@nerveint/ni-rua-plugin`, CLI binary `ni-rua-plugin`, zero npm dependencies) holds the per-host manifests with HTTP MCP entries to `http://127.0.0.1:8790/mcp`, two skills (`ni-rua-robot` for the actor, `ni-rua-experiments` for the operator), and the CLI (`setup`, `gateway`, `install`, `uninstall`, `doctor`). The npm tarball itself contains no Python binaries.
 
-Install separately, as for any NI-RUA run:
-
-- the Python harness (clone the repository, `mamba env create -f environment.yml`, the `ni-rua` environment), the robot environment (RoboDojo or the SO-101 deployment) and, only for queue cases, provider profiles;
-- Node 18 or newer (the installer is plain Node, built-in modules only) and the host CLI you want to use;
-- platform: macOS and Linux. Windows only through WSL, because the gateway uses `fcntl`.
-
-The package is unpublished (`"private": true`). Install from the repository (`node agent-plugin/bin/cli.mjs`) or from an `npm pack` tarball.
+- **One-line zero-clone install**: `npx -y @nerveint/ni-rua-plugin setup <claude|codex|opencode|all> [--so101]` installs the host plugin AND bootstraps an isolated Python 3.12 runtime for `ni-rua-harness` under `~/.local/share/ni-rua/envs/gateway` (preferring `uv`, falling back to `python3.12 -m venv`). Adding `--so101` creates a separate isolated `~/.local/share/ni-rua/envs/so101` environment for SO-101 hardware dependencies.
+- **Global CLI (recommended for daily use)**: `npm i -g @nerveint/ni-rua-plugin` exposes `ni-rua-plugin` on `PATH` for `gateway`, `doctor`, `install`, and `uninstall`.
+- **Requirements**: Node 18 or newer, Python 3.12 (or `uv`), the host CLI you want to use, and macOS or Linux (Windows only through WSL, because the gateway uses `fcntl`).
+- **From a source checkout**: you can still run `node agent-plugin/bin/cli.mjs` directly against the `mamba` `ni-rua` environment.
 
 ## Quick start
 
-1. Start the gateway first, from the checkout, before the agent session (the task comes only from `--prompt`; see [The bracket](#the-bracket-run_begin-and-run_finish)). An external run is never `--benchmark`. Pick the line for your robot and give it a console `--port`:
+1. Install the plugin and gateway runtime once, then verify with `doctor`:
 
    ```sh
-   # RoboDojo simulation (one idle GPU; the RoboDojo paths of configs/ni-rua.json apply, see running.md)
+   npx -y @nerveint/ni-rua-plugin setup claude        # or: codex | opencode | all (add --so101 for SO-101 arm)
+   npm i -g @nerveint/ni-rua-plugin                   # optional: keep `ni-rua-plugin` on PATH
+   ni-rua-plugin doctor                               # add --so101 for serial/camera/calibration checks
+   ```
+
+2. Start the gateway first, before the agent session (the task comes only from `--prompt`; see [The bracket](#the-bracket-run_begin-and-run_finish)). An external run is never `--benchmark`:
+
+   ```sh
+   # Zero-hardware smoke test (lightweight local dry-run MCP server on 127.0.0.1:8790/mcp)
+   ni-rua-plugin gateway --dry-run
+
+   # SO-101 arm — standalone local CPU-only default (auto-adds --observation-profile rgb_proprio_v1 on cold start before calibration)
+   ni-rua-plugin gateway --config so101 --port 8781 --run-dir runs/my-external --prompt "<task>"
+
+   # RoboDojo simulation from a checkout (one idle GPU; see running.md)
    mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external \
      --task stack_bowls --gpu 0 --port 8767 --run-dir runs/my-external --prompt "<task>"
-
-   # SO-101 arm — standalone local CPU-only default (the real arm: only with the deployment's normal real-robot procedure and the operator at the arm)
-   mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external \
-     --config configs/so101_standalone.json --port 8781 --run-dir runs/my-external --prompt "<task>"
    ```
 
-   For first-time SO-101 setup before `camera_calibration.json` exists, add `--observation-profile rgb_proprio_v1` to enter the guided calibration wizard at `http://127.0.0.1:8781/calibration?lang=en`; once calibration is applied, daily local CPU-only runs use `--config configs/so101_standalone.json` directly. Use `--config configs/so101_gateway.json` only when connecting optional remote VGGT/SAM/cuRobo GPU services. Both configs name the SO-101 deployment in `backend.deployment` (your `configs/so101.local.json`; see [SO-101 Quickstart](../guides/so101-quickstart.md), [SO-101 Calibration Guide](../guides/so101-calibration.md), [SO-101 configuration](so101-configuration.md), and [SO-101 integration, section 6.3](so101-integration.md)); change that path for your machine. Build the console once with `npm --prefix web ci && npm --prefix web run build`, then open `http://127.0.0.1:<port>/console?lang=en` (the `--port` above). `--run-dir` must be a new directory.
+   For first-time SO-101 setup before `camera_calibration.json` exists, `ni-rua-plugin gateway --config so101` automatically detects the missing calibration file and appends `--observation-profile rgb_proprio_v1` so you can open `http://127.0.0.1:8781/calibration?lang=en` immediately (when invoking `ni-rua` directly, pass `--observation-profile rgb_proprio_v1` explicitly). Once calibration is applied, daily local CPU-only runs use `--config so101` (bundled `so101_standalone.json`) directly. Use `--config configs/so101_gateway.json` only when connecting optional remote VGGT/SAM/cuRobo GPU services. Deployment configuration is read from `~/.config/ni-rua/so101.local.json` (generated via `ni-rua-so101 init-config`) or `./configs/so101.local.json` inside a checkout; see [SO-101 Quickstart](../guides/so101-quickstart.md), [SO-101 Calibration Guide](../guides/so101-calibration.md), [SO-101 configuration](so101-configuration.md), and [SO-101 integration, section 6.3](so101-integration.md). Open `http://127.0.0.1:<port>/console?lang=en` (the `--port` above); `--run-dir` must be a new directory.
 
    The gateway serves MCP on `http://127.0.0.1:8790/mcp` (`agent.external.mcp_port`, overridable via `--external-mcp-port`, see [Configuration](configuration.md#agent-backend-agent)) and prints the endpoint at start. A taken port refuses the launch with one sentence naming the port. For RoboDojo runs, `run_begin` also delivers the native `task_instruction` (with any `task_instruction_override`), `public_task_rules` and `default_task_notes` in `native_task` and `task_notes`.
-
-   To try the plugin without an arm, see [Dry run without hardware](#dry-run-without-hardware-checkout-only).
-2. Install the plugin into your host and check it:
-
-   ```sh
-   node agent-plugin/bin/cli.mjs install claude     # or: codex | opencode
-   node agent-plugin/bin/cli.mjs doctor
-   ```
 
 3. Start your own agent session and ask it to do the task. The `ni_rua` tools appear; the agent calls `run_begin`, works, and calls `run_finish`.
 
 Use the NI-RUA console (the gateway's `--port`) to stop, hold or emergency-stop the arm.
 
-## Dry run without hardware (checkout only)
+## Dry run without hardware
 
-The test suite's scene double serves the real SO-101 backend and adapter over a simulated servo bus and rendered cameras (no serial port, no arm). It is test support, not part of the wheel. From the checkout:
+- **Built-in CLI dry run (no checkout, no Python needed):** `ni-rua-plugin gateway --dry-run` starts a lightweight local MCP server on `http://127.0.0.1:8790/mcp` exposing `run_begin`, `robot_observe`, `robot_action`, and `run_finish` so you can verify `Agent ↔ MCP` end to end in seconds.
+- **Full SO-101 scene double (checkout only):** The test suite's scene double serves the real SO-101 backend and adapter over a simulated servo bus and rendered cameras (no serial port, no arm). It is test support, not part of the wheel. From the checkout:
 
 ```sh
 D=$(mktemp -d)

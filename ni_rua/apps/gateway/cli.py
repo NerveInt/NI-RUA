@@ -73,7 +73,10 @@ def build_parser() -> argparse.ArgumentParser:
         description='Run NI-RUA + RoboDojo with a persistent native agent workbench',
         argument_default=argparse.SUPPRESS,
     )
-    parser.add_argument('--config', help='Unified JSON config; defaults to NI_RUA_CONFIG or configs/ni-rua.json')
+    parser.add_argument(
+        '--config',
+        help='Unified JSON config path or bundled preset name (so101, so101_standalone, ni-rua); defaults to NI_RUA_CONFIG or configs/ni-rua.json',
+    )
     parser.add_argument(
         '--no-local-config',
         action='store_true',

@@ -28,57 +28,56 @@ NI-RUA 提供两种使用方式，同一份代码仓库和同一套安装可同�
 | 定位 | `external` 智能体后端：`--agent-backend external` 启动机器人、`Harness` 以及既有的 [`NiRuaMcpServer`](../../ni_rua/cortex/agents/mcp_server.py)（固定回环端口），不拉起智能体也不启动模型中继，由你自己的智能体通过 MCP 驱动运行。 | `ni-rua-experiments` 技能指导你的智能体按照 [AGENTS.md](../../AGENTS.md) 规则操作单局网关、`ni-rua-queue`、`ni-rua-report`、`ni-rua-audit` 与实验库。 |
 | 代码 | [`ni_rua/cortex/agents/external/`](../../ni_rua/cortex/agents/external/session.py)、[`run_bracket.py`](../../ni_rua/runtime/tools/plugins/run_bracket.py) | [`agent-plugin/skills/ni-rua-experiments/SKILL.md`](../../agent-plugin/skills/ni-rua-experiments/SKILL.md)；无新增 Python 代码 |
 | 可驱动的 Actor | 你自己的智能体（交互式） | 队列中的每个用例仍使用 NI-RUA 托管的 Actor（`codex`、`claude_code`、`opencode`） |
-| 前置条件 | 源码仓库、`ni-rua` 环境、机器人运行环境 | 源码仓库、`ni-rua` 环境、`configs/profiles/` 中的 Provider Profile、所选后端固定版本的智能体运行时，以及运行 RoboDojo 基准所需的 GPU 宿主机（普通笔记本仍可用于回放、统计与审计） |
+| 前置条件 | `@nerveint/ni-rua-plugin` + `ni-rua-harness`（可通过 `setup` 自动安装到隔离的 Python 3.12 环境，或使用本地源码仓库）与机器人运行环境 | 源码仓库、`ni-rua` 环境、`configs/profiles/` 中的 Provider Profile、所选后端固定版本的智能体运行时，以及运行 RoboDojo 基准所需的 GPU 宿主机（普通笔记本仍可用于回放、统计与审计） |
 
 外部智能体运行仅限交互式，不可入队：队列会拒绝 `agent_backend="external"`（错误码 `external_backend_not_queueable`，见 [`queue.py`](../../ni_rua/apps/evaluation/queue.py)），因为排队用例没有人工或外部会话接入。切勿将 `external` 运行写入评测 manifest。
 
-## 插件包内容与独立安装项
+## 插件包内容与 `setup` 安装项
 
-npm 包 [`agent-plugin/`](../../agent-plugin/README.zh-CN.md)（包名 `ni-rua-agent-plugin`，安装器命令 `ni-rua-plugin`，零第三方依赖）仅包含指向 `http://127.0.0.1:8790/mcp` 的各宿主 HTTP MCP 清单、两项技能（面向执行者的 `ni-rua-robot` 与面向运维者的 `ni-rua-experiments`）以及安装器（`install`、`uninstall`、`doctor`）。该包不含任何 Python 代码或机器人软件。
+npm 包 [`agent-plugin/`](../../agent-plugin/README.zh-CN.md)（已发布为 `@nerveint/ni-rua-plugin`，CLI 命令 `ni-rua-plugin`，零 npm 依赖）包含指向 `http://127.0.0.1:8790/mcp` 的各宿主 HTTP MCP 清单、两项技能（面向执行者的 `ni-rua-robot` 与面向运维者的 `ni-rua-experiments`）以及命令行工具（`setup`、`gateway`、`install`、`uninstall`、`doctor`）。npm 包本身不含 Python 二进制。
 
-与任何 NI-RUA 运行一样，以下组件需单独安装：
-
-- Python Harness（克隆仓库、`mamba env create -f environment.yml` 创建 `ni-rua` 环境）、机器人环境（RoboDojo 或 SO-101 部署环境），以及（仅在运行托管队列用例时）Provider Profile；
-- Node 18 或更新版本（安装器为纯 Node 实现，仅使用内置模块）以及你要使用的宿主 CLI；
-- 操作系统平台：macOS 与 Linux。Windows 仅支持通过 WSL 运行（网关依赖 `fcntl`）。
-
-该包尚未发布至 npm（`"private": true`），请直接从源码仓库运行（`node agent-plugin/bin/cli.mjs`）或从 `npm pack` 打出的 tarball 安装。
+- **一行命令零 clone 安装**：执行 `npx -y @nerveint/ni-rua-plugin setup <claude|codex|opencode|all> [--so101]` 会同时安装宿主插件，并在 `~/.local/share/ni-rua/envs/gateway` 下自动创建隔离的 Python 3.12 `ni-rua-harness` 网关环境（优先使用 `uv`，回退至 `python3.12 -m venv`）。附加 `--so101` 时，会额外创建隔离的 `~/.local/share/ni-rua/envs/so101` 硬件 Worker 环境。
+- **全局 CLI（日常推荐）**：`npm i -g @nerveint/ni-rua-plugin` 将 `ni-rua-plugin` 装入 `PATH`，方便日常执行 `gateway`、`doctor`、`install` 与 `uninstall`。
+- **运行要求**：Node 18 或更新版本、Python 3.12（或 `uv`）、你要使用的宿主 CLI，以及 macOS / Linux（Windows 仅支持通过 WSL 运行，网关依赖 `fcntl`）。
+- **源码开发模式**：仍可在仓库根目录直接运行 `node agent-plugin/bin/cli.mjs` 搭配 `mamba` 的 `ni-rua` 环境。
 
 ## 快速开始
 
-1. 先在源码仓库中启动网关，再开启智能体会话（任务仅来源于 `--prompt`；见[生命周期门控：`run_begin` 与 `run_finish`](#the-bracket-run_begin-and-run_finish)）。外部模式绝不可带 `--benchmark`。按你的机器人选择对应命令并指定控制台 `--port`：
+1. 一次性安装插件与网关运行时，并执行自检：
 
    ```sh
-   # RoboDojo 仿真（需 1 张空闲 GPU；沿用 configs/ni-rua.json 中的 RoboDojo 路径，见 running.zh-CN.md）
+   npx -y @nerveint/ni-rua-plugin setup claude        # 或：codex | opencode | all（SO-101 真机加 --so101）
+   npm i -g @nerveint/ni-rua-plugin                   # 可选：全局保留 `ni-rua-plugin` 命令
+   ni-rua-plugin doctor                               # 真机加 --so101 核查串口、相机与标定状态
+   ```
+
+2. 先启动网关，再开启智能体会话（任务仅来源于 `--prompt`；见[生命周期门控：`run_begin` 与 `run_finish`](#the-bracket-run_begin-and-run_finish)）。外部模式绝不可带 `--benchmark`：
+
+   ```sh
+   # 零硬件 MCP 试运行（内置轻量 dry-run MCP 服务，监听 127.0.0.1:8790/mcp）
+   ni-rua-plugin gateway --dry-run
+
+   # SO-101 机械臂 —— 单机本地纯 CPU 默认配置（冷启动缺标定时自动补全 --observation-profile rgb_proprio_v1）
+   ni-rua-plugin gateway --config so101 --port 8781 --run-dir runs/my-external --prompt "<task>"
+
+   # 源码仓库内运行 RoboDojo 仿真（需 1 张空闲 GPU；见 running.zh-CN.md）
    mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external \
      --task stack_bowls --gpu 0 --port 8767 --run-dir runs/my-external --prompt "<task>"
-
-   # SO-101 机械臂 —— 单机本地纯 CPU 默认配置（真机运行须遵循正常真机安全流程，且操作员必须在机台旁值守）
-   mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external \
-     --config configs/so101_standalone.json --port 8781 --run-dir runs/my-external --prompt "<task>"
    ```
 
-   首次搭建 SO-101 且尚未生成 `camera_calibration.json` 时，启动网关必须附加 `--observation-profile rgb_proprio_v1`，以便打开 `http://127.0.0.1:8781/calibration` 完成引导标定；标定应用完成后，日常单机纯 CPU 运行直接使用 `--config configs/so101_standalone.json` 即可。仅在对接可选远程 VGGT/SAM/cuRobo GPU 服务时改用 `--config configs/so101_gateway.json`。两份配置都在 `backend.deployment` 中指定了 SO-101 机台部署文件（即你的 `configs/so101.local.json`；详见 [SO-101 真机快速上手指南](../guides/so101-quickstart.zh-CN.md)、[SO-101 标定指南](../guides/so101-calibration.zh-CN.md)、[SO-101 配置说明](so101-configuration.md) 与 [SO-101 集成指南第 6.3 节](so101-integration.md)），请按本机路径修改。首次使用前请先构建控制台前端：`npm --prefix web ci && npm --prefix web run build`，然后打开 `http://127.0.0.1:<port>/console`（`<port>` 为上方 `--port`）。`--run-dir` 必须是一个尚不存在的新目录。
+   首次搭建 SO-101 且尚未生成 `camera_calibration.json` 时，`ni-rua-plugin gateway --config so101` 会自动检测并附加 `--observation-profile rgb_proprio_v1`，直接打开 `http://127.0.0.1:8781/calibration` 即可进入引导标定（若直接调用 `ni-rua`，需手动附加 `--observation-profile rgb_proprio_v1`）；标定应用完成后，日常单机纯 CPU 运行直接使用 `--config so101`（内置 `so101_standalone.json`）即可。仅在对接可选远程 VGGT/SAM/cuRobo GPU 服务时改用 `--config configs/so101_gateway.json`。机台部署文件默认读取 `~/.config/ni-rua/so101.local.json`（可通过 `ni-rua-so101 init-config` 生成）或仓库内 `./configs/so101.local.json`；详见 [SO-101 真机快速上手指南](../guides/so101-quickstart.zh-CN.md)、[SO-101 标定指南](../guides/so101-calibration.zh-CN.md)、[SO-101 配置说明](so101-configuration.md) 与 [SO-101 集成指南第 6.3 节](so101-integration.md)。打开 `http://127.0.0.1:<port>/console`（`<port>` 为上方 `--port`）；`--run-dir` 必须是一个尚不存在的新目录。
 
    网关会在 `http://127.0.0.1:8790/mcp` 上提供 MCP 服务（对应 `agent.external.mcp_port`，可用 `--external-mcp-port` 覆盖，见[配置指南](configuration.zh-CN.md)中的 Agent Backend 配置节），并在启动时打印端点地址。若端口已被占用，启动会拒绝并输出一行指明该端口的提示。对于 RoboDojo 运行，`run_begin` 还会通过 `native_task` 和 `task_notes` 透传环境原生的 `task_instruction`（含 `task_instruction_override`）、`public_task_rules` 与 `default_task_notes`。
-
-   如需在没有实体机械臂的情况下试用插件，见[无硬件试运行（仅限源码仓库）](#dry-run-without-hardware-checkout-only)。
-
-2. 将插件安装到宿主并执行自检：
-
-   ```sh
-   node agent-plugin/bin/cli.mjs install claude     # 或：codex | opencode
-   node agent-plugin/bin/cli.mjs doctor
-   ```
 
 3. 启动你自己的智能体会话并让它执行任务。`ni_rua` 工具列表会出现；智能体调用 `run_begin`、开展操作，最后调用 `run_finish`。
 
 请始终通过 NI-RUA 控制台（即网关的 `--port`）执行停止（stop）、保持（hold）或紧急停止（estop）。
 
 <a id="dry-run-without-hardware-checkout-only"></a>
-## 无硬件试运行（仅限源码仓库）
+## 无硬件试运行
 
-测试套件中的场景替身（scene double）在模拟舵机总线与渲染相机之上运行真实的 SO-101 后端与适配器（无需串口，也无需实体机械臂）。它属于测试辅助模块，不包含在发行的 wheel 中。在源码仓库根目录执行：
+- **内置 CLI dry-run（无需源码仓库与 Python）：** 运行 `ni-rua-plugin gateway --dry-run` 即可在 `http://127.0.0.1:8790/mcp` 启动轻量级本地 MCP 服务，暴露 `run_begin`、`robot_observe`、`robot_action` 与 `run_finish`，几秒内验证 `Agent ↔ MCP` 端到端链路。
+- **完整 SO-101 场景替身（仅限源码仓库）：** 测试套件中的场景替身（scene double）在模拟舵机总线与渲染相机之上运行真实的 SO-101 后端与适配器（无需串口，也无需实体机械臂）。它属于测试辅助模块，不包含在发行的 wheel 中。在源码仓库根目录执行：
 
 ```sh
 D=$(mktemp -d)

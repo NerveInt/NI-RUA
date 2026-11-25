@@ -1,16 +1,32 @@
 {
-  "name": "ni-rua-agent-plugin",
+  "name": "@nerveint/ni-rua-plugin",
   "version": "0.1.0",
-  "private": true,
   "description": "NI-RUA robot tools and skills for Claude Code, Codex and OpenCode, served by a local NI-RUA gateway over MCP.",
   "author": "Nerve Intelligence",
   "homepage": "https://github.com/NerveInt/NI-RUA#readme",
+  "bugs": {
+    "url": "https://github.com/NerveInt/NI-RUA/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/NerveInt/NI-RUA.git",
     "directory": "agent-plugin"
   },
+  "keywords": [
+    "ni-rua",
+    "mcp",
+    "robotics",
+    "embodied-ai",
+    "so101",
+    "claude-code",
+    "codex",
+    "opencode",
+    "agent-plugin"
+  ],
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "bin": {
     "ni-rua-plugin": "bin/cli.mjs"

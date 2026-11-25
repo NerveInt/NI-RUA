@@ -45,7 +45,10 @@ class RobotBackend(WorkerProcess):
             raise ValueError("so101_real_requires_motion_execution_mode_resampled")
         path = deployment if deployment is not None else config.backend.deployment
         if not path:
-            raise ValueError("so101_deployment_required: set backend.deployment to configs/so101.local.json")
+            raise ValueError(
+                "so101_deployment_required: set backend.deployment to configs/so101.local.json or "
+                "~/.config/ni-rua/so101.local.json (run `ni-rua-so101 init-config` to generate one)"
+            )
         self.deployment_path = str(Path(path).expanduser().resolve())
         self.deployment = load_deployment(self.deployment_path)
         profile = config.features.observation_profile if observation_profile is None else observation_profile
@@ -54,8 +57,11 @@ class RobotBackend(WorkerProcess):
         if has_calibration(profile):
             calibration = self.deployment.get("camera_calibration_file")
             if not calibration or not Path(calibration).is_file():
-                raise ValueError("so101_camera_calibration_missing: calibrated profile requires the deployment "
-                                 "camera_calibration_file; use observation_profile rgb_proprio_v1 until calibrated")
+                raise ValueError(
+                    f"so101_camera_calibration_missing: camera_calibration_file ({calibration or 'unset'}) not found "
+                    "for calibrated profile; for cold-start calibration, launch with "
+                    "`--observation-profile rgb_proprio_v1` and open `/calibration` in the workbench UI"
+                )
         self.observation_profile = profile
         self.python = self.deployment["python"]
         from ....core.storage.images import image_settings
