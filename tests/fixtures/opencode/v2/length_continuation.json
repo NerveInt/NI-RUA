@@ -1,0 +1,326 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "/tmp/ni-rua-agent-harness/oc2/bin/s03_*.py:s03-length",
+  "scenario": "the first response stops with max_tokens; OpenCode continues with a synthetic message",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+ "prompts": [
+  "msg_1d109f078001o4pfuTAA0ZIh64"
+ ],
+ "snapshots": [
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d109f078001o4pfuTAA0ZIh64",
+     "time": {
+      "created": 1794508452193
+     },
+     "text": "P1",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d109f164001JWyH4bKR9mcV8E",
+     "time": {
+      "created": 1794508452198,
+      "streamed": 1794508452205,
+      "completed": 1794508452206
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "cut"
+      }
+     ],
+     "finish": "length",
+     "rawFinish": "max_tokens",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d109f16f001HNVoUnTsZN9PyB",
+     "time": {
+      "created": 1794508452207
+     },
+     "text": "Your last response hit the output token limit (stop reason: length). Do not apologize, recap, or repeat yourself. Break the remaining work into smaller pieces.",
+     "type": "synthetic"
+    },
+    {
+     "id": "msg_1d109f16f002rgTR08bvjAWn1z",
+     "time": {
+      "created": 1794508452210,
+      "streamed": 1794508452215,
+      "completed": 1794508452215
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "done"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d109f178002PfYc2k07MUaoQ4",
+     "time": {
+      "created": 1794508452216
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    }
+   ],
+   "active": null,
+   "inbox": null
+  }
+ ],
+ "children": {},
+ "events": [
+  {
+   "id": "evt_1d109eee2001sXVEVe22NB1j0d",
+   "created": 1794508451554,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d109f140005vdE3l02LNRLj5Y",
+   "created": 1794508452160,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d109f078001o4pfuTAA0ZIh64",
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "P1"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d109f14a001Fb8qTCAmmCb73L",
+   "created": 1794508452170,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O"
+   }
+  },
+  {
+   "id": "evt_1d109f1610010fQnLPKrq6oz7K",
+   "created": 1794508452193,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "inboxID": "msg_1d109f078001o4pfuTAA0ZIh64"
+   }
+  },
+  {
+   "id": "evt_1d109f16a001iWGoJuJ6qhyNQw",
+   "created": 1794508452202,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d109f164001JWyH4bKR9mcV8E",
+    "started": 1794508452198
+   }
+  },
+  {
+   "id": "evt_1d109f16b001pQVFJ1ntPN6G4s",
+   "created": 1794508452203,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "assistantMessageID": "msg_1d109f164001JWyH4bKR9mcV8E",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d109f16c0015NX13KR2ATJDGF",
+   "created": 1794508452204,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "assistantMessageID": "msg_1d109f164001JWyH4bKR9mcV8E",
+    "ordinal": 0,
+    "delta": "cut"
+   }
+  },
+  {
+   "id": "evt_1d109f16c0025rIjIUBsOuIffB",
+   "created": 1794508452204,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "assistantMessageID": "msg_1d109f164001JWyH4bKR9mcV8E",
+    "ordinal": 0,
+    "text": "cut"
+   }
+  },
+  {
+   "id": "evt_1d109f16d001kvqNAwMrC7xZZJ",
+   "created": 1794508452205,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "assistantMessageID": "msg_1d109f164001JWyH4bKR9mcV8E"
+   }
+  },
+  {
+   "id": "evt_1d109f16e001Io48pyL0x0PIZs",
+   "created": 1794508452206,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "assistantMessageID": "msg_1d109f164001JWyH4bKR9mcV8E",
+    "finish": "length",
+    "rawFinish": "max_tokens",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d109f16f001HNVoUnTsZN9PyB",
+   "created": 1794508452207,
+   "type": "session.synthetic",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "text": "Your last response hit the output token limit (stop reason: length). Do not apologize, recap, or repeat yourself. Break the remaining work into smaller pieces."
+   }
+  },
+  {
+   "id": "evt_1d109f17500111NAoCwqDMRXfY",
+   "created": 1794508452213,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d109f16f002rgTR08bvjAWn1z",
+    "started": 1794508452210
+   }
+  },
+  {
+   "id": "evt_1d109f175002166wkgJothiO0k",
+   "created": 1794508452213,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "assistantMessageID": "msg_1d109f16f002rgTR08bvjAWn1z",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d109f176001PRyGgIluKHqkPz",
+   "created": 1794508452214,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "assistantMessageID": "msg_1d109f16f002rgTR08bvjAWn1z",
+    "ordinal": 0,
+    "delta": "done"
+   }
+  },
+  {
+   "id": "evt_1d109f176002eyetJVDtutbCrI",
+   "created": 1794508452214,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "assistantMessageID": "msg_1d109f16f002rgTR08bvjAWn1z",
+    "ordinal": 0,
+    "text": "done"
+   }
+  },
+  {
+   "id": "evt_1d109f177001P5iFtwtdmEBW3R",
+   "created": 1794508452215,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "assistantMessageID": "msg_1d109f16f002rgTR08bvjAWn1z"
+   }
+  },
+  {
+   "id": "evt_1d109f177002zuPxQJuvpS7DL8",
+   "created": 1794508452215,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O",
+    "assistantMessageID": "msg_1d109f16f002rgTR08bvjAWn1z",
+    "finish": "stop",
+    "rawFinish": "end_turn",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d109f178002PfYc2k07MUaoQ4",
+   "created": 1794508452216,
+   "type": "session.execution.succeeded",
+   "data": {
+    "sessionID": "ses_e2ef6111fffeq4Rr2IOp11L16O"
+   }
+  }
+ ]
+}

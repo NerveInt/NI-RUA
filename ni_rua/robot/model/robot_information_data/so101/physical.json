@@ -1,0 +1,116 @@
+{
+  "identity": {
+    "name": "SO-101 follower arm",
+    "physical_model": "TheRobotStudio SO-101 follower (SO-ARM100 family), one arm with five revolute arm joints and one revolute gripper jaw, Feetech STS3215 servos on one serial bus",
+    "arms": 1,
+    "public_arm_slots": ["right"],
+    "fixed_bases": true,
+    "revolute_joints_per_arm": 5,
+    "gripper_jaw_joints_per_arm": 1,
+    "gripper_commands_per_arm": 1,
+    "native_action_dimensions": 6,
+    "hardware_variant": "Follower arm with the fixed-jaw gripper, moving jaw and the optional 32x32 mm UVC wrist camera mount on gripper_link. Printed parts, servo gear ratios and camera module of a given unit are not verified by this package."
+  },
+  "kinematics": {
+    "frame_convention": "Frame so101_base is URDF base_link: metres and radians, right-handed, +Z up when the base is mounted flat. For this single-arm deployment world equals the robot base (T_world_base = identity). Joint angles use the URDF new-calibration convention: zero is the middle of each joint's calibrated range.",
+    "joints": [
+      {"name": "shoulder_pan", "type": "revolute", "parent": "base_link", "child": "shoulder_link", "local_axis": [0, 0, 1], "declared_limits_rad": [-1.91986, 1.91986]},
+      {"name": "shoulder_lift", "type": "revolute", "parent": "shoulder_link", "child": "upper_arm_link", "local_axis": [0, 0, 1], "declared_limits_rad": [-1.74533, 1.74533]},
+      {"name": "elbow_flex", "type": "revolute", "parent": "upper_arm_link", "child": "lower_arm_link", "local_axis": [0, 0, 1], "declared_limits_rad": [-1.69, 1.69], "note": "These URDF limits include a 5-degree calibration offset."},
+      {"name": "wrist_flex", "type": "revolute", "parent": "lower_arm_link", "child": "wrist_link", "local_axis": [0, 0, 1], "declared_limits_rad": [-1.65806, 1.65806]},
+      {"name": "wrist_roll", "type": "revolute", "parent": "wrist_link", "child": "gripper_link", "local_axis": [0, 0, 1], "declared_limits_rad": [-2.74385, 2.84121]},
+      {"name": "gripper", "type": "revolute", "parent": "gripper_link", "child": "moving_jaw_so101_v1_link", "local_axis": [0, 0, 1], "declared_limits_rad": [-0.174533, 1.74533]},
+      {"name": "gripper_frame_joint", "type": "fixed", "parent": "gripper_link", "child": "gripper_frame_link"},
+      {"name": "wrist_camera_mount_joint", "type": "fixed", "parent": "gripper_link", "child": "wrist_camera_mount_link"},
+      {"name": "wrist_camera_joint", "type": "fixed", "parent": "wrist_camera_mount_link", "child": "wrist_camera_link"}
+    ],
+    "base_link": "base_link",
+    "tcp_link": "gripper_frame_link",
+    "wrist_camera_parent_link": "gripper_link",
+    "arm_joint_order": ["shoulder_pan", "shoulder_lift", "elbow_flex", "wrist_flex", "wrist_roll"],
+    "gripper_joint_order": ["gripper"],
+    "joint_units": "rad",
+    "pose_interface": {
+      "pose_units": "position_m in metres and quaternion_xyzw (x, y, z, w) of gripper_frame_link expressed in so101_base. Named angles_deg poses are not supported and are rejected.",
+      "tcp_config_id": "so101-gripper-frame-v1",
+      "tcp_link": "gripper_frame_link",
+      "tcp_definition": "URDF link gripper_frame_link, fixed to gripper_link by gripper_frame_joint: a point on the fixed jaw's inner fingertip face (local x = 0), not between the jaws; the whole jaw gap lies on local -X, so the fingertip midpoint moves with the jaw angle. It is a geometric reference, not a contact sensor.",
+      "tcp_axes": "Local +Z of gripper_frame_link points outward along the jaws (approach direction), local +X from the jaw gap toward the fixed jaw, local +Y to the wrist-camera side. The moving jaw swings about gripper_frame_link local -Y; at gripper=0 its inner fingertip point lies 0.0158 m along local -X from the TCP (CAD), and larger gripper angles move it further along -X and, past about 0.6 rad, back behind the TCP plane (opening).",
+      "reachability": "Five revolute arm joints: an arbitrary 6D TCP pose is generally not reachable; the approach axis (local +Z) tilts only in the arm's vertical plane through shoulder_pan and wrist_roll sets the roll about it. IK minimises weighted position and orientation error and reports the achieved residuals; stage tolerances decide completion.",
+      "zero_configuration_tcp_m": [0.3914, 0.0, 0.2265],
+      "zero_configuration_note": "TCP position in so101_base at all arm joints zero, computed from the URDF. A unit's driver zero is aligned with it by the deployment's joint_mapping offsets, which this package does not establish."
+    },
+    "lerobot_mapping": {
+      "driver_joint_names_match_urdf": true,
+      "arm_units_with_use_degrees": "degrees = (ticks - (range_min + range_max)/2) * 360 / 4095, centred on the recorded calibration midpoint",
+      "gripper_units": "0..100 percent of the recorded calibration range (0 at range_min ticks)",
+      "assumption": "rad = sign * deg * pi / 180 + offset_rad per joint (deployment joint_mapping), aligning the driver with the URDF new-calibration zero and positive direction; the gripper percent maps linearly onto the deployment's closed and open jaw angles. Per-unit signs, offsets and jaw angles come from the deployment and its calibration, not from this package."
+    }
+  },
+  "geometry": {
+    "units": "metres; mesh scale as declared per mesh element in the URDF",
+    "up_axis": "Z",
+    "links": [
+      "base_link", "shoulder_link", "upper_arm_link", "lower_arm_link", "wrist_link", "gripper_link",
+      "gripper_frame_link", "moving_jaw_so101_v1_link", "wrist_camera_mount_link", "wrist_camera_link"
+    ],
+    "wrist_camera": {
+      "parent_link": "gripper_link",
+      "mount_link": "wrist_camera_mount_link",
+      "camera_link": "wrist_camera_link",
+      "form_factor": "32x32 mm UVC module in a hex-nut-recess mount",
+      "interpretation": "The URDF camera link places the housing mesh only. It is not the optical frame; live intrinsics and T_link_camera come from the deployment calibration file through observations."
+    },
+    "collision_geometry": "Collision elements reuse the visual meshes per link. No planner collision spheres are defined for this robot. Clearance of the camera mount, moving jaw and held objects is not checked by this package.",
+    "native_model": {
+      "resource_id": "geometry_model",
+      "archive_format": "ZIP",
+      "assembly_member": "so101_new_calib_camera.urdf",
+      "mesh_formats": ["STL"],
+      "coordinates": "URDF base_link is the assembly frame. Binary STL meshes under assets/ with paths relative to the URDF; most meshes are authored in metres with no scale, the wrist camera mount mesh is in millimetres with scale 0.001 declared in the URDF. +Z up."
+    }
+  },
+  "dynamics": {
+    "declared_link_masses_kg": {
+      "base_link": 0.147, "shoulder_link": 0.100006, "upper_arm_link": 0.103, "lower_arm_link": 0.104,
+      "wrist_link": 0.079, "gripper_link": 0.087, "moving_jaw_so101_v1_link": 0.012,
+      "wrist_camera_mount_link": 0.02, "wrist_camera_link": 0.015
+    },
+    "sum_declared_mass_kg": 0.667006,
+    "mass_interpretation": "CAD-derived URDF values; the camera and mount masses and inertias are placeholders. Not a measured product weight or payload rating.",
+    "declared_joint_effort_and_velocity": "Every URDF joint declares effort 10 and velocity 10. These are placeholder model values, not servo ratings.",
+    "configured_actuators_and_physics": {
+      "actuator": "Feetech STS3215 serial bus servo, one per joint (six on one bus)",
+      "operating_mode": "position control",
+      "encoder_ticks_per_revolution": 4096,
+      "driver_position_pid_defaults": {"p": 16, "i": 0, "d": 32},
+      "driver_gripper_limits": "The LeRobot driver writes Max_Torque_Limit 500, Protection_Current 250 and Overload_Torque 25 (servo register units) to the gripper servo only, to reduce burnout risk.",
+      "interpretation": "LeRobot SOFollower driver defaults; a deployment may override them. Stall torque, current-to-force relation, gear backlash, friction and compliance of the installed servos are unknown."
+    },
+    "simulation_parameters_note": "The published MuJoCo descriptions carry STS3215 actuator parameters for simulation. They are not identified for this hardware and are not used by the real-robot backend."
+  },
+  "control": {
+    "gripper": {
+      "normalized_command_range": [0, 1],
+      "zero": "requests closed",
+      "one": "requests open",
+      "native_joint_target_rad": "jaw_closed_rad + goal_normalized * (jaw_open_rad - jaw_closed_rad), with the closed/open jaw angles set in the deployment file (inside the declared gripper limits -0.174533..1.74533 rad)",
+      "measured_position_warning": "The measured jaw angle is reported separately. An object blocking closure, servo torque limiting or calibration error can leave it away from the target; it is not a grasp-success signal."
+    },
+    "default_harness": {
+      "clock": "real time; the world keeps moving while the model reasons and nothing is paused",
+      "command_semantics": "Each dispatched command is a joint position goal. The step counter counts dispatched commands (step_domain so101_control_step), not simulated time.",
+      "motion_limits": "Maximum joint speed (rad/s) and maximum per-command joint delta (rad) come from the deployment file and are reported by runtime capabilities.",
+      "stop": "Stop sends the present measured position as the goal. It is confirmed only after measured velocity settles below a threshold; otherwise stop status is unknown.",
+      "reset": "Reset moves only the arm to a recorded home joint configuration; the world is not reset.",
+      "joint_resolution_rad": 0.001534
+    },
+    "execution": "Preview and execution share the same IK and gripper mapping. A plan or dispatched goal does not prove achieved motion; compare with measured joint positions and fresh camera images."
+  },
+  "limitations": [
+    "Payload, grasp force, friction, backlash, compliance, repeatability and stopping latency are unknown.",
+    "URDF joint limits are nominal model bounds, not verified hardware safety limits.",
+    "Joint sign and zero correspondence between the LeRobot calibration and the URDF is per unit: it comes from the deployment's joint_mapping and calibration, not from this package.",
+    "Printed-part dimensions and assembly can differ from the CAD model."
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "_comment": "SO-101 ChArUco calibration board specification (12x9 squares, 15mm square, 11.25mm marker, 3.2mm thickness).",
+  "type": "charuco",
+  "squares_x": 12,
+  "squares_y": 9,
+  "square_m": 0.015,
+  "marker_m": 0.01125,
+  "dictionary": "DICT_5X5_100",
+  "thickness_m": 0.0032
+}

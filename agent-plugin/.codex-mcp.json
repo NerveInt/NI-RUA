@@ -1,0 +1,87 @@
+{
+  "mcpServers": {
+    "ni_rua": {
+      "url": "http://127.0.0.1:8790/mcp",
+      "default_tools_approval_mode": "approve",
+      "tool_timeout_sec": 3600,
+      "startup_timeout_sec": 30,
+      "tools": {
+        "depth_query": {
+          "output_token_limit": 100000
+        },
+        "geometry_query": {
+          "output_token_limit": 100000
+        },
+        "history_annotate_action": {
+          "output_token_limit": 100000
+        },
+        "history_list_actions": {
+          "output_token_limit": 100000
+        },
+        "history_read_trace": {
+          "output_token_limit": 100000
+        },
+        "history_view_observation": {
+          "output_token_limit": 100000
+        },
+        "operation_memory": {
+          "output_token_limit": 100000
+        },
+        "pose_plan": {
+          "output_token_limit": 100000
+        },
+        "program_run": {
+          "output_token_limit": 100000
+        },
+        "program_status": {
+          "output_token_limit": 100000
+        },
+        "robot_action": {
+          "output_token_limit": 100000
+        },
+        "robot_action_status": {
+          "output_token_limit": 100000
+        },
+        "robot_capabilities": {
+          "output_token_limit": 100000
+        },
+        "robot_contact_overlay": {
+          "output_token_limit": 100000
+        },
+        "robot_information": {
+          "output_token_limit": 100000
+        },
+        "robot_observe": {
+          "output_token_limit": 100000
+        },
+        "robot_policy_step": {
+          "output_token_limit": 100000
+        },
+        "robot_wait": {
+          "output_token_limit": 100000
+        },
+        "robotic_view": {
+          "output_token_limit": 100000
+        },
+        "run_begin": {
+          "output_token_limit": 100000
+        },
+        "run_finish": {
+          "output_token_limit": 100000
+        },
+        "stereo_guide": {
+          "output_token_limit": 100000
+        },
+        "task_plan": {
+          "output_token_limit": 100000
+        },
+        "vision_compare": {
+          "output_token_limit": 100000
+        },
+        "vision_review": {
+          "output_token_limit": 100000
+        }
+      }
+    }
+  }
+}

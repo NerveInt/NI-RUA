@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "model": {
+    "name": "gpt-6.1-sol",
+    "effort": "high",
+    "codex_home": "~/.codex"
+  },
+  "backend": {
+    "environment": "so101_real",
+    "robot_model_id": "so101",
+    "deployment": "so101.local.json"
+  },
+  "features": {
+    "observation_profile": "rgb_proprio_calibrated_v1",
+    "external_perception": true,
+    "sandbox_enabled": false,
+    "motion_review": false,
+    "vggt_endpoint": "http://127.0.0.1:8331",
+    "vggt_camera_id": "fixed",
+    "vggt_support_z_m": null,
+    "held_perception": false
+  },
+  "run": {
+    "experiment_root": "~/.cache/ni-rua/so101/exp",
+    "category": "so101",
+    "task": "desk_free_task",
+    "port": 8781
+  }
+}

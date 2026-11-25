@@ -1,0 +1,423 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "OC2-C probe (lab.py of the design probes):shell-running",
+  "scenario": "a 3 s shell command; snapshot shell_running read during it",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+ "prompts": [
+  "msg_1d12ee18e001veJa5gnc6mDcBO"
+ ],
+ "snapshots": [
+  {
+   "label": "shell_running",
+   "messages": [
+    {
+     "id": "msg_1d12ee18e001veJa5gnc6mDcBO",
+     "time": {
+      "created": 1794510873219
+     },
+     "text": "P1 slow shell",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12ee2860011vR3bKzdgh1tRp",
+     "time": {
+      "created": 1794510873224,
+      "streamed": 1794510873242
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_0_0",
+       "name": "shell",
+       "executed": false,
+       "state": {
+        "status": "running",
+        "input": {
+         "command": "sleep 3; echo slept"
+        },
+        "metadata": {}
+       },
+       "time": {
+        "created": 1794510873229,
+        "ran": 1794510873231
+       }
+      }
+     ]
+    }
+   ],
+   "active": {
+    "ses_e2ed12089ffefRzBdx3gXc0TL7": {
+     "type": "running"
+    }
+   },
+   "inbox": []
+  },
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d12ee18e001veJa5gnc6mDcBO",
+     "time": {
+      "created": 1794510873219
+     },
+     "text": "P1 slow shell",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12ee2860011vR3bKzdgh1tRp",
+     "time": {
+      "created": 1794510873224,
+      "streamed": 1794510873242,
+      "completed": 1794510876273
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_0_0",
+       "name": "shell",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {
+         "command": "sleep 3; echo slept"
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "slept\n"
+         }
+        ],
+        "metadata": {
+         "status": "completed",
+         "truncated": false,
+         "exit": 0
+        }
+       },
+       "time": {
+        "created": 1794510873229,
+        "ran": 1794510873231,
+        "completed": 1794510876267
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12eee82001GGyt8rOcfxU2K2",
+     "time": {
+      "created": 1794510876294,
+      "streamed": 1794510876304,
+      "completed": 1794510876305
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "SHELL-DONE"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12eee93001iskcuLS7OopuCo",
+     "time": {
+      "created": 1794510876307
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    }
+   ],
+   "active": {},
+   "inbox": []
+  }
+ ],
+ "children": {},
+ "events": [
+  {
+   "id": "evt_1d12edf7d001eelabc31fpHc3D",
+   "created": 1794510872445,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d12ee26c00132aO8tEUBy0znz",
+   "created": 1794510873196,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d12ee18e001veJa5gnc6mDcBO",
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "P1 slow shell"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d12ee275001Mxnuq11LlZscQh",
+   "created": 1794510873205,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7"
+   }
+  },
+  {
+   "id": "evt_1d12ee283001a1QJo49PBjgLy6",
+   "created": 1794510873219,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "inboxID": "msg_1d12ee18e001veJa5gnc6mDcBO"
+   }
+  },
+  {
+   "id": "evt_1d12ee28b001npjicP1Q6Qm7qc",
+   "created": 1794510873228,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12ee2860011vR3bKzdgh1tRp",
+    "started": 1794510873224
+   }
+  },
+  {
+   "id": "evt_1d12ee28d0011dBS4Nzuxh5PVl",
+   "created": 1794510873229,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "assistantMessageID": "msg_1d12ee2860011vR3bKzdgh1tRp",
+    "id": "call_fake_0_0",
+    "name": "shell"
+   }
+  },
+  {
+   "id": "evt_1d12ee28e0019CFSmyHiKSFwlW",
+   "created": 1794510873230,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "assistantMessageID": "msg_1d12ee2860011vR3bKzdgh1tRp",
+    "id": "call_fake_0_0",
+    "text": "{\"command\": \"sleep 3; echo slept\"}"
+   }
+  },
+  {
+   "id": "evt_1d12ee28f00138K5Q60mFPWO6x",
+   "created": 1794510873231,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "assistantMessageID": "msg_1d12ee2860011vR3bKzdgh1tRp",
+    "id": "call_fake_0_0",
+    "input": {
+     "command": "sleep 3; echo slept"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ee29a001oozeVzn1uAvmZI",
+   "created": 1794510873242,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "assistantMessageID": "msg_1d12ee2860011vR3bKzdgh1tRp"
+   }
+  },
+  {
+   "id": "evt_1d12ee29d002frC4BEBKALJ9jD",
+   "created": 1794510873245,
+   "type": "session.tool.progress",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "assistantMessageID": "msg_1d12ee2860011vR3bKzdgh1tRp",
+    "id": "call_fake_0_0",
+    "metadata": {
+     "shellID": "sh_1d12ee29b001Ru8dPsCQBWjUia"
+    }
+   }
+  },
+  {
+   "id": "evt_1d12eee6b001QxSqJRJGeBC1lv",
+   "created": 1794510876267,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "assistantMessageID": "msg_1d12ee2860011vR3bKzdgh1tRp",
+    "id": "call_fake_0_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "slept\n"
+     }
+    ],
+    "metadata": {
+     "status": "completed",
+     "truncated": false,
+     "exit": 0
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12eee710016PA9LxJYtP72DL",
+   "created": 1794510876273,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "assistantMessageID": "msg_1d12ee2860011vR3bKzdgh1tRp",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12eee8b001ozjOa8Yywqe9Gi",
+   "created": 1794510876299,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12eee82001GGyt8rOcfxU2K2",
+    "started": 1794510876294
+   }
+  },
+  {
+   "id": "evt_1d12eee8d001edr7hGVfvi8IKF",
+   "created": 1794510876301,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "assistantMessageID": "msg_1d12eee82001GGyt8rOcfxU2K2",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d12eee8e001ztPKGumROMNFDZ",
+   "created": 1794510876302,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "assistantMessageID": "msg_1d12eee82001GGyt8rOcfxU2K2",
+    "ordinal": 0,
+    "delta": "SHELL-DONE"
+   }
+  },
+  {
+   "id": "evt_1d12eee8e0025APoASVkN75AFO",
+   "created": 1794510876302,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "assistantMessageID": "msg_1d12eee82001GGyt8rOcfxU2K2",
+    "ordinal": 0,
+    "text": "SHELL-DONE"
+   }
+  },
+  {
+   "id": "evt_1d12eee90001SHr03zJ3EgduPV",
+   "created": 1794510876304,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "assistantMessageID": "msg_1d12eee82001GGyt8rOcfxU2K2"
+   }
+  },
+  {
+   "id": "evt_1d12eee91001oV1j0fstYiGoOn",
+   "created": 1794510876305,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7",
+    "assistantMessageID": "msg_1d12eee82001GGyt8rOcfxU2K2",
+    "finish": "stop",
+    "rawFinish": "end_turn",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12eee93001iskcuLS7OopuCo",
+   "created": 1794510876307,
+   "type": "session.execution.succeeded",
+   "data": {
+    "sessionID": "ses_e2ed12089ffefRzBdx3gXc0TL7"
+   }
+  }
+ ]
+}

@@ -1,0 +1,421 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "OC2-C probe (lab.py of the design probes):patch",
+  "scenario": "GPT model id on the Responses wire: one patch call (add, update, delete)",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2ed10d5effeA6mLmVZor51o55",
+ "prompts": [
+  "msg_1d12ef48b0014m7yAZugJC3lfx"
+ ],
+ "snapshots": [
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d12ef48b0014m7yAZugJC3lfx",
+     "time": {
+      "created": 1794510878077
+     },
+     "text": "P1 patch",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12ef582001GbLWW4b4a90D3y",
+     "time": {
+      "created": 1794510878084,
+      "streamed": 1794510878093,
+      "completed": 1794510878106
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "gpt-5.2",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_0_0",
+       "name": "patch",
+       "executed": false,
+       "native": {
+        "itemId": "fc_fake_0_0"
+       },
+       "state": {
+        "status": "completed",
+        "input": {
+         "patchText": "*** Begin Patch\n*** Add File: p/new.txt\n+one\n+two\n*** Update File: p/old.txt\n@@\n-old line\n+new line\n*** Delete File: p/gone.txt\n*** End Patch"
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "Success. Updated the following files:\nA p/new.txt\nM p/old.txt\nD p/gone.txt"
+         }
+        ],
+        "metadata": {
+         "files": [
+          {
+           "file": "p/new.txt",
+           "patch": "Index: /runs/patch/actor/p/new.txt\n===================================================================\n--- /runs/patch/actor/p/new.txt\n+++ /runs/patch/actor/p/new.txt\n@@ -0,0 +1,2 @@\n+one\n+two\n",
+           "status": "added",
+           "additions": 2,
+           "deletions": 0
+          },
+          {
+           "file": "p/old.txt",
+           "patch": "Index: /runs/patch/actor/p/old.txt\n===================================================================\n--- /runs/patch/actor/p/old.txt\n+++ /runs/patch/actor/p/old.txt\n@@ -1,1 +1,1 @@\n-old line\n+new line\n",
+           "status": "modified",
+           "additions": 1,
+           "deletions": 1
+          },
+          {
+           "file": "p/gone.txt",
+           "patch": "Index: /runs/patch/actor/p/gone.txt\n===================================================================\n--- /runs/patch/actor/p/gone.txt\n+++ /runs/patch/actor/p/gone.txt\n@@ -1,1 +0,0 @@\n-bye\n",
+           "status": "deleted",
+           "additions": 0,
+           "deletions": 1
+          }
+         ],
+         "truncated": false
+        }
+       },
+       "time": {
+        "created": 1794510878089,
+        "ran": 1794510878092,
+        "completed": 1794510878105
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "native": {
+      "responseId": "resp_fake_0"
+     },
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12ef59d001ka76v0MWcXddDc",
+     "time": {
+      "created": 1794510878111,
+      "streamed": 1794510878116,
+      "completed": 1794510878117
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "gpt-5.2",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "PATCH-DONE",
+       "native": {
+        "itemId": "msg_fake_1"
+       }
+      }
+     ],
+     "finish": "stop",
+     "native": {
+      "responseId": "resp_fake_1"
+     },
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12ef5a6001DqC4U15vMOTZTJ",
+     "time": {
+      "created": 1794510878118
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    }
+   ],
+   "active": {},
+   "inbox": []
+  }
+ ],
+ "children": {},
+ "events": [
+  {
+   "id": "evt_1d12ef2a9001nkR03SwFPrf80H",
+   "created": 1794510877353,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d12ef5630021tuGDh6tYfFE1m",
+   "created": 1794510878051,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d12ef48b0014m7yAZugJC3lfx",
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "P1 patch"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d12ef56d001lTDDw4vpWLQabU",
+   "created": 1794510878061,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55"
+   }
+  },
+  {
+   "id": "evt_1d12ef57d002V98g5oTP54Zfp5",
+   "created": 1794510878077,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "inboxID": "msg_1d12ef48b0014m7yAZugJC3lfx"
+   }
+  },
+  {
+   "id": "evt_1d12ef588001BoK00hPhiz9yxR",
+   "created": 1794510878088,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "agent": "build",
+    "model": {
+     "id": "gpt-5.2",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12ef582001GbLWW4b4a90D3y",
+    "started": 1794510878084
+   }
+  },
+  {
+   "id": "evt_1d12ef5890010Xyu6VSD8jwO71",
+   "created": 1794510878089,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "assistantMessageID": "msg_1d12ef582001GbLWW4b4a90D3y",
+    "id": "call_fake_0_0",
+    "name": "patch"
+   }
+  },
+  {
+   "id": "evt_1d12ef58b0010h8Qmmnsl6BTaM",
+   "created": 1794510878091,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "assistantMessageID": "msg_1d12ef582001GbLWW4b4a90D3y",
+    "id": "call_fake_0_0",
+    "text": "{\"patchText\": \"*** Begin Patch\\n*** Add File: p/new.txt\\n+one\\n+two\\n*** Update File: p/old.txt\\n@@\\n-old line\\n+new line\\n*** Delete File: p/gone.txt\\n*** End Patch\"}"
+   }
+  },
+  {
+   "id": "evt_1d12ef58c001eNkThAhNj73yMH",
+   "created": 1794510878092,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "assistantMessageID": "msg_1d12ef582001GbLWW4b4a90D3y",
+    "id": "call_fake_0_0",
+    "input": {
+     "patchText": "*** Begin Patch\n*** Add File: p/new.txt\n+one\n+two\n*** Update File: p/old.txt\n@@\n-old line\n+new line\n*** Delete File: p/gone.txt\n*** End Patch"
+    },
+    "executed": false,
+    "native": {
+     "itemId": "fc_fake_0_0"
+    }
+   }
+  },
+  {
+   "id": "evt_1d12ef58d001xt27cZHs19SunC",
+   "created": 1794510878093,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "assistantMessageID": "msg_1d12ef582001GbLWW4b4a90D3y"
+   }
+  },
+  {
+   "id": "evt_1d12ef599001nIm2n3kGMvQ2nn",
+   "created": 1794510878105,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "assistantMessageID": "msg_1d12ef582001GbLWW4b4a90D3y",
+    "id": "call_fake_0_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "Success. Updated the following files:\nA p/new.txt\nM p/old.txt\nD p/gone.txt"
+     }
+    ],
+    "metadata": {
+     "files": [
+      {
+       "file": "p/new.txt",
+       "patch": "Index: /runs/patch/actor/p/new.txt\n===================================================================\n--- /runs/patch/actor/p/new.txt\n+++ /runs/patch/actor/p/new.txt\n@@ -0,0 +1,2 @@\n+one\n+two\n",
+       "status": "added",
+       "additions": 2,
+       "deletions": 0
+      },
+      {
+       "file": "p/old.txt",
+       "patch": "Index: /runs/patch/actor/p/old.txt\n===================================================================\n--- /runs/patch/actor/p/old.txt\n+++ /runs/patch/actor/p/old.txt\n@@ -1,1 +1,1 @@\n-old line\n+new line\n",
+       "status": "modified",
+       "additions": 1,
+       "deletions": 1
+      },
+      {
+       "file": "p/gone.txt",
+       "patch": "Index: /runs/patch/actor/p/gone.txt\n===================================================================\n--- /runs/patch/actor/p/gone.txt\n+++ /runs/patch/actor/p/gone.txt\n@@ -1,1 +0,0 @@\n-bye\n",
+       "status": "deleted",
+       "additions": 0,
+       "deletions": 1
+      }
+     ],
+     "truncated": false
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ef59a0012qrHgqcbq9TLOP",
+   "created": 1794510878106,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "assistantMessageID": "msg_1d12ef582001GbLWW4b4a90D3y",
+    "finish": "tool-calls",
+    "native": {
+     "responseId": "resp_fake_0"
+    },
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12ef5a1001Rqjik0TgGSPEnT",
+   "created": 1794510878113,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "agent": "build",
+    "model": {
+     "id": "gpt-5.2",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12ef59d001ka76v0MWcXddDc",
+    "started": 1794510878111
+   }
+  },
+  {
+   "id": "evt_1d12ef5a2001OCq2RjyR6Cear8",
+   "created": 1794510878114,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "assistantMessageID": "msg_1d12ef59d001ka76v0MWcXddDc",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d12ef5a3001DGnrmn40ForwSr",
+   "created": 1794510878115,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "assistantMessageID": "msg_1d12ef59d001ka76v0MWcXddDc",
+    "ordinal": 0,
+    "delta": "PATCH-DONE"
+   }
+  },
+  {
+   "id": "evt_1d12ef5a3002fiTwP64sWCN1D7",
+   "created": 1794510878115,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "assistantMessageID": "msg_1d12ef59d001ka76v0MWcXddDc",
+    "ordinal": 0,
+    "text": "PATCH-DONE",
+    "native": {
+     "itemId": "msg_fake_1"
+    }
+   }
+  },
+  {
+   "id": "evt_1d12ef5a4001Pi2VUj8W6KEtxx",
+   "created": 1794510878116,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "assistantMessageID": "msg_1d12ef59d001ka76v0MWcXddDc"
+   }
+  },
+  {
+   "id": "evt_1d12ef5a5001gcsP2JXpDz0U9i",
+   "created": 1794510878117,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55",
+    "assistantMessageID": "msg_1d12ef59d001ka76v0MWcXddDc",
+    "finish": "stop",
+    "native": {
+     "responseId": "resp_fake_1"
+    },
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12ef5a6001DqC4U15vMOTZTJ",
+   "created": 1794510878118,
+   "type": "session.execution.succeeded",
+   "data": {
+    "sessionID": "ses_e2ed10d5effeA6mLmVZor51o55"
+   }
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "ni_rua.provider_profile.v1",
+  "name": "Example Gateway",
+  "credential": {"api_key": "sk-REPLACE-WITH-YOUR-KEY"},
+  "wires": {
+    "anthropic_messages": {"base_url": "https://gateway.example/gateway", "auth_scheme": "bearer"},
+    "openai_responses": {"base_url": "https://gateway.example/gateway/v1", "auth_scheme": "bearer"}
+  },
+  "compat": {"tool_result_images": "user_blocks", "tool_schema_max_depth": 13},
+  "backends": {
+    "claude_code": {"env": {"CLAUDE_CODE_THINKING_DISPLAY_UPDATES": "0"}},
+    "opencode": {"thinking_display": null}
+  },
+  "defaults": {"model": "example-model", "effort": "high"}
+}

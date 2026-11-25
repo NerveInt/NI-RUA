@@ -1,0 +1,355 @@
+{
+  "_comment": "SO-101 so101_real deployment template. Copy to configs/so101.local.json (git-ignored) and edit for this machine. Every number is required and validated at load (ni_rua/robot/backends/so101/deployment.py FIELDS: unit, range, meaning). Values below are conservative starting points, NOT verified on hardware. No credentials.",
+  "schema": "ni_rua.so101.deployment.v1",
+  "python": "~/miniforge3/envs/so101/bin/python",
+  "port": "/dev/tty.usbmodemXXXX",
+  "robot_id": "so101_follower",
+  "calibration_dir": null,
+  "camera_calibration_file": "camera_calibration.json",
+  "_camera_calibration_file": "Single source of the active camera calibration (path relative to this file). The worker loads it at start and on operator reload_calibration / calibrate (validated, atomically replaced; a bad file keeps the old one). Missing file => uncalibrated profile rgb_proprio_v1; intrinsics are never fabricated.",
+  "calibration_bundle_dir": null,
+  "_calibration_bundle_dir": "Calibration workflow bundle (page /calibration): versions/<UTC>/ with camera file, joint record, touch data and step reports, plus an `active` pointer. null = calibration/ next to camera_calibration_file. The workflow installs the active version into camera_calibration_file and writes joint_mapping offsets into this file (with a .bak-<UTC> backup).",
+  "disable_torque_on_disconnect": false,
+  "_disable_torque_on_disconnect": "false keeps the arm holding when the worker exits; true lets it fall.",
+  "max_relative_target_deg": 10.0,
+  "_max_relative_target_deg": "LeRobot hardware-side clamp |goal - present| per command, deg (0, 90].",
+  "num_read_retries": 2,
+  "joint_mapping": {
+    "_comment": "q_urdf_rad = sign * radians(q_lerobot_deg) + offset_rad. Verify per joint by posing the arm at URDF zero.",
+    "shoulder_pan": {
+      "sign": 1,
+      "offset_rad": 0.0
+    },
+    "shoulder_lift": {
+      "sign": 1,
+      "offset_rad": 0.0
+    },
+    "elbow_flex": {
+      "sign": 1,
+      "offset_rad": 0.0
+    },
+    "wrist_flex": {
+      "sign": 1,
+      "offset_rad": 0.0
+    },
+    "wrist_roll": {
+      "sign": 1,
+      "offset_rad": 0.0
+    }
+  },
+  "cameras": {
+    "wrist": {
+      "index_or_path": 0,
+      "device_name": null,
+      "unique_id": null,
+      "width": 640,
+      "height": 480,
+      "fps": 30,
+      "fourcc": null,
+      "rotate_deg": 0
+    },
+    "fixed": {
+      "index_or_path": 1,
+      "device_name": null,
+      "unique_id": null,
+      "width": 640,
+      "height": 480,
+      "fps": 30,
+      "fourcc": null,
+      "rotate_deg": 0
+    }
+  },
+  "gripper": {
+    "_comment": "goal_normalized 0=closed, 1=open maps linearly onto lerobot_closed..lerobot_open (LeRobot RANGE_0_100) and jaw_closed_rad..jaw_open_rad (URDF rad).",
+    "lerobot_closed": 0.0,
+    "lerobot_open": 100.0,
+    "jaw_closed_rad": -0.174533,
+    "jaw_open_rad": 1.74533,
+    "max_speed_rad_s": 1.0,
+    "settle_timeout_s": 1.0,
+    "_empty_close_aperture_m": "m: MEASURE AND SET before real runs. Fingertip gap (gripper_execution.measured_opening_m) after an EMPTY goal-0 close, largest of several. Zero point of grip_guard presets and of the post-grasp re-check; null rejects presets and turns the re-check off. Development unit: 0.0042-0.0051 m.",
+    "empty_close_aperture_m": null,
+    "_full_open_aperture_m": "m: MEASURE AND SET. Fingertip gap measured at goal 1 (development unit 0.1361 m); bound of explicit min/max_aperture_m; null uses the CAD opening at jaw_open_rad (0.1372 m).",
+    "full_open_aperture_m": null,
+    "_preset_margins_m": "m: grip_guard_preset margins above empty_close_aperture_m, [min_margin_m, max_margin_m or null]; preset bound = empty_close_aperture_m + margin. Shared defaults below; presets need a measured empty_close_aperture_m.",
+    "preset_margins_m": {
+      "non_empty": [
+        0.0015,
+        null
+      ],
+      "thin_object": [
+        0.0005,
+        null
+      ],
+      "rigid_object": [
+        0.002,
+        null
+      ],
+      "wide_object": [
+        0.003,
+        null
+      ]
+    },
+    "_hold_squeeze_rad": "rad of the jaw joint: holding squeeze of a closing jaw. After a closing jaw command settles short of its goal (on an object, or on the other fingertip when empty) the jaw goal becomes the measured jaw angle minus this value toward closed, so the position-controlled servo holds with bounded torque instead of its torque limit (which overheats the gripper servo in long holds). 0.010 rad is about 0.8 mm of fingertip gap at 10-50 mm openings; stay above the ~0.03-0.04 rad unloaded static-friction deadband at P=16 (0.08 rad held a 29 mm rigid cube at ~20 % load with 0-1 degC/min rise and no slip on the development unit). Default of robot_action grip_squeeze_rad. null (default): no squeeze, the jaw keeps pushing toward the commanded goal. Pick the value with scripts/so101_grip_bench.py.",
+    "hold_squeeze_rad": null,
+    "_max_hold_squeeze_rad": "rad of the jaw joint: largest robot_action grip_squeeze_rad a stage may request (refused above it); >= hold_squeeze_rad. null: the jaw range |jaw_open_rad - jaw_closed_rad|. Needs hold_squeeze_rad.",
+    "max_hold_squeeze_rad": null
+  },
+  "motion": {
+    "_comment": "rad/s, rad, Hz, s, m. max_command_delta_rad * command_rate_hz must reach max_joint_speed_rad_s.",
+    "max_joint_speed_rad_s": 0.3,
+    "max_command_delta_rad": 0.035,
+    "command_rate_hz": 20.0,
+    "tracking_error_limit_rad": 0.25,
+    "stall_window_s": 1.0,
+    "stall_min_progress_rad": 0.01,
+    "settle_velocity_rad_s": 0.02,
+    "settle_hold_s": 0.2,
+    "arrival_timeout_s": 2.0,
+    "stop_confirm_timeout_s": 2.0,
+    "joint_limit_margin_rad": 0.05,
+    "default_position_tolerance_m": 0.01,
+    "default_orientation_tolerance_rad": 0.15,
+    "max_waypoints": 8,
+    "default_timeout_s": 60.0,
+    "max_timeout_s": 300.0,
+    "arrival_correction_rounds": 3,
+    "arrival_correction_min_error_rad": 0.005,
+    "arrival_correction_max_offset_rad": 0.1,
+    "stall_min_commanded_rad": 0.05,
+    "default_wait_timeout_s": 30.0,
+    "_tolerance_presets": "tolerance_preset name -> [position_tolerance_m (0, 0.1] m, orientation_tolerance_rad (0, pi] rad]; orientation >= 3.14159 solves position only. Shared defaults below. Stages without a preset or explicit tolerance use default_position_tolerance_m / default_orientation_tolerance_rad.",
+    "tolerance_presets": {
+      "tight": [
+        0.003,
+        0.05
+      ],
+      "normal": [
+        0.01,
+        0.15
+      ],
+      "relaxed": [
+        0.015,
+        0.2
+      ],
+      "compliant": [
+        0.015,
+        0.2
+      ],
+      "coarse": [
+        0.025,
+        0.35
+      ],
+      "unconstrained_orientation": [
+        0.015,
+        3.14159
+      ]
+    }
+  },
+  "ik": {
+    "max_iterations": 200,
+    "restarts": 8,
+    "orientation_weight_m_per_rad": 0.3
+  },
+  "plan": {
+    "_comment": "Cached robot_action plans: start-state drift bound (rad), lifetime (s), cache entries.",
+    "max_start_drift_rad": 0.03,
+    "max_age_s": 120.0,
+    "cache_size": 16
+  },
+  "perception": {
+    "_comment": "Optional (absent = these defaults). Reports only, nothing moves (docs/development/so101-integration.md 13.4). robot_occlusion_report: object tables report the share of the table the arm's FK silhouette covers and the earlier rows under it. contact_top_estimate: cross_view rows add contact_top_z (two-view prism standing on the table). attach_cross_view: the per-observation table also carries cross_view against the wrist camera (one more service call per observation). clear_view_q_rad: null or 5 rad from scripts/so101_clear_view_pose.py; the motion instructions then name its TCP pose.",
+    "robot_occlusion_report": true,
+    "contact_top_estimate": true,
+    "attach_cross_view": false,
+    "clear_view_q_rad": null
+  },
+  "workspace": {
+    "_comment": "Accepted TCP target box in so101_base (m). Set z above your table surface.",
+    "min_m": [
+      -0.45,
+      -0.45,
+      0.01
+    ],
+    "max_m": [
+      0.45,
+      0.45,
+      0.45
+    ]
+  },
+  "home": {
+    "_comment": "Record from a measured safe rest pose of THIS arm (rad, shoulder_pan..wrist_roll).",
+    "q_rad": [
+      0.0,
+      -1.5,
+      1.45,
+      0.9,
+      0.0
+    ],
+    "gripper_normalized": 0.0,
+    "arrival_tolerance_rad": 0.05
+  },
+  "telemetry": {
+    "joint_hz": 10.0,
+    "frame_hz": 5.0,
+    "motor_status_hz": 1.0,
+    "preview_max_side_px": 640
+  },
+  "operator": {
+    "min_speed_scale_cap": 0.1,
+    "default_speed_scale_cap": 0.9
+  },
+  "camera": {
+    "frame_timeout_s": 1.0,
+    "_video": "Motion-only H.264 for every camera; preserve native size/FPS. CRF 23 (typical 18..28, lower=larger); queue 64 MiB per camera (typical 32..128); overflow reported without blocking motion.",
+    "video_crf": 23,
+    "video_queue_mb": 64
+  },
+  "ipc": {
+    "response_margin_s": 30.0,
+    "operator_timeout_s": 20.0
+  },
+  "_motion_compensation": "Optional section motion_compensation (absent = every mechanism off): {\"carry_arrival_offset\": bool, \"no_response_stop\": bool, \"stop_correction_within_tolerance\": bool, \"arrival_breakaway_rad\": {joint: rad} or null, \"gravity_feedforward\": {\"joint_stiffness_nm_per_rad\": {joint: N*m/rad}, \"max_offset_rad\": rad, \"provenance\": text} or null}. Identify with scripts/so101_gravity_identify.py, compare with scripts/so101_motion_bench.py; docs/development/so101-integration.md section 4.12.",
+  "servo": {
+    "_comment": "STS3215 position PID registers written at connect; LeRobot defaults 16/0/32. i_coefficient above 0 removes steady-state sag inside the servo but winds up against an obstacle (section 4.12); measure with scripts/so101_motion_bench.py first.",
+    "p_coefficient": 16,
+    "i_coefficient": 0,
+    "d_coefficient": 32
+  },
+  "preflight": {
+    "_comment": "Read-only power-on self-check (ni_rua/robot/backends/so101/preflight.py). Any failure stops startup; there is no simulated fallback.",
+    "min_voltage_v": 10.5,
+    "max_voltage_v": 13.5,
+    "max_temperature_c": 60.0,
+    "urdf_limit_tolerance_rad": 0.05
+  },
+  "calibration": {
+    "_comment": "One-click operator recalibration (console 重新标定相机 / worker op calibrate). Board static on the table, seen by both cameras; the arm visits home.q_rad + offset grid at speed_scale x effective speed. Gates decide whether the new file replaces camera_calibration_file.",
+    "min_board_corners": 8,
+    "sample_min_wrist_corners": 8,
+    "speed_scale": 0.6,
+    "arrival_tolerance_rad": 0.03,
+    "settle_timeout_s": 2.0,
+    "pan_offsets_rad": [
+      -0.2,
+      0.0,
+      0.2
+    ],
+    "flex_offsets_rad": [
+      -0.2,
+      0.0,
+      0.15
+    ],
+    "roll_offsets_rad": [
+      -0.35,
+      0.35
+    ],
+    "lift_offsets_rad": [
+      -0.12,
+      0.12
+    ],
+    "lift_elbow_coupling": 0.6,
+    "capture_timeout_s": 300.0,
+    "solve_timeout_s": 180.0,
+    "min_samples": 8,
+    "max_pnp_reprojection_px": 2.0,
+    "max_intrinsics_rms_px": 1.0,
+    "max_hand_eye_translation_m": 0.005,
+    "max_hand_eye_rotation_rad": 0.02,
+    "max_fixed_reprojection_px": 6.0,
+    "_comment_handheld": "Console 手持标定固定相机 (worker ops handheld_capture / handheld_solve): the operator holds the board in front of the fixed camera; still (< handheld_still_px px corner motion) and novel views are kept from the worker's own camera stream. Pass = fixed intrinsics RMS <= max_handheld_intrinsics_rms_px px (and the re-solved chain <= max_fixed_reprojection_px when the last robot calibration session is available).",
+    "handheld_target_views": 20,
+    "handheld_min_views": 10,
+    "handheld_still_px": 1.5,
+    "handheld_min_novelty": 0.08,
+    "handheld_timeout_s": 300.0,
+    "max_handheld_intrinsics_rms_px": 1.0,
+    "_comment_workflow": "Calibration workflow (calibration_workflow.py, page /calibration): S1 touch-off at touch_points_xy_m, S2 grid capture (above), S3 hand-held (above), S4 fixed extrinsic at extrinsic_pose_count grid poses, S5 joint solve with the gates below, S6 apply + verification touches at verify_points_xy_m. Units: m, rad, s, px. Starting values from the 2026-11-08 bench run; measure board_thickness_m for your board.",
+    "board_thickness_m": 0.003,
+    "extrinsic_pose_count": 5,
+    "touch_points_xy_m": [
+      [
+        0.2,
+        0.0
+      ],
+      [
+        0.24,
+        0.06
+      ],
+      [
+        0.24,
+        -0.06
+      ],
+      [
+        0.17,
+        -0.05
+      ]
+    ],
+    "verify_points_xy_m": [
+      [
+        0.22,
+        0.03
+      ],
+      [
+        0.3,
+        -0.04
+      ]
+    ],
+    "touch_hover_z_m": 0.06,
+    "touch_min_z_m": -0.06,
+    "touch_step_m": 0.002,
+    "touch_step_period_s": 0.12,
+    "touch_contact_lag_rad": 0.03,
+    "touch_contact_load_delta": 120.0,
+    "touch_warmup_steps": 3,
+    "touch_confirm_reads": 2,
+    "touch_jaw_normalized": 0.0,
+    "touch_speed_scale": 0.5,
+    "touch_arrival_tolerance_rad": 0.05,
+    "touch_ik_max_position_error_m": 0.005,
+    "touch_settle_s": 0.3,
+    "touch_timeout_s": 300.0,
+    "_comment_touch_slide": "Optional supervised obstruction-trajectory collection: sliding defaults off. Out-and-back base-XY path at fixed candidate commanded z; no calibrated force control. Limits are position residuals and uncalibrated raw-load rise. Stop on unsupported contact evidence, missing load, limits, timeout or operator hold. Every effective touch_* setting is saved in the report.",
+    "touch_slide_distance_m": 0.0,
+    "touch_slide_direction_rad": 0.0,
+    "touch_slide_step_m": 0.001,
+    "touch_max_tracking_error_rad": 0.15,
+    "touch_max_load_rise": 300.0,
+    "touch_slide_max_duration_s": 10.0,
+    "touch_video_fps": 10.0,
+    "touch_video_max_frames": 600,
+    "touch_video_max_duration_s": 60.0,
+    "joint_offset_prior_rad": 0.2,
+    "joint_plane_sigma_m": 0.002,
+    "joint_touch_sigma_m": 0.001,
+    "joint_pixel_sigma_px": 0.5,
+    "table_prior_sigma_m": 0.01,
+    "max_joint_reprojection_px": 1.5,
+    "max_board_height_error_m": 0.003,
+    "max_touch_residual_m": 0.006,
+    "max_joint_offset_rad": 0.15,
+    "max_verify_touch_error_m": 0.005,
+    "selfcheck_max_telemetry_age_s": 2.0,
+    "staleness_max_board_shift_px": 15.0,
+    "staleness_check_period_s": 5.0,
+    "capture_max_drift_rad": null,
+    "z_floor_m": null,
+    "handheld_near_fraction": 0.55,
+    "handheld_far_fraction": 0.3,
+    "handheld_tilt_small": 1.06,
+    "handheld_tilt_large": 1.15,
+    "handheld_still_frames": 2,
+    "handheld_min_sharpness": 0.0,
+    "touch_orientation_weight": 0.0,
+    "joint_solver_max_nfev": 400,
+    "joint_pixel_robust_scale": 3.0,
+    "joint_solver_ftol": 1e-08,
+    "joint_solver_xtol": 1e-08,
+    "joint_solver_gtol": 1e-08,
+    "joint_solver_x_scale": 1.0,
+    "xy_max_error_m": 0.005,
+    "xy_max_reprojection_error_px": 3.0,
+    "xy_min_parallax_deg": 1.0,
+    "hand_eye_score_lever_m": 0.1
+  }
+}

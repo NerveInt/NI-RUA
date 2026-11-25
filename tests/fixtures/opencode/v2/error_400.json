@@ -1,0 +1,162 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "/tmp/ni-rua-agent-harness/oc2/bin/s03_*.py:s03-err400",
+  "scenario": "the provider answers 400 (no retry)",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2ef8ab27ffe2NSNZWWuYF48td",
+ "prompts": [
+  "msg_1d10756dc0019Ik5SA6tLjpEKo"
+ ],
+ "snapshots": [
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d10756dc0019Ik5SA6tLjpEKo",
+     "time": {
+      "created": 1794508281821
+     },
+     "text": "P1",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d10757e0001taBnvuOP7L0XCB",
+     "time": {
+      "created": 1794508281826,
+      "completed": 1794508281831
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [],
+     "finish": "error",
+     "error": {
+      "type": "provider.invalid-request",
+      "message": "ni_rua_model_request_failed",
+      "status": 400,
+      "response": {
+       "body": "{\"type\": \"error\", \"error\": {\"type\": \"invalid_request_error\", \"message\": \"ni_rua_model_request_failed\"}}"
+      }
+     }
+    },
+    {
+     "id": "msg_1d10757e8001ORUgVkyGr65qeT",
+     "time": {
+      "created": 1794508281832
+     },
+     "type": "idle",
+     "outcome": "failed",
+     "error": {
+      "type": "provider.invalid-request",
+      "message": "ni_rua_model_request_failed",
+      "status": 400,
+      "response": {
+       "body": "{\"type\": \"error\", \"error\": {\"type\": \"invalid_request_error\", \"message\": \"ni_rua_model_request_failed\"}}"
+      }
+     }
+    }
+   ],
+   "active": null,
+   "inbox": null
+  }
+ ],
+ "children": {},
+ "events": [
+  {
+   "id": "evt_1d10754df001Vh4ruc3mSmcBIS",
+   "created": 1794508281055,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ef8ab27ffe2NSNZWWuYF48td",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d10757c3001ExHAIOWlXsKI4l",
+   "created": 1794508281795,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d10756dc0019Ik5SA6tLjpEKo",
+    "sessionID": "ses_e2ef8ab27ffe2NSNZWWuYF48td",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "P1"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d10757cd001kZQISFmBv1eyC4",
+   "created": 1794508281805,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ef8ab27ffe2NSNZWWuYF48td"
+   }
+  },
+  {
+   "id": "evt_1d10757dd001h6fOsQxR3Y19Qq",
+   "created": 1794508281821,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ef8ab27ffe2NSNZWWuYF48td",
+    "inboxID": "msg_1d10756dc0019Ik5SA6tLjpEKo"
+   }
+  },
+  {
+   "id": "evt_1d10757e6001649V59VlpkpdY2",
+   "created": 1794508281830,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef8ab27ffe2NSNZWWuYF48td",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d10757e0001taBnvuOP7L0XCB",
+    "started": 1794508281826
+   }
+  },
+  {
+   "id": "evt_1d10757e70010Uu4oHgvQHNobZ",
+   "created": 1794508281831,
+   "type": "session.step.failed",
+   "data": {
+    "sessionID": "ses_e2ef8ab27ffe2NSNZWWuYF48td",
+    "assistantMessageID": "msg_1d10757e0001taBnvuOP7L0XCB",
+    "error": {
+     "type": "provider.invalid-request",
+     "message": "ni_rua_model_request_failed",
+     "status": 400,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"invalid_request_error\", \"message\": \"ni_rua_model_request_failed\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d10757e8001ORUgVkyGr65qeT",
+   "created": 1794508281832,
+   "type": "session.execution.failed",
+   "data": {
+    "sessionID": "ses_e2ef8ab27ffe2NSNZWWuYF48td",
+    "error": {
+     "type": "provider.invalid-request",
+     "message": "ni_rua_model_request_failed",
+     "status": 400,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"invalid_request_error\", \"message\": \"ni_rua_model_request_failed\"}}"
+     }
+    }
+   }
+  }
+ ]
+}

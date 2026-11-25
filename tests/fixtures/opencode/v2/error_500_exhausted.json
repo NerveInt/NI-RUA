@@ -1,0 +1,502 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "/tmp/ni-rua-agent-harness/oc2/bin/s03_*.py:s03-err500",
+  "scenario": "the provider answers 500 on every attempt (11 attempts)",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+ "prompts": [
+  "msg_1d1075dcd001r29QcauwsWx3kJ"
+ ],
+ "snapshots": [
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d1075dcd001r29QcauwsWx3kJ",
+     "time": {
+      "created": 1794508283572
+     },
+     "text": "P1",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+     "time": {
+      "created": 1794508366306,
+      "completed": 1794508366317
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [],
+     "finish": "error",
+     "error": {
+      "type": "provider.internal",
+      "message": "boom",
+      "status": 500,
+      "response": {
+       "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+      }
+     }
+    },
+    {
+     "id": "msg_1d108a1f2001fM6WnH80SESRDI",
+     "time": {
+      "created": 1794508366322
+     },
+     "type": "idle",
+     "outcome": "failed",
+     "error": {
+      "type": "provider.internal",
+      "message": "boom",
+      "status": 500,
+      "response": {
+       "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+      }
+     }
+    }
+   ],
+   "active": null,
+   "inbox": null
+  }
+ ],
+ "children": {},
+ "events": [
+  {
+   "id": "evt_1d1075be9001jl0gYkk4ubKrrP",
+   "created": 1794508282857,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d1075e9c003W0HKoPf5JGU6n9",
+   "created": 1794508283548,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d1075dcd001r29QcauwsWx3kJ",
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "P1"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d1075ea5001bbwr6rV8yzJzj6",
+   "created": 1794508283557,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s"
+   }
+  },
+  {
+   "id": "evt_1d1075eb4001gXGMEdFmyx9Ki7",
+   "created": 1794508283572,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "inboxID": "msg_1d1075dcd001r29QcauwsWx3kJ"
+   }
+  },
+  {
+   "id": "evt_1d1075ec1001cWhf1k7e4qv6DK",
+   "created": 1794508283585,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "started": 1794508283576
+   }
+  },
+  {
+   "id": "evt_1d1075ec20015krYAOBU5wDgRO",
+   "created": 1794508283586,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "attempt": 2,
+    "at": 1794508285393,
+    "error": {
+     "type": "provider.internal",
+     "message": "boom",
+     "status": 500,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d10765e00017rqN3JvC15kBUG",
+   "created": 1794508285408,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "started": 1794508285405
+   }
+  },
+  {
+   "id": "evt_1d10765e1001gVOI0uuSz6mRMQ",
+   "created": 1794508285409,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "attempt": 3,
+    "at": 1794508290056,
+    "error": {
+     "type": "provider.internal",
+     "message": "boom",
+     "status": 500,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d1077816001m0amVHG4GRpClK",
+   "created": 1794508290070,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "started": 1794508290066
+   }
+  },
+  {
+   "id": "evt_1d1077818001qNRgkETenNV6uk",
+   "created": 1794508290072,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "attempt": 4,
+    "at": 1794508298670,
+    "error": {
+     "type": "provider.internal",
+     "message": "boom",
+     "status": 500,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d10799b6001e5EwD3bq9LG7EK",
+   "created": 1794508298678,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "started": 1794508298676
+   }
+  },
+  {
+   "id": "evt_1d10799b700182g5yCXaU1PFKx",
+   "created": 1794508298679,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "attempt": 5,
+    "at": 1794508310456,
+    "error": {
+     "type": "provider.internal",
+     "message": "boom",
+     "status": 500,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d107c7c1001S71REwJqxUuDgf",
+   "created": 1794508310465,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "started": 1794508310462
+   }
+  },
+  {
+   "id": "evt_1d107c7c2001DAeG6X0EX2NunO",
+   "created": 1794508310466,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "attempt": 6,
+    "at": 1794508318500,
+    "error": {
+     "type": "provider.internal",
+     "message": "boom",
+     "status": 500,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d107e72e001swFabWxz10mkpH",
+   "created": 1794508318510,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "started": 1794508318508
+   }
+  },
+  {
+   "id": "evt_1d107e72f001iAy1GoDw4x3c92",
+   "created": 1794508318511,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "attempt": 7,
+    "at": 1794508327429,
+    "error": {
+     "type": "provider.internal",
+     "message": "boom",
+     "status": 500,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d1080a12001edf5t4tLRmYjKt",
+   "created": 1794508327442,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "started": 1794508327437
+   }
+  },
+  {
+   "id": "evt_1d1080a14001xHfLgR0hyunQ9D",
+   "created": 1794508327444,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "attempt": 8,
+    "at": 1794508336749,
+    "error": {
+     "type": "provider.internal",
+     "message": "boom",
+     "status": 500,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d1082e770014u0TEhEAHrYpqT",
+   "created": 1794508336759,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "started": 1794508336756
+   }
+  },
+  {
+   "id": "evt_1d1082e7a001n5qtAXwIiP82Pc",
+   "created": 1794508336762,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "attempt": 9,
+    "at": 1794508348145,
+    "error": {
+     "type": "provider.internal",
+     "message": "boom",
+     "status": 500,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d1085b0b0010VuZmMZBtLPru0",
+   "created": 1794508348171,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "started": 1794508348165
+   }
+  },
+  {
+   "id": "evt_1d1085b0e001P1plvrRvntlERa",
+   "created": 1794508348174,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "attempt": 10,
+    "at": 1794508356404,
+    "error": {
+     "type": "provider.internal",
+     "message": "boom",
+     "status": 500,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d1087b49001CQsr4V5gHCsldE",
+   "created": 1794508356426,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "started": 1794508356420
+   }
+  },
+  {
+   "id": "evt_1d1087b4c001fe0ZAH8DOEtITv",
+   "created": 1794508356428,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "attempt": 11,
+    "at": 1794508366287,
+    "error": {
+     "type": "provider.internal",
+     "message": "boom",
+     "status": 500,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d108a1e800168JV5zXKXVXOv5",
+   "created": 1794508366313,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "started": 1794508366306
+   }
+  },
+  {
+   "id": "evt_1d108a1ed001WhDteNA3noXWKg",
+   "created": 1794508366317,
+   "type": "session.step.failed",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "assistantMessageID": "msg_1d1075eb7001VSHnBCXe2sOfTh",
+    "error": {
+     "type": "provider.internal",
+     "message": "boom",
+     "status": 500,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d108a1f2001fM6WnH80SESRDI",
+   "created": 1794508366322,
+   "type": "session.execution.failed",
+   "data": {
+    "sessionID": "ses_e2ef8a41effepQwWXBfxZhdM0s",
+    "error": {
+     "type": "provider.internal",
+     "message": "boom",
+     "status": 500,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+     }
+    }
+   }
+  }
+ ]
+}

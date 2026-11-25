@@ -1,0 +1,98 @@
+{
+  "schema": "ni_rua.agent_plugin.manifest.v1",
+  "version": "0.1.0",
+  "server_name": "ni_rua",
+  "plugin_id": "ni_rua@ni_rua",
+  "marketplace": "ni_rua",
+  "claude_allow": "mcp__plugin_ni_rua_ni_rua",
+  "default_port": 8790,
+  "mcp_url": "http://127.0.0.1:8790/mcp",
+  "claude_env": {
+    "MAX_MCP_OUTPUT_TOKENS": "2000000",
+    "MCP_TOOL_TIMEOUT": "3600000",
+    "CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS": "0",
+    "CLAUDE_CODE_MAX_MCP_DESCRIPTION_LENGTH": "1000000"
+  },
+  "opencode_tool_output": {
+    "max_lines": 100000,
+    "max_bytes": 16000000
+  },
+  "opencode_media_image": {
+    "auto_resize": false,
+    "max_width": 1000000,
+    "max_height": 1000000,
+    "max_base64_bytes": 1073741824
+  },
+  "opencode_timeout_ms": {
+    "startup": 30000,
+    "catalog": 30000,
+    "execution": 3600000
+  },
+  "codex_timeouts": {
+    "tool_timeout_sec": 3600,
+    "startup_timeout_sec": 30
+  },
+  "codex_direct_catalog": "codex-models.direct.json",
+  "codex_code_mode_only_models": [
+    "codex-auto-review",
+    "gpt-5.6-luna",
+    "gpt-5.6-sol",
+    "gpt-5.6-terra",
+    "gpt-6-astra",
+    "gpt-6-luna",
+    "gpt-6-sol",
+    "gpt-6.1-sol",
+    "gpt-6.2-astra",
+    "gpt-6.2-sol",
+    "gpt-daybreak-blue-latest",
+    "gpt-daybreak-red-latest"
+  ],
+  "output_token_limit": 100000,
+  "largest_known_result_chars": 120000,
+  "skills": [
+    "ni-rua-robot",
+    "ni-rua-experiments"
+  ],
+  "verified_hosts": {
+    "claude": [
+      "2.1.321",
+      "2.1.325",
+      "2.1.328"
+    ],
+    "codex": [
+      "0.160.0",
+      "0.167.0",
+      "0.169.0"
+    ],
+    "opencode": [
+      "2.2.7"
+    ]
+  },
+  "tool_names": [
+    "depth_query",
+    "geometry_query",
+    "history_annotate_action",
+    "history_list_actions",
+    "history_read_trace",
+    "history_view_observation",
+    "operation_memory",
+    "pose_plan",
+    "program_run",
+    "program_status",
+    "robot_action",
+    "robot_action_status",
+    "robot_capabilities",
+    "robot_contact_overlay",
+    "robot_information",
+    "robot_observe",
+    "robot_policy_step",
+    "robot_wait",
+    "robotic_view",
+    "run_begin",
+    "run_finish",
+    "stereo_guide",
+    "task_plan",
+    "vision_compare",
+    "vision_review"
+  ]
+}

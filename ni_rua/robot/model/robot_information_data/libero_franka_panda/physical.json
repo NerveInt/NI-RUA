@@ -1,0 +1,653 @@
+{
+  "identity": {
+    "name": "LIBERO Franka Emika Panda (simulation-only)",
+    "robot_model_id": "libero-franka-panda",
+    "simulation_only": true,
+    "simulator": "LIBERO (robosuite MuJoCo)",
+    "physical_model": "Simulation-only Franka Emika Panda 7-DoF arm with parallel-jaw PandaGripper and eye-in-hand wrist camera in LIBERO (robosuite MuJoCo SingleArm + OperationalSpaceController); not calibrated for real hardware",
+    "arms": 1,
+    "public_arm_slots": [
+      "arm0"
+    ],
+    "fixed_bases": true,
+    "revolute_joints_per_arm": 7,
+    "prismatic_finger_joints_per_arm": 2,
+    "gripper_commands_per_arm": 1,
+    "native_action_dimensions": 7,
+    "hardware_variant": "Simulation-only robosuite MuJoCo Panda model (robots/panda/robot.xml + grippers/panda_gripper.xml). Link inertials, joint damping/armature, OSC gains, and pad collision boxes are simulator parameters, not physical Franka Emika Panda hardware specifications."
+  },
+  "kinematics": {
+    "frame_convention": "Frame franka_base is URDF base_link panda_link0 (MuJoCo robot0_base): metres and radians, right-handed, +X forward across workspace, +Y left, +Z up, with T_world_base = identity. Joint origins apply parent-frame translation then fixed RPY rotation before motion about the local joint axis.",
+    "joints": [
+      {
+        "name": "panda_joint1",
+        "type": "revolute",
+        "parent": "panda_link0",
+        "child": "panda_link1",
+        "origin": {
+          "xyz_m": [
+            0.0,
+            0.0,
+            0.333
+          ],
+          "rpy_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "axis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "declared_limits": {
+          "lower": -2.8973,
+          "upper": 2.8973,
+          "effort": 80.0,
+          "velocity": 2.175
+        },
+        "limit_units": {
+          "position": "rad",
+          "velocity": "rad/s",
+          "effort": "N m"
+        }
+      },
+      {
+        "name": "panda_joint2",
+        "type": "revolute",
+        "parent": "panda_link1",
+        "child": "panda_link2",
+        "origin": {
+          "xyz_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rpy_rad": [
+            -1.5707963267948966,
+            0.0,
+            0.0
+          ]
+        },
+        "axis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "declared_limits": {
+          "lower": -1.7628,
+          "upper": 1.7628,
+          "effort": 80.0,
+          "velocity": 2.175
+        },
+        "limit_units": {
+          "position": "rad",
+          "velocity": "rad/s",
+          "effort": "N m"
+        }
+      },
+      {
+        "name": "panda_joint3",
+        "type": "revolute",
+        "parent": "panda_link2",
+        "child": "panda_link3",
+        "origin": {
+          "xyz_m": [
+            0.0,
+            -0.316,
+            0.0
+          ],
+          "rpy_rad": [
+            1.5707963267948966,
+            0.0,
+            0.0
+          ]
+        },
+        "axis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "declared_limits": {
+          "lower": -2.8973,
+          "upper": 2.8973,
+          "effort": 80.0,
+          "velocity": 2.175
+        },
+        "limit_units": {
+          "position": "rad",
+          "velocity": "rad/s",
+          "effort": "N m"
+        }
+      },
+      {
+        "name": "panda_joint4",
+        "type": "revolute",
+        "parent": "panda_link3",
+        "child": "panda_link4",
+        "origin": {
+          "xyz_m": [
+            0.0825,
+            0.0,
+            0.0
+          ],
+          "rpy_rad": [
+            1.5707963267948966,
+            0.0,
+            0.0
+          ]
+        },
+        "axis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "declared_limits": {
+          "lower": -3.0718,
+          "upper": -0.0698,
+          "effort": 80.0,
+          "velocity": 2.175
+        },
+        "limit_units": {
+          "position": "rad",
+          "velocity": "rad/s",
+          "effort": "N m"
+        }
+      },
+      {
+        "name": "panda_joint5",
+        "type": "revolute",
+        "parent": "panda_link4",
+        "child": "panda_link5",
+        "origin": {
+          "xyz_m": [
+            -0.0825,
+            0.384,
+            0.0
+          ],
+          "rpy_rad": [
+            -1.5707963267948966,
+            0.0,
+            0.0
+          ]
+        },
+        "axis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "declared_limits": {
+          "lower": -2.8973,
+          "upper": 2.8973,
+          "effort": 80.0,
+          "velocity": 2.61
+        },
+        "limit_units": {
+          "position": "rad",
+          "velocity": "rad/s",
+          "effort": "N m"
+        }
+      },
+      {
+        "name": "panda_joint6",
+        "type": "revolute",
+        "parent": "panda_link5",
+        "child": "panda_link6",
+        "origin": {
+          "xyz_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rpy_rad": [
+            1.5707963267948966,
+            0.0,
+            0.0
+          ]
+        },
+        "axis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "declared_limits": {
+          "lower": -0.0175,
+          "upper": 3.7525,
+          "effort": 12.0,
+          "velocity": 2.61
+        },
+        "limit_units": {
+          "position": "rad",
+          "velocity": "rad/s",
+          "effort": "N m"
+        }
+      },
+      {
+        "name": "panda_joint7",
+        "type": "revolute",
+        "parent": "panda_link6",
+        "child": "panda_link7",
+        "origin": {
+          "xyz_m": [
+            0.088,
+            0.0,
+            0.0
+          ],
+          "rpy_rad": [
+            1.5707963267948966,
+            0.0,
+            0.0
+          ]
+        },
+        "axis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "declared_limits": {
+          "lower": -2.8973,
+          "upper": 2.8973,
+          "effort": 12.0,
+          "velocity": 2.61
+        },
+        "limit_units": {
+          "position": "rad",
+          "velocity": "rad/s",
+          "effort": "N m"
+        }
+      },
+      {
+        "name": "panda_right_hand_joint",
+        "type": "fixed",
+        "parent": "panda_link7",
+        "child": "panda_right_hand",
+        "origin": {
+          "xyz_m": [
+            0.0,
+            0.0,
+            0.1065
+          ],
+          "rpy_rad": [
+            0.0,
+            0.0,
+            -0.7858907877735346
+          ]
+        }
+      },
+      {
+        "name": "panda_hand_joint",
+        "type": "fixed",
+        "parent": "panda_right_hand",
+        "child": "panda_hand",
+        "origin": {
+          "xyz_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "rpy_rad": [
+            0.0,
+            0.0,
+            -1.5707963267948966
+          ]
+        }
+      },
+      {
+        "name": "panda_grip_site_joint",
+        "type": "fixed",
+        "parent": "panda_hand",
+        "child": "gripper0_grip_site",
+        "origin": {
+          "xyz_m": [
+            0.0,
+            0.0,
+            0.097
+          ],
+          "rpy_rad": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "name": "panda_wrist_camera_joint",
+        "type": "fixed",
+        "parent": "panda_hand",
+        "child": "panda_wrist_camera_optical_link",
+        "origin": {
+          "xyz_m": [
+            0.0,
+            0.05,
+            0.0
+          ],
+          "rpy_rad": [
+            0.0,
+            0.0,
+            3.141592653589793
+          ]
+        }
+      },
+      {
+        "name": "panda_finger_joint1",
+        "type": "prismatic",
+        "parent": "panda_hand",
+        "child": "panda_leftfinger",
+        "origin": {
+          "xyz_m": [
+            0.0,
+            0.0,
+            0.0524
+          ],
+          "rpy_rad": [
+            0.0,
+            0.0,
+            1.5707963267948966
+          ]
+        },
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "declared_limits": {
+          "lower": 0.0,
+          "upper": 0.04,
+          "effort": 20.0,
+          "velocity": 0.2
+        },
+        "limit_units": {
+          "position": "m",
+          "velocity": "m/s",
+          "effort": "N"
+        }
+      },
+      {
+        "name": "panda_finger_joint2",
+        "type": "prismatic",
+        "parent": "panda_hand",
+        "child": "panda_rightfinger",
+        "origin": {
+          "xyz_m": [
+            0.0,
+            0.0,
+            0.0524
+          ],
+          "rpy_rad": [
+            0.0,
+            0.0,
+            1.5707963267948966
+          ]
+        },
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "declared_limits": {
+          "lower": -0.04,
+          "upper": 0.0,
+          "effort": 20.0,
+          "velocity": 0.2
+        },
+        "limit_units": {
+          "position": "m",
+          "velocity": "m/s",
+          "effort": "N"
+        }
+      }
+    ],
+    "base_link": "panda_link0",
+    "tcp_link": "gripper0_grip_site",
+    "end_effector_link": "gripper0_grip_site",
+    "wrist_camera_parent_link": "panda_hand",
+    "arm_joint_order": [
+      "panda_joint1",
+      "panda_joint2",
+      "panda_joint3",
+      "panda_joint4",
+      "panda_joint5",
+      "panda_joint6",
+      "panda_joint7"
+    ],
+    "gripper_joint_order": [
+      "panda_finger_joint1",
+      "panda_finger_joint2"
+    ],
+    "nominal_init_qpos_rad": [
+      0.0,
+      -0.161037389,
+      0.0,
+      -2.44459747,
+      0.0,
+      2.2267522,
+      0.7853981633974483
+    ],
+    "pose_interface": {
+      "pose_units": "position_m in metres and quaternion_xyzw (x, y, z, w) of gripper0_grip_site in franka_base, or grasp_position_m in metres and angles_deg = [pitch_deg, roll_deg, yaw_deg] relative to the straight-down grasp reference",
+      "tcp_config_id": "libero-panda-grip-site-v1",
+      "tcp_link": "gripper0_grip_site",
+      "tcp_axes": "Local +Z of gripper0_grip_site points outward along the fingers (approach direction; straight down [0, 0, -1] in franka_base at LIBERO spawn quaternion_xyzw = [0.707107, 0.707107, 0.0, 0.0], matching MuJoCo gripper0_grip_site and robosuite controller.ee_ori_mat). Local +-X is the parallel-jaw opening/closing line (panda_rightfinger moves along +X as panda_finger_joint2 opens 0..-0.04 m; panda_leftfinger moves along -X as panda_finger_joint1 opens 0..0.04 m). Local +Y points toward the eye-in-hand wrist camera at (0.0, +0.050, -0.097) m.",
+      "grasp_contact_offsets_m": {
+        "pad_center": 0.0,
+        "finger_middle": -0.0176,
+        "fingertip": 0.0093
+      },
+      "contact_depth_presets_m": {
+        "pad_center": 0.0,
+        "finger_middle": 0.0176,
+        "fingertip": -0.0093
+      },
+      "fingertip_beyond_reference_m": 0.0093,
+      "exposed_inner_finger_axial_span_from_tcp_m": [
+        -0.04447,
+        0.0093
+      ],
+      "pad_collision_box_axial_span_from_tcp_m": [
+        -0.0116,
+        0.0044
+      ],
+      "reachability": "Seven revolute arm joints provide 1 redundant null-space degree of freedom (elbow swivel) within joint limits (notably panda_joint4 in [-3.0718, -0.0698] rad and panda_joint6 in [-0.0175, 3.7525] rad). Motion stages drive robosuite OperationalSpaceController (OSC_POSE) directly in franka_base at 20 Hz."
+    },
+    "default_mounts": [
+      {
+        "arm": "arm0",
+        "position_environment_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "geometry": {
+    "units": "metres; binary STL meshes in link-local metres with unit scale",
+    "up_axis": "Z",
+    "links": [
+      "panda_link0",
+      "panda_link1",
+      "panda_link2",
+      "panda_link3",
+      "panda_link4",
+      "panda_link5",
+      "panda_link6",
+      "panda_link7",
+      "panda_right_hand",
+      "panda_hand",
+      "gripper0_grip_site",
+      "panda_wrist_camera_optical_link",
+      "panda_leftfinger",
+      "panda_rightfinger"
+    ],
+    "wrist_camera": {
+      "mujoco_camera_name": "robot0_eye_in_hand",
+      "parent_link": "panda_hand",
+      "optical_link": "panda_wrist_camera_optical_link",
+      "fovy_deg": 75.0,
+      "T_panda_hand_camera_cv": [
+        [
+          -1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0,
+          0.0,
+          0.05
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "interpretation": "Exact OpenCV pinhole optical frame (+X right, +Y down, +Z forward, det(R)=+1) of MuJoCo robot0_eye_in_hand mounted on robot0_right_hand / panda_hand."
+    },
+    "collision_geometry": "Binary STL collision meshes per link (meshes/collision/*.stl) from robosuite Panda and PandaGripper assets. In MuJoCo simulation, PandaGripper additionally attaches two 16x8x16 mm high-friction pad collision boxes on the inner distal finger tips spanning [-0.0116, +0.0044] m along TCP +Z.",
+    "native_model": {
+      "resource_id": "geometry_model",
+      "archive_format": "ZIP",
+      "assembly_member": "panda.urdf",
+      "mesh_formats": [
+        "STL"
+      ],
+      "simulation_only": true,
+      "coordinates": "URDF panda_link0 (franka_base) is the assembly root frame (+X forward, +Y left, +Z up). All visual and collision STL meshes inside the archive use metres relative to the assembly root."
+    }
+  },
+  "dynamics": {
+    "declared_link_masses_kg": {
+      "panda_link0": 4.0,
+      "panda_link1": 3.0,
+      "panda_link2": 3.0,
+      "panda_link3": 2.0,
+      "panda_link4": 2.0,
+      "panda_link5": 2.0,
+      "panda_link6": 1.5,
+      "panda_link7": 0.5,
+      "panda_right_hand": 0.5,
+      "panda_hand": 0.3,
+      "panda_leftfinger": 0.11,
+      "panda_rightfinger": 0.11
+    },
+    "sum_declared_mass_kg": 18.52,
+    "mass_interpretation": "Robosuite MuJoCo simulation link masses (robots/panda/robot.xml + grippers/panda_gripper.xml, with 0.10 kg finger + 0.01 kg pad tip combined per finger). Simulation parameters only, not certified physical Franka Emika product mass or payload ratings.",
+    "configured_actuators_and_physics": {
+      "simulation_only": true,
+      "simulator": "MuJoCo (robosuite SingleArm + LIBERO)",
+      "arm": {
+        "joints": "panda_joint[1-7]",
+        "controller": "OperationalSpaceController (OSC_POSE, 20 Hz task-space impedance with gravity compensation)",
+        "torque_limits_N_m": {
+          "panda_joint1_to_5": [
+            -80.0,
+            80.0
+          ],
+          "panda_joint6_to_7": [
+            -12.0,
+            12.0
+          ]
+        },
+        "dof_damping_N_m_s_per_rad": [
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.1,
+          0.01,
+          0.01
+        ],
+        "dof_armature_kg_m2": [
+          5.0,
+          2.5,
+          1.6667,
+          1.25,
+          1.0,
+          0.8333,
+          0.7143
+        ],
+        "dof_frictionloss_N_m": 0.1
+      },
+      "gripper": {
+        "joints": [
+          "panda_finger_joint1",
+          "panda_finger_joint2"
+        ],
+        "actuator_type": "MuJoCo position servo (kp = 1000 N/m)",
+        "ctrlrange_m": {
+          "panda_finger_joint1": [
+            0.0,
+            0.04
+          ],
+          "panda_finger_joint2": [
+            -0.04,
+            0.0
+          ]
+        },
+        "forcerange_N": [
+          -20.0,
+          20.0
+        ],
+        "dof_damping_N_s_per_m": 100.0,
+        "dof_armature_kg": 1.0,
+        "dof_frictionloss_N": 1.0
+      }
+    }
+  },
+  "control": {
+    "gripper": {
+      "normalized_command_range": [
+        0,
+        1
+      ],
+      "zero": "requests fully closed (target aperture 0.000 m; empty steady-state settles at 0.0010 m)",
+      "one": "requests fully open (target aperture 0.080 m; empty steady-state settles at 0.0797..0.0800 m)",
+      "native_joint_target_m": "qcmd_finger1 = +0.04 * goal_normalized, qcmd_finger2 = -0.04 * goal_normalized (aperture_target_m = 0.080 * goal_normalized; closed-loop servo over robosuite PandaGripper)",
+      "empty_close_aperture_m": 0.001,
+      "full_open_aperture_m": 0.08,
+      "pad_surface_gap_relation_m": "inner_pad_gap_m = max(0.0, measured_aperture_m - 0.0010)",
+      "measured_position_warning": "At empty full close, the two 4 mm half-thickness pad collision boxes meet at q1=+0.0005 m, q2=-0.0005 m so aperture_m reads 0.0010 m rather than 0.0 m. Non-zero aperture above 0.0010 m reflects contact or incomplete travel, not proof of stable grasp retention."
+    },
+    "default_harness": {
+      "physics_dt_s": 0.002,
+      "native_control_hz": 20.0,
+      "physics_ticks_per_action": 25,
+      "speed_scale_range": [
+        0.25,
+        2.0
+      ],
+      "clock": "simulated_steps (paused between operations; advances only during robot_action and robot_wait)",
+      "command_semantics": "Closed-loop 20 Hz Cartesian OSC stages in franka_base (libero_control_step), capped per stage and bounded by episode step budget.",
+      "motion_limits": "Per-step OSC task-space action bounds (+-0.05 m translation, +-0.5 rad rotation nominal scale) modulated by speed_scale / speed_preset and guarded by stall_guard_preset.",
+      "stop": "Holds current measured Cartesian TCP pose and jaw aperture until velocity settles.",
+      "reset": "Episode reset is observer-controlled only; actor tools cannot reset task objects."
+    },
+    "preview_gripper_mapping": {
+      "preview_command_to_joint_m": "0.04 * goal_normalized per finger (0.080 * goal_normalized total aperture)",
+      "native_command_to_joint_m": "closed-loop aperture servo targeting 0.080 * goal_normalized m",
+      "interpretation": "Preview aperture is nominal; empty close physically stops at 0.0010 m pad contact."
+    }
+  },
+  "limitations": [
+    "Simulation-only model for LIBERO (robosuite MuJoCo); NEVER use these inertials, gains, or limits as real Franka hardware specifications.",
+    "Static robot reference does not report live object poses or scene table height; LIBERO tabletop scenes sit at z = -0.012 m in franka_base while floor scenes sit at z = 0.000 m.",
+    "7-DoF local IK convergence does not guarantee collision-free arm/camera/object sweep or OSC dynamic tracking under contact.",
+    "Measured gripper aperture above 0.0010 m empty-close baseline does not guarantee slip-free object retention during lift or transport."
+  ]
+}

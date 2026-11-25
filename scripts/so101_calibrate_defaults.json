@@ -1,0 +1,39 @@
+{
+  "_comment": "Legacy helper numeric defaults; values retain historical units and behavior. User --settings accepts partial sections. Priority: packaged defaults < deployment --config equivalent fields < --settings < explicit CLI. See docs/development/so101-legacy-calibration-settings.md.",
+  "capture": {
+    "board_yaw_deg": 0.0,
+    "n_poses": 20,
+    "tilt_min_deg": 15.0,
+    "tilt_max_deg": 35.0,
+    "distance_min_m": 0.20,
+    "distance_max_m": 0.32,
+    "joint_margin_deg": 8.0,
+    "z_floor_m": 0.05,
+    "seed": 0,
+    "max_joint_speed_rad_s": 0.2617993877991494,
+    "max_command_delta_rad": 0.03490658503988659,
+    "max_relative_target_deg": 10.0,
+    "rate_hz": 20.0,
+    "settle_tolerance_deg": 0.3,
+    "settle_window_s": 0.5,
+    "settle_timeout_s": 5.0
+  },
+  "capture-handheld": {
+    "views": 20,
+    "timeout_s": 240.0,
+    "min_corners": 10,
+    "still_px": 1.5,
+    "min_novelty": 0.08
+  },
+  "solve": {
+    "hand_eye_score_lever_m": 0.1,
+    "max_pnp_reprojection_px": 2.0,
+    "max_intrinsics_rms_px": 1.0,
+    "max_hand_eye_translation_m": 0.005,
+    "max_hand_eye_rotation_rad": 0.02,
+    "max_fixed_reprojection_px": null
+  },
+  "verify": {
+    "max_reprojection_px": null
+  }
+}

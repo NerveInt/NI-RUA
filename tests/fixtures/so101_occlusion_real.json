@@ -1,0 +1,663 @@
+{
+ "source": "real SO-101 run 2026-11-16 (OpenCode + DeepSeek, stacking three 29 mm cubes): the model-visible fixed-camera object tables of six observations, the measured joints and the fixed-camera calibration of that run (no images). Truth positions are not known; reference_cubes are the first table's rows with the cube edge 29 mm (a reference for the metric code, not ground truth).",
+ "fixed_camera": {
+  "K": [
+   [
+    491.0597184360654,
+    0.0,
+    333.10414720549346
+   ],
+   [
+    0.0,
+    490.64849915522865,
+    241.96992499473282
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "D": [
+   -0.012103370621691013,
+   0.042193782481156024,
+   -0.0007102217746880686,
+   -0.0003818701557076443,
+   -0.0655080724980409
+  ],
+  "T_world_camera": [
+   [
+    0.03155207037793119,
+    0.9985432715808105,
+    0.04376987132214831,
+    0.23369175894906985
+   ],
+   [
+    0.8030864912372964,
+    -0.051397531362977186,
+    0.5936416270461153,
+    -0.1793079188714151
+   ],
+   [
+    0.5950265157512168,
+    0.016420369986183285,
+    -0.8035383108492608,
+    0.3727830237809559
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "image_size": [
+   640,
+   480
+  ],
+  "table_z_m": -0.01623
+ },
+ "frames": [
+  {
+   "observation": "obs-b1c2e8c2",
+   "reply": "observe",
+   "q_rad": [
+    -0.00307,
+    -0.95113,
+    0.9085,
+    0.99937,
+    0.00077,
+    -0.14201
+   ],
+   "gripper_goal_normalized": 0.01693766937669377,
+   "tcp_position_m": [
+    0.2137,
+    0.0005,
+    0.081
+   ],
+   "columns": [
+    "id",
+    "centre_m",
+    "top_z",
+    "bottom_z",
+    "length",
+    "width",
+    "yaw_deg",
+    "tilt_deg",
+    "support",
+    "quality"
+   ],
+   "rows": [
+    [
+     "o1",
+     [
+      0.328,
+      0.009,
+      0.001
+     ],
+     0.017,
+     -0.016,
+     0.03,
+     0.027,
+     -56.0,
+     null,
+     "table",
+     "ok"
+    ],
+    [
+     "o2",
+     [
+      0.282,
+      -0.066,
+      -0.006
+     ],
+     0.005,
+     -0.016,
+     0.032,
+     0.028,
+     77.0,
+     null,
+     "table",
+     "ok"
+    ],
+    [
+     "o3",
+     [
+      0.257,
+      0.071,
+      0.003
+     ],
+     0.023,
+     -0.016,
+     0.036,
+     0.026,
+     -64.0,
+     null,
+     "table",
+     "ok"
+    ],
+    [
+     "o4",
+     [
+      0.369,
+      0.182,
+      0.022
+     ],
+     0.034,
+     0.011,
+     0.112,
+     0.095,
+     40.0,
+     null,
+     "unknown",
+     "low:contact_mismatch"
+    ]
+   ],
+   "objects": [
+    {
+     "id": "o1",
+     "centre_m": [
+      0.328,
+      0.009,
+      0.001
+     ],
+     "top_z_m": 0.017,
+     "bottom_z_m": -0.016,
+     "length_m": 0.03,
+     "width_m": 0.027,
+     "yaw_deg": -56.0,
+     "support": "table",
+     "quality": "ok"
+    },
+    {
+     "id": "o2",
+     "centre_m": [
+      0.282,
+      -0.066,
+      -0.006
+     ],
+     "top_z_m": 0.005,
+     "bottom_z_m": -0.016,
+     "length_m": 0.032,
+     "width_m": 0.028,
+     "yaw_deg": 77.0,
+     "support": "table",
+     "quality": "ok"
+    },
+    {
+     "id": "o3",
+     "centre_m": [
+      0.257,
+      0.071,
+      0.003
+     ],
+     "top_z_m": 0.023,
+     "bottom_z_m": -0.016,
+     "length_m": 0.036,
+     "width_m": 0.026,
+     "yaw_deg": -64.0,
+     "support": "table",
+     "quality": "ok"
+    },
+    {
+     "id": "o4",
+     "centre_m": [
+      0.369,
+      0.182,
+      0.022
+     ],
+     "top_z_m": 0.034,
+     "bottom_z_m": 0.011,
+     "length_m": 0.112,
+     "width_m": 0.095,
+     "yaw_deg": 40.0,
+     "support": "unknown",
+     "quality": "low"
+    }
+   ]
+  },
+  {
+   "observation": "obs-b737b457",
+   "reply": "action",
+   "q_rad": [
+    0.22708,
+    0.46815,
+    -0.50004,
+    1.55941,
+    -1.09937,
+    0.38998
+   ],
+   "gripper_goal_normalized": 0.3,
+   "tcp_position_m": [
+    0.2784,
+    -0.0482,
+    0.0547
+   ],
+   "columns": [
+    "id",
+    "centre_m",
+    "top_z",
+    "bottom_z",
+    "length",
+    "width",
+    "yaw_deg",
+    "tilt_deg",
+    "support",
+    "quality"
+   ],
+   "rows": [],
+   "objects": []
+  },
+  {
+   "observation": "obs-48dd176a",
+   "reply": "action",
+   "q_rad": [
+    0.0,
+    -0.53839,
+    -0.10724,
+    1.60544,
+    -0.00077,
+    0.38998
+   ],
+   "gripper_goal_normalized": 0.3,
+   "tcp_position_m": [
+    0.225,
+    -0.0,
+    0.178
+   ],
+   "columns": [
+    "id",
+    "centre_m",
+    "top_z",
+    "bottom_z",
+    "length",
+    "width",
+    "yaw_deg",
+    "tilt_deg",
+    "support",
+    "quality"
+   ],
+   "rows": [
+    [
+     "o1",
+     [
+      0.331,
+      0.015,
+      -0.007
+     ],
+     0.003,
+     -0.016,
+     0.033,
+     0.031,
+     39.0,
+     null,
+     "table",
+     "ok"
+    ],
+    [
+     "o2",
+     [
+      0.278,
+      -0.06,
+      0.013
+     ],
+     0.021,
+     0.005,
+     0.033,
+     0.03,
+     -88.0,
+     null,
+     "unknown",
+     "ok"
+    ],
+    [
+     "o3",
+     [
+      0.28,
+      -0.08,
+      -0.007
+     ],
+     0.002,
+     -0.016,
+     0.028,
+     0.005,
+     -1.0,
+     73.0,
+     "table",
+     "ok"
+    ],
+    [
+     "o4",
+     [
+      0.285,
+      0.421,
+      0.004
+     ],
+     0.024,
+     -0.016,
+     0.154,
+     0.091,
+     -78.0,
+     null,
+     "table",
+     "ok"
+    ]
+   ],
+   "objects": [
+    {
+     "id": "o1",
+     "centre_m": [
+      0.331,
+      0.015,
+      -0.007
+     ],
+     "top_z_m": 0.003,
+     "bottom_z_m": -0.016,
+     "length_m": 0.033,
+     "width_m": 0.031,
+     "yaw_deg": 39.0,
+     "support": "table",
+     "quality": "ok"
+    },
+    {
+     "id": "o2",
+     "centre_m": [
+      0.278,
+      -0.06,
+      0.013
+     ],
+     "top_z_m": 0.021,
+     "bottom_z_m": 0.005,
+     "length_m": 0.033,
+     "width_m": 0.03,
+     "yaw_deg": -88.0,
+     "support": "unknown",
+     "quality": "ok"
+    },
+    {
+     "id": "o3",
+     "centre_m": [
+      0.28,
+      -0.08,
+      -0.007
+     ],
+     "top_z_m": 0.002,
+     "bottom_z_m": -0.016,
+     "length_m": 0.028,
+     "width_m": 0.005,
+     "yaw_deg": -1.0,
+     "support": "table",
+     "quality": "ok"
+    },
+    {
+     "id": "o4",
+     "centre_m": [
+      0.285,
+      0.421,
+      0.004
+     ],
+     "top_z_m": 0.024,
+     "bottom_z_m": -0.016,
+     "length_m": 0.154,
+     "width_m": 0.091,
+     "yaw_deg": -78.0,
+     "support": "table",
+     "quality": "ok"
+    }
+   ]
+  },
+  {
+   "observation": "obs-9c9dfe10",
+   "reply": "action",
+   "q_rad": [
+    0.23629,
+    0.27329,
+    -0.41411,
+    1.5947,
+    -0.83546,
+    0.48883
+   ],
+   "gripper_goal_normalized": 0.35,
+   "tcp_position_m": [
+    0.2677,
+    -0.0491,
+    0.0828
+   ],
+   "columns": [
+    "id",
+    "centre_m",
+    "top_z",
+    "bottom_z",
+    "length",
+    "width",
+    "yaw_deg",
+    "tilt_deg",
+    "support",
+    "quality"
+   ],
+   "rows": [
+    [
+     "o1",
+     [
+      0.2,
+      -0.056,
+      -0.002
+     ],
+     0.012,
+     -0.016,
+     0.032,
+     0.028,
+     -81.0,
+     null,
+     "table",
+     "ok"
+    ],
+    [
+     "o2",
+     [
+      0.278,
+      -0.063,
+      -0.007
+     ],
+     0.002,
+     -0.016,
+     0.034,
+     0.027,
+     81.0,
+     null,
+     "table",
+     "ok"
+    ]
+   ],
+   "objects": [
+    {
+     "id": "o1",
+     "centre_m": [
+      0.2,
+      -0.056,
+      -0.002
+     ],
+     "top_z_m": 0.012,
+     "bottom_z_m": -0.016,
+     "length_m": 0.032,
+     "width_m": 0.028,
+     "yaw_deg": -81.0,
+     "support": "table",
+     "quality": "ok"
+    },
+    {
+     "id": "o2",
+     "centre_m": [
+      0.278,
+      -0.063,
+      -0.007
+     ],
+     "top_z_m": 0.002,
+     "bottom_z_m": -0.016,
+     "length_m": 0.034,
+     "width_m": 0.027,
+     "yaw_deg": 81.0,
+     "support": "table",
+     "quality": "ok"
+    }
+   ]
+  },
+  {
+   "observation": "obs-4be6e9b6",
+   "reply": "action",
+   "q_rad": [
+    -0.21634,
+    -0.48468,
+    -0.17936,
+    1.58396,
+    -0.17568,
+    0.48883
+   ],
+   "gripper_goal_normalized": 0.35,
+   "tcp_position_m": [
+    0.23,
+    0.0434,
+    0.1851
+   ],
+   "columns": [
+    "id",
+    "centre_m",
+    "top_z",
+    "bottom_z",
+    "length",
+    "width",
+    "yaw_deg",
+    "tilt_deg",
+    "support",
+    "quality"
+   ],
+   "rows": [
+    [
+     "o1",
+     [
+      0.279,
+      -0.064,
+      -0.005
+     ],
+     0.006,
+     -0.016,
+     0.033,
+     0.026,
+     68.0,
+     null,
+     "table",
+     "ok"
+    ],
+    [
+     "o2",
+     [
+      0.2,
+      -0.054,
+      -0.005
+     ],
+     0.007,
+     -0.016,
+     0.033,
+     0.028,
+     -85.0,
+     null,
+     "table",
+     "ok"
+    ]
+   ],
+   "objects": [
+    {
+     "id": "o1",
+     "centre_m": [
+      0.279,
+      -0.064,
+      -0.005
+     ],
+     "top_z_m": 0.006,
+     "bottom_z_m": -0.016,
+     "length_m": 0.033,
+     "width_m": 0.026,
+     "yaw_deg": 68.0,
+     "support": "table",
+     "quality": "ok"
+    },
+    {
+     "id": "o2",
+     "centre_m": [
+      0.2,
+      -0.054,
+      -0.005
+     ],
+     "top_z_m": 0.007,
+     "bottom_z_m": -0.016,
+     "length_m": 0.033,
+     "width_m": 0.028,
+     "yaw_deg": -85.0,
+     "support": "table",
+     "quality": "ok"
+    }
+   ]
+  },
+  {
+   "observation": "obs-8233fc4e",
+   "reply": "action",
+   "q_rad": [
+    0.70273,
+    0.20731,
+    -0.32512,
+    1.57476,
+    -1.43079,
+    0.68004
+   ],
+   "gripper_goal_normalized": 0.45,
+   "tcp_position_m": [
+    0.2204,
+    -0.1438,
+    0.0837
+   ],
+   "columns": [
+    "id",
+    "centre_m",
+    "top_z",
+    "bottom_z",
+    "length",
+    "width",
+    "yaw_deg",
+    "tilt_deg",
+    "support",
+    "quality"
+   ],
+   "rows": [],
+   "objects": []
+  }
+ ],
+ "reference_cubes": [
+  {
+   "colour": "blue",
+   "centre_xy_m": [
+    0.328,
+    0.009
+   ],
+   "top_z_m": 0.0128,
+   "edge_m": 0.029
+  },
+  {
+   "colour": "white",
+   "centre_xy_m": [
+    0.282,
+    -0.066
+   ],
+   "top_z_m": 0.0128,
+   "edge_m": 0.029
+  },
+  {
+   "colour": "orange",
+   "centre_xy_m": [
+    0.257,
+    0.071
+   ],
+   "top_z_m": 0.0128,
+   "edge_m": 0.029
+  }
+ ]
+}

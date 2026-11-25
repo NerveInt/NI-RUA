@@ -1,0 +1,1559 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "OC2-C probe (lab.py of the design probes):native",
+  "scenario": "write, edit, failing edit, shell with exit 3, glob, read, grep, failing read, then the final text",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+ "prompts": [
+  "msg_1d12ea626001DFSjl70NzMeW51"
+ ],
+ "snapshots": [
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d12ea626001DFSjl70NzMeW51",
+     "time": {
+      "created": 1794510857989
+     },
+     "text": "P1 native tools",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12ea70b001n95syj8iv1Dg1a",
+     "time": {
+      "created": 1794510857997,
+      "streamed": 1794510858014,
+      "completed": 1794510858018
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "reasoning",
+       "text": "plan the edits",
+       "native": {
+        "signature": "fake-signature-0001"
+       },
+       "time": {
+        "created": 1794510858007,
+        "completed": 1794510858009
+       }
+      },
+      {
+       "type": "text",
+       "text": "Writing."
+      },
+      {
+       "type": "tool",
+       "id": "call_fake_0_0",
+       "name": "write",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {
+         "path": "notes/a.txt",
+         "content": "alpha\nbeta\n"
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "Created file successfully: notes/a.txt"
+         }
+        ],
+        "metadata": {
+         "truncated": false
+        }
+       },
+       "time": {
+        "created": 1794510858011,
+        "ran": 1794510858013,
+        "completed": 1794510858017
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12ea725001PxPBHmgf63a0o1",
+     "time": {
+      "created": 1794510858022,
+      "streamed": 1794510858028,
+      "completed": 1794510858030
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_1_0",
+       "name": "edit",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {
+         "path": "notes/a.txt",
+         "oldString": "beta",
+         "newString": "gamma"
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "Edited notes/a.txt (1 replacement)"
+         }
+        ],
+        "metadata": {
+         "files": [
+          {
+           "file": "notes/a.txt",
+           "patch": "Index: notes/a.txt\n===================================================================\n--- notes/a.txt\n+++ notes/a.txt\n@@ -1,2 +1,2 @@\n alpha\n-beta\n+gamma\n",
+           "status": "modified",
+           "additions": 1,
+           "deletions": 1
+          }
+         ],
+         "truncated": false
+        }
+       },
+       "time": {
+        "created": 1794510858025,
+        "ran": 1794510858026,
+        "completed": 1794510858029
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12ea731001z3W4MW53fhPAQ4",
+     "time": {
+      "created": 1794510858034,
+      "streamed": 1794510858039,
+      "completed": 1794510858041
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_2_0",
+       "name": "edit",
+       "executed": false,
+       "state": {
+        "status": "error",
+        "input": {
+         "path": "notes/a.txt",
+         "oldString": "missing-text",
+         "newString": "x"
+        },
+        "error": {
+         "type": "tool.execution",
+         "message": "Could not find oldString in notes/a.txt. It must match exactly, including whitespace and indentation."
+        }
+       },
+       "time": {
+        "created": 1794510858037,
+        "ran": 1794510858038,
+        "completed": 1794510858040
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12ea73b001SzGR6HUUGBRnwf",
+     "time": {
+      "created": 1794510858045,
+      "streamed": 1794510858050,
+      "completed": 1794510858061
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_3_0",
+       "name": "shell",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {
+         "command": "cat notes/a.txt; echo done-err >&2; exit 3"
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "alpha\ngamma\ndone-err\n"
+         },
+         {
+          "type": "text",
+          "text": "Exit code: 3"
+         }
+        ],
+        "metadata": {
+         "status": "completed",
+         "truncated": false,
+         "exit": 3
+        }
+       },
+       "time": {
+        "created": 1794510858047,
+        "ran": 1794510858048,
+        "completed": 1794510858060
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12ea74f001SPDFUf2KGFppC5",
+     "time": {
+      "created": 1794510858065,
+      "streamed": 1794510858069,
+      "completed": 1794510858102
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_4_0",
+       "name": "glob",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {
+         "pattern": "**/*.txt"
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "/runs/native/actor/notes/a.txt"
+         }
+        ],
+        "metadata": {
+         "count": 1,
+         "truncated": false
+        }
+       },
+       "time": {
+        "created": 1794510858067,
+        "ran": 1794510858068,
+        "completed": 1794510858101
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12ea77a001I8u3P6hWtZx2AA",
+     "time": {
+      "created": 1794510858107,
+      "streamed": 1794510858113,
+      "completed": 1794510858115
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_5_0",
+       "name": "read",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {
+         "path": "notes/a.txt"
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "Read file notes/a.txt, lines 1-2\n1: alpha\n2: gamma"
+         }
+        ],
+        "metadata": {
+         "truncated": false
+        }
+       },
+       "time": {
+        "created": 1794510858111,
+        "ran": 1794510858112,
+        "completed": 1794510858114
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12ea786001bjKZr3VR10u6H1",
+     "time": {
+      "created": 1794510858119,
+      "streamed": 1794510858123,
+      "completed": 1794510858132
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_6_0",
+       "name": "grep",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {
+         "pattern": "gamma"
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "Found 1 matches\n/runs/native/actor/notes/a.txt:\n  Line 2: gamma\n"
+         }
+        ],
+        "metadata": {
+         "matches": 1,
+         "truncated": false
+        }
+       },
+       "time": {
+        "created": 1794510858121,
+        "ran": 1794510858122,
+        "completed": 1794510858131
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12ea797001lel3VT32N1f66S",
+     "time": {
+      "created": 1794510858136,
+      "streamed": 1794510858140,
+      "completed": 1794510858141
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_7_0",
+       "name": "read",
+       "executed": false,
+       "state": {
+        "status": "error",
+        "input": {
+         "path": "notes/missing.txt"
+        },
+        "error": {
+         "type": "tool.execution",
+         "message": "File not found: notes/missing.txt"
+        }
+       },
+       "time": {
+        "created": 1794510858138,
+        "ran": 1794510858139,
+        "completed": 1794510858141
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12ea7a0001sFSG2nTDVStrs4",
+     "time": {
+      "created": 1794510858145,
+      "streamed": 1794510858149,
+      "completed": 1794510858149
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "NATIVE-DONE"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12ea7a60020IGwBTYZFjnQ8d",
+     "time": {
+      "created": 1794510858150
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    }
+   ],
+   "active": {},
+   "inbox": []
+  }
+ ],
+ "children": {},
+ "events": [
+  {
+   "id": "evt_1d12ea3d1001tkGOGgk4kfeWwI",
+   "created": 1794510857169,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d12ea6df001OHvlpVn98F9trR",
+   "created": 1794510857951,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d12ea626001DFSjl70NzMeW51",
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "P1 native tools"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d12ea6ee00174MPwehphAlazR",
+   "created": 1794510857966,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH"
+   }
+  },
+  {
+   "id": "evt_1d12ea705002xnqHL68Bdbmch4",
+   "created": 1794510857989,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "inboxID": "msg_1d12ea626001DFSjl70NzMeW51"
+   }
+  },
+  {
+   "id": "evt_1d12ea716001H7SpS4YPo9JLKE",
+   "created": 1794510858006,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12ea70b001n95syj8iv1Dg1a",
+    "started": 1794510857997
+   }
+  },
+  {
+   "id": "evt_1d12ea717001ZroRnREkXqv0L6",
+   "created": 1794510858007,
+   "type": "session.reasoning.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea70b001n95syj8iv1Dg1a",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d12ea719001YwGnQGpidWhdob",
+   "created": 1794510858009,
+   "type": "session.reasoning.delta",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea70b001n95syj8iv1Dg1a",
+    "ordinal": 0,
+    "delta": "plan the edits"
+   }
+  },
+  {
+   "id": "evt_1d12ea7190020wjxDDBdtQRYp5",
+   "created": 1794510858009,
+   "type": "session.reasoning.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea70b001n95syj8iv1Dg1a",
+    "ordinal": 0,
+    "text": "plan the edits",
+    "native": {
+     "signature": "fake-signature-0001"
+    }
+   }
+  },
+  {
+   "id": "evt_1d12ea71a001Y57Pxa9L4fc3D8",
+   "created": 1794510858010,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea70b001n95syj8iv1Dg1a",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d12ea71b001JYdqGYUl0lgCYe",
+   "created": 1794510858011,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea70b001n95syj8iv1Dg1a",
+    "ordinal": 0,
+    "delta": "Writing."
+   }
+  },
+  {
+   "id": "evt_1d12ea71b002bJ21xJLCVUkPg0",
+   "created": 1794510858011,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea70b001n95syj8iv1Dg1a",
+    "ordinal": 0,
+    "text": "Writing."
+   }
+  },
+  {
+   "id": "evt_1d12ea71b003boqbj2vmYst89E",
+   "created": 1794510858011,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea70b001n95syj8iv1Dg1a",
+    "id": "call_fake_0_0",
+    "name": "write"
+   }
+  },
+  {
+   "id": "evt_1d12ea71c001gKej871OIDzFmJ",
+   "created": 1794510858012,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea70b001n95syj8iv1Dg1a",
+    "id": "call_fake_0_0",
+    "text": "{\"path\": \"notes/a.txt\", \"content\": \"alpha\\nbeta\\n\"}"
+   }
+  },
+  {
+   "id": "evt_1d12ea71d001gE0QuxqYWOVZgB",
+   "created": 1794510858013,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea70b001n95syj8iv1Dg1a",
+    "id": "call_fake_0_0",
+    "input": {
+     "path": "notes/a.txt",
+     "content": "alpha\nbeta\n"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea71e001qPWONoW5dMCpXg",
+   "created": 1794510858014,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea70b001n95syj8iv1Dg1a"
+   }
+  },
+  {
+   "id": "evt_1d12ea721001CD3XFyAJh2rO8M",
+   "created": 1794510858017,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea70b001n95syj8iv1Dg1a",
+    "id": "call_fake_0_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "Created file successfully: notes/a.txt"
+     }
+    ],
+    "metadata": {
+     "truncated": false
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea722001yTWAYEvJOjWE5G",
+   "created": 1794510858018,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea70b001n95syj8iv1Dg1a",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12ea7280019JL2DKBNvlpfPz",
+   "created": 1794510858024,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12ea725001PxPBHmgf63a0o1",
+    "started": 1794510858022
+   }
+  },
+  {
+   "id": "evt_1d12ea729001cporx63eqrCZlP",
+   "created": 1794510858025,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea725001PxPBHmgf63a0o1",
+    "id": "call_fake_1_0",
+    "name": "edit"
+   }
+  },
+  {
+   "id": "evt_1d12ea72a001u5V67T3pk41Tz7",
+   "created": 1794510858026,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea725001PxPBHmgf63a0o1",
+    "id": "call_fake_1_0",
+    "text": "{\"path\": \"notes/a.txt\", \"oldString\": \"beta\", \"newString\": \"gamma\"}"
+   }
+  },
+  {
+   "id": "evt_1d12ea72a0029IefBL04D9X2IK",
+   "created": 1794510858026,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea725001PxPBHmgf63a0o1",
+    "id": "call_fake_1_0",
+    "input": {
+     "path": "notes/a.txt",
+     "oldString": "beta",
+     "newString": "gamma"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea72c001bh9JOhQ1r3kXDb",
+   "created": 1794510858028,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea725001PxPBHmgf63a0o1"
+   }
+  },
+  {
+   "id": "evt_1d12ea72d0013v9Tl06A8ciGN9",
+   "created": 1794510858029,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea725001PxPBHmgf63a0o1",
+    "id": "call_fake_1_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "Edited notes/a.txt (1 replacement)"
+     }
+    ],
+    "metadata": {
+     "files": [
+      {
+       "file": "notes/a.txt",
+       "patch": "Index: notes/a.txt\n===================================================================\n--- notes/a.txt\n+++ notes/a.txt\n@@ -1,2 +1,2 @@\n alpha\n-beta\n+gamma\n",
+       "status": "modified",
+       "additions": 1,
+       "deletions": 1
+      }
+     ],
+     "truncated": false
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea72e00198X0aLbIPKTC3V",
+   "created": 1794510858030,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea725001PxPBHmgf63a0o1",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12ea734001mIwhykaZCzUxxI",
+   "created": 1794510858036,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12ea731001z3W4MW53fhPAQ4",
+    "started": 1794510858034
+   }
+  },
+  {
+   "id": "evt_1d12ea7350016NEYOEOVG1YnWs",
+   "created": 1794510858037,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea731001z3W4MW53fhPAQ4",
+    "id": "call_fake_2_0",
+    "name": "edit"
+   }
+  },
+  {
+   "id": "evt_1d12ea736001Xkdlcc3KwIanjC",
+   "created": 1794510858038,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea731001z3W4MW53fhPAQ4",
+    "id": "call_fake_2_0",
+    "text": "{\"path\": \"notes/a.txt\", \"oldString\": \"missing-text\", \"newString\": \"x\"}"
+   }
+  },
+  {
+   "id": "evt_1d12ea736002Y6bay4h3vWt7dz",
+   "created": 1794510858038,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea731001z3W4MW53fhPAQ4",
+    "id": "call_fake_2_0",
+    "input": {
+     "path": "notes/a.txt",
+     "oldString": "missing-text",
+     "newString": "x"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea7370016IteuVa0FqTn6x",
+   "created": 1794510858039,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea731001z3W4MW53fhPAQ4"
+   }
+  },
+  {
+   "id": "evt_1d12ea7380013ouSvsakTg8v4N",
+   "created": 1794510858040,
+   "type": "session.tool.failed",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea731001z3W4MW53fhPAQ4",
+    "id": "call_fake_2_0",
+    "error": {
+     "type": "tool.execution",
+     "message": "Could not find oldString in notes/a.txt. It must match exactly, including whitespace and indentation."
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea739001E9OkfJ1xfgigIb",
+   "created": 1794510858041,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea731001z3W4MW53fhPAQ4",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12ea73e001BjQ6Dheyui5twb",
+   "created": 1794510858046,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12ea73b001SzGR6HUUGBRnwf",
+    "started": 1794510858045
+   }
+  },
+  {
+   "id": "evt_1d12ea73f001rcoJUA92NMvBSs",
+   "created": 1794510858047,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea73b001SzGR6HUUGBRnwf",
+    "id": "call_fake_3_0",
+    "name": "shell"
+   }
+  },
+  {
+   "id": "evt_1d12ea73f002qCuEGYjp6Y9VpT",
+   "created": 1794510858047,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea73b001SzGR6HUUGBRnwf",
+    "id": "call_fake_3_0",
+    "text": "{\"command\": \"cat notes/a.txt; echo done-err >&2; exit 3\"}"
+   }
+  },
+  {
+   "id": "evt_1d12ea740001OMWYwfx6zkQZ6t",
+   "created": 1794510858048,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea73b001SzGR6HUUGBRnwf",
+    "id": "call_fake_3_0",
+    "input": {
+     "command": "cat notes/a.txt; echo done-err >&2; exit 3"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea7420017p8Wmuf2n1eehG",
+   "created": 1794510858050,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea73b001SzGR6HUUGBRnwf"
+   }
+  },
+  {
+   "id": "evt_1d12ea744002UTgzUk5NSIB2CJ",
+   "created": 1794510858052,
+   "type": "session.tool.progress",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea73b001SzGR6HUUGBRnwf",
+    "id": "call_fake_3_0",
+    "metadata": {
+     "shellID": "sh_1d12ea742002r1TqZ2ZIGKd3bn"
+    }
+   }
+  },
+  {
+   "id": "evt_1d12ea74c001LHfgywgRdF6wz5",
+   "created": 1794510858060,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea73b001SzGR6HUUGBRnwf",
+    "id": "call_fake_3_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "alpha\ngamma\ndone-err\n"
+     },
+     {
+      "type": "text",
+      "text": "Exit code: 3"
+     }
+    ],
+    "metadata": {
+     "status": "completed",
+     "truncated": false,
+     "exit": 3
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea74d001m0KJN9kUW7ZrjB",
+   "created": 1794510858061,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea73b001SzGR6HUUGBRnwf",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12ea752001RwythWSreqP7P8",
+   "created": 1794510858066,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12ea74f001SPDFUf2KGFppC5",
+    "started": 1794510858065
+   }
+  },
+  {
+   "id": "evt_1d12ea753001LgdQUjz6XKbUnB",
+   "created": 1794510858067,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea74f001SPDFUf2KGFppC5",
+    "id": "call_fake_4_0",
+    "name": "glob"
+   }
+  },
+  {
+   "id": "evt_1d12ea754001ujoFV7Tk4j7aU8",
+   "created": 1794510858068,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea74f001SPDFUf2KGFppC5",
+    "id": "call_fake_4_0",
+    "text": "{\"pattern\": \"**/*.txt\"}"
+   }
+  },
+  {
+   "id": "evt_1d12ea754002psX79p6fARByco",
+   "created": 1794510858068,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea74f001SPDFUf2KGFppC5",
+    "id": "call_fake_4_0",
+    "input": {
+     "pattern": "**/*.txt"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea7550014N81ZMzBXwuBed",
+   "created": 1794510858069,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea74f001SPDFUf2KGFppC5"
+   }
+  },
+  {
+   "id": "evt_1d12ea775001Rwyy7dKPxMxdkT",
+   "created": 1794510858101,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea74f001SPDFUf2KGFppC5",
+    "id": "call_fake_4_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "/runs/native/actor/notes/a.txt"
+     }
+    ],
+    "metadata": {
+     "count": 1,
+     "truncated": false
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea776001oJu9qpbJryJ1sS",
+   "created": 1794510858102,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea74f001SPDFUf2KGFppC5",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12ea77e0016it11yQZu5iKEI",
+   "created": 1794510858110,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12ea77a001I8u3P6hWtZx2AA",
+    "started": 1794510858107
+   }
+  },
+  {
+   "id": "evt_1d12ea77f001TOYEM13q5g9GxH",
+   "created": 1794510858111,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea77a001I8u3P6hWtZx2AA",
+    "id": "call_fake_5_0",
+    "name": "read"
+   }
+  },
+  {
+   "id": "evt_1d12ea77f002OAY7kwEaNLuokF",
+   "created": 1794510858111,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea77a001I8u3P6hWtZx2AA",
+    "id": "call_fake_5_0",
+    "text": "{\"path\": \"notes/a.txt\"}"
+   }
+  },
+  {
+   "id": "evt_1d12ea780001QTqFL6tsY8LaSS",
+   "created": 1794510858112,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea77a001I8u3P6hWtZx2AA",
+    "id": "call_fake_5_0",
+    "input": {
+     "path": "notes/a.txt"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea7810011S1I5yXAIhtdYb",
+   "created": 1794510858113,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea77a001I8u3P6hWtZx2AA"
+   }
+  },
+  {
+   "id": "evt_1d12ea7820012c5hX4gJPf2BAD",
+   "created": 1794510858114,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea77a001I8u3P6hWtZx2AA",
+    "id": "call_fake_5_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "Read file notes/a.txt, lines 1-2\n1: alpha\n2: gamma"
+     }
+    ],
+    "metadata": {
+     "truncated": false
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea7830015GYgjajxRKZhDk",
+   "created": 1794510858115,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea77a001I8u3P6hWtZx2AA",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12ea789001gyba1enKTXqht5",
+   "created": 1794510858121,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12ea786001bjKZr3VR10u6H1",
+    "started": 1794510858119
+   }
+  },
+  {
+   "id": "evt_1d12ea789002kEbdWUGOcfrgfq",
+   "created": 1794510858121,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea786001bjKZr3VR10u6H1",
+    "id": "call_fake_6_0",
+    "name": "grep"
+   }
+  },
+  {
+   "id": "evt_1d12ea78a001g0o31XOAlz6sfI",
+   "created": 1794510858122,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea786001bjKZr3VR10u6H1",
+    "id": "call_fake_6_0",
+    "text": "{\"pattern\": \"gamma\"}"
+   }
+  },
+  {
+   "id": "evt_1d12ea78a0027UL7ZeFrvK7qu8",
+   "created": 1794510858122,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea786001bjKZr3VR10u6H1",
+    "id": "call_fake_6_0",
+    "input": {
+     "pattern": "gamma"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea78b001ZY2Sz7OdZpMo6o",
+   "created": 1794510858123,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea786001bjKZr3VR10u6H1"
+   }
+  },
+  {
+   "id": "evt_1d12ea793001TYwTIzJqA5tTpC",
+   "created": 1794510858131,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea786001bjKZr3VR10u6H1",
+    "id": "call_fake_6_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "Found 1 matches\n/runs/native/actor/notes/a.txt:\n  Line 2: gamma\n"
+     }
+    ],
+    "metadata": {
+     "matches": 1,
+     "truncated": false
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea7940011x10GdLrhuO6XD",
+   "created": 1794510858132,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea786001bjKZr3VR10u6H1",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12ea79a001XaXovDsIKXvGDE",
+   "created": 1794510858138,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12ea797001lel3VT32N1f66S",
+    "started": 1794510858136
+   }
+  },
+  {
+   "id": "evt_1d12ea79a002UCY42C1fpJ7mDl",
+   "created": 1794510858138,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea797001lel3VT32N1f66S",
+    "id": "call_fake_7_0",
+    "name": "read"
+   }
+  },
+  {
+   "id": "evt_1d12ea79b001XkG2UwmvSFrlgz",
+   "created": 1794510858139,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea797001lel3VT32N1f66S",
+    "id": "call_fake_7_0",
+    "text": "{\"path\": \"notes/missing.txt\"}"
+   }
+  },
+  {
+   "id": "evt_1d12ea79b002LMdITOHxr5ZpvO",
+   "created": 1794510858139,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea797001lel3VT32N1f66S",
+    "id": "call_fake_7_0",
+    "input": {
+     "path": "notes/missing.txt"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea79c0014Gy5nZ348rJmVv",
+   "created": 1794510858140,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea797001lel3VT32N1f66S"
+   }
+  },
+  {
+   "id": "evt_1d12ea79d001Ay4UVFbT9yLagb",
+   "created": 1794510858141,
+   "type": "session.tool.failed",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea797001lel3VT32N1f66S",
+    "id": "call_fake_7_0",
+    "error": {
+     "type": "tool.execution",
+     "message": "File not found: notes/missing.txt"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12ea79d0026PW0Gre11nFh4V",
+   "created": 1794510858141,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea797001lel3VT32N1f66S",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12ea7a3001cazEgnvUKp4tHR",
+   "created": 1794510858147,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12ea7a0001sFSG2nTDVStrs4",
+    "started": 1794510858145
+   }
+  },
+  {
+   "id": "evt_1d12ea7a3002jFJ98V6BLIGyAy",
+   "created": 1794510858147,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea7a0001sFSG2nTDVStrs4",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d12ea7a4001g3hADwayyuDlwa",
+   "created": 1794510858148,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea7a0001sFSG2nTDVStrs4",
+    "ordinal": 0,
+    "delta": "NATIVE-DONE"
+   }
+  },
+  {
+   "id": "evt_1d12ea7a4002EVHu87iBRRr3Cy",
+   "created": 1794510858148,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea7a0001sFSG2nTDVStrs4",
+    "ordinal": 0,
+    "text": "NATIVE-DONE"
+   }
+  },
+  {
+   "id": "evt_1d12ea7a5001EdrCtMrZAfotER",
+   "created": 1794510858149,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea7a0001sFSG2nTDVStrs4"
+   }
+  },
+  {
+   "id": "evt_1d12ea7a50026Y06VDwK8nmIcl",
+   "created": 1794510858149,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH",
+    "assistantMessageID": "msg_1d12ea7a0001sFSG2nTDVStrs4",
+    "finish": "stop",
+    "rawFinish": "end_turn",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12ea7a60020IGwBTYZFjnQ8d",
+   "created": 1794510858150,
+   "type": "session.execution.succeeded",
+   "data": {
+    "sessionID": "ses_e2ed15c33ffewZnic4Buz2m0VH"
+   }
+  }
+ ]
+}

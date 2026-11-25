@@ -1,0 +1,36 @@
+{
+  "thresholds": {
+    "tight_position_tolerance_m": 0.003,
+    "default_position_tolerance_m": 0.01,
+    "relaxed_position_tolerance_m": 0.015,
+    "compliant_position_tolerance_m": 0.015,
+    "coarse_position_tolerance_m": 0.025,
+    "max_position_tolerance_m": 0.1,
+    "tight_orientation_tolerance_rad": 0.05,
+    "orientation_tolerance_rad": 0.15,
+    "relaxed_orientation_tolerance_rad": 0.2,
+    "coarse_orientation_tolerance_rad": 0.35,
+    "max_orientation_tolerance_rad": 3.14159265,
+    "contact_divergence_threshold_m": 0.004,
+    "stall_guard_strict_divergence_m": 0.01,
+    "stall_guard_contact_stop_divergence_m": 0.02,
+    "stall_guard_compliant_divergence_m": 0.02,
+    "stall_guard_min_divergence_m": 0.005,
+    "stall_guard_max_divergence_m": 0.15,
+    "stall_guard_step_velocity_threshold_m": 0.001,
+    "stall_guard_consecutive_steps": 6,
+    "max_gripper_aperture_m": 0.08,
+    "grip_empty_threshold_mm": 0.5,
+    "grip_thin_threshold_mm": 1.5,
+    "grip_holding_threshold_mm": 3.0,
+    "grip_solid_threshold_mm": 3.5,
+    "grip_non_empty_min_aperture_m": 0.0015,
+    "grip_thin_min_aperture_m": 0.0005,
+    "grip_rigid_min_aperture_m": 0.002,
+    "grip_wide_min_aperture_m": 0.003
+  },
+  "preset_upward_dz_m": {
+    "compliant": 0.04,
+    "seating": 0.04
+  }
+}

@@ -1,0 +1,6 @@
+.workspace-nav{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:13px}
+.workspace-nav a{display:inline-block;padding:5px 9px;border-radius:6px;text-decoration:none;color:inherit!important;border:1px solid transparent;white-space:nowrap}
+.workspace-nav a:hover{border-color:#91a398}.workspace-nav a[aria-current=page]{background:#dcece1;color:#214d35!important;font-weight:600}
+.brand{flex-wrap:wrap}.brand .workspace-nav{flex-shrink:0}
+header>div:has(>.workspace-nav){display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+@media(max-width:800px){header:has(#workspace-nav){height:auto;min-height:66px;padding-top:8px;padding-bottom:8px;flex-wrap:wrap;gap:8px}}

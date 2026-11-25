@@ -1,0 +1,905 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "/tmp/ni-rua-agent-harness/oc2/bin/s06_*.py:s06-compaction",
+  "scenario": "two ni_rua_observe calls push the context over the limit; auto compaction succeeds; the turn continues and finishes",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+ "prompts": [
+  "msg_1d10d50900014bg200rv5ZRhYs"
+ ],
+ "snapshots": [
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d10d50900014bg200rv5ZRhYs",
+     "time": {
+      "created": 1794508673486
+     },
+     "text": "T1 observe twice",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d10d51d1001Qs8LHs4tF2yIJf",
+     "time": {
+      "created": 1794508673491,
+      "streamed": 1794508673502,
+      "completed": 1794508673513
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_0_0",
+       "name": "ni_rua_observe",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {
+         "camera": "first"
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "observation ok MARKER-TOOL-TEXT"
+         },
+         {
+          "type": "file",
+          "uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAwCAIAAAAuKetIAAAAY0lEQVR4nO3PQQkAMAzAwCqpfymTNRF7HINABFzm7H7dcEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAUNaEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAWPXYknMLX+nGo+AAAAAElFTkSuQmCC",
+          "mime": "image/png"
+         }
+        ],
+        "metadata": {
+         "truncated": false
+        }
+       },
+       "time": {
+        "created": 1794508673496,
+        "ran": 1794508673499,
+        "completed": 1794508673511
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 1000,
+      "output": 50,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d10d51ed001iIFhkj4REB1fBM",
+     "time": {
+      "created": 1794508673518,
+      "streamed": 1794508673524,
+      "completed": 1794508673526
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_1_0",
+       "name": "ni_rua_observe",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {
+         "camera": "again"
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "observation ok MARKER-TOOL-TEXT"
+         },
+         {
+          "type": "file",
+          "uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAwCAIAAAAuKetIAAAAY0lEQVR4nO3PQQkAMAzAwCqpfymTNRF7HINABFzm7H7dcEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAUNaEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAWPXYknMLX+nGo+AAAAAElFTkSuQmCC",
+          "mime": "image/png"
+         }
+        ],
+        "metadata": {
+         "truncated": false
+        }
+       },
+       "time": {
+        "created": 1794508673521,
+        "ran": 1794508673522,
+        "completed": 1794508673525
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 30000,
+      "output": 50,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "type": "compaction",
+     "id": "msg_1d10d51f9002f2rVtEX71ilL9z",
+     "time": {
+      "created": 1794508673529
+     },
+     "status": "completed",
+     "reason": "auto",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "summary": "## Objective\n- Probe objective MARKER-SUMMARY.\n\n## Requirements\n- (none)\n\n## Decisions\n- (none)\n\n## Work State\n### Completed\n- (none)\n\n### Active\n- observing\n\n### Blocked\n- (none)\n\n## Next Move\n1. continue\n\n## Relevant Files\n(none)\n\n## Important Context\n- (none)\n",
+     "cost": 0,
+     "tokens": {
+      "input": 31000,
+      "output": 200,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d10d5200001NS24l9QzVPlu1z",
+     "time": {
+      "created": 1794508673539,
+      "streamed": 1794508673544,
+      "completed": 1794508673547
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_3_0",
+       "name": "ni_rua_observe",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {
+         "camera": "post"
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "observation ok MARKER-TOOL-TEXT"
+         },
+         {
+          "type": "file",
+          "uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAwCAIAAAAuKetIAAAAY0lEQVR4nO3PQQkAMAzAwCqpfymTNRF7HINABFzm7H7dcEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAUNaEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAWPXYknMLX+nGo+AAAAAElFTkSuQmCC",
+          "mime": "image/png"
+         }
+        ],
+        "metadata": {
+         "truncated": false
+        }
+       },
+       "time": {
+        "created": 1794508673542,
+        "ran": 1794508673543,
+        "completed": 1794508673546
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 5000,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d10d520e0017UYxXLEh7cSYL7",
+     "time": {
+      "created": 1794508673551,
+      "streamed": 1794508673559,
+      "completed": 1794508673560
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "FINAL-AFTER-COMPACTION"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 5000,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d10d5219001AZ6AaQ0b4ieGyx",
+     "time": {
+      "created": 1794508673561
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    }
+   ],
+   "active": null,
+   "inbox": null
+  }
+ ],
+ "children": {},
+ "events": [
+  {
+   "id": "evt_1d10d4ea00019loA2bKWJki8XK",
+   "created": 1794508672672,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d10d51b2002Qt3x0Pw0C78I1j",
+   "created": 1794508673458,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d10d50900014bg200rv5ZRhYs",
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "T1 observe twice"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d10d51bc0014GVIOn3e8VJ2rQ",
+   "created": 1794508673468,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg"
+   }
+  },
+  {
+   "id": "evt_1d10d51ce001oc1cVhtFmmzEDA",
+   "created": 1794508673486,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "inboxID": "msg_1d10d50900014bg200rv5ZRhYs"
+   }
+  },
+  {
+   "id": "evt_1d10d51d6001P0pNqejTgVqTlz",
+   "created": 1794508673494,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d10d51d1001Qs8LHs4tF2yIJf",
+    "started": 1794508673491
+   }
+  },
+  {
+   "id": "evt_1d10d51d8001xs6t2NWR4CAPKl",
+   "created": 1794508673496,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d51d1001Qs8LHs4tF2yIJf",
+    "id": "call_fake_0_0",
+    "name": "ni_rua_observe"
+   }
+  },
+  {
+   "id": "evt_1d10d51da001nnnR1UVrkzdv3x",
+   "created": 1794508673498,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d51d1001Qs8LHs4tF2yIJf",
+    "id": "call_fake_0_0",
+    "text": "{\"camera\": \"first\"}"
+   }
+  },
+  {
+   "id": "evt_1d10d51db001IcYTa0NA1Wj2c1",
+   "created": 1794508673499,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d51d1001Qs8LHs4tF2yIJf",
+    "id": "call_fake_0_0",
+    "input": {
+     "camera": "first"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d10d51de0014Ol6fOziVEkVxU",
+   "created": 1794508673502,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d51d1001Qs8LHs4tF2yIJf"
+   }
+  },
+  {
+   "id": "evt_1d10d51e7001DZSrW66wJQu9cf",
+   "created": 1794508673511,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d51d1001Qs8LHs4tF2yIJf",
+    "id": "call_fake_0_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "observation ok MARKER-TOOL-TEXT"
+     },
+     {
+      "type": "file",
+      "uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAwCAIAAAAuKetIAAAAY0lEQVR4nO3PQQkAMAzAwCqpfymTNRF7HINABFzm7H7dcEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAUNaEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAWPXYknMLX+nGo+AAAAAElFTkSuQmCC",
+      "mime": "image/png"
+     }
+    ],
+    "metadata": {
+     "truncated": false
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d10d51e9001MOSUHPKgt1x7c1",
+   "created": 1794508673513,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d51d1001Qs8LHs4tF2yIJf",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 1000,
+     "output": 50,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d10d51f0001mkLPXQ1ymkDd3S",
+   "created": 1794508673520,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d10d51ed001iIFhkj4REB1fBM",
+    "started": 1794508673518
+   }
+  },
+  {
+   "id": "evt_1d10d51f1001lgKL3J8jaktNkx",
+   "created": 1794508673521,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d51ed001iIFhkj4REB1fBM",
+    "id": "call_fake_1_0",
+    "name": "ni_rua_observe"
+   }
+  },
+  {
+   "id": "evt_1d10d51f20010Zf2qf20kaM3ve",
+   "created": 1794508673522,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d51ed001iIFhkj4REB1fBM",
+    "id": "call_fake_1_0",
+    "text": "{\"camera\": \"again\"}"
+   }
+  },
+  {
+   "id": "evt_1d10d51f20024GUqsh7bMU0MYk",
+   "created": 1794508673522,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d51ed001iIFhkj4REB1fBM",
+    "id": "call_fake_1_0",
+    "input": {
+     "camera": "again"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d10d51f4001fJGB9NH2YeMEvh",
+   "created": 1794508673524,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d51ed001iIFhkj4REB1fBM"
+   }
+  },
+  {
+   "id": "evt_1d10d51f5001sYJEnDXeHVHKCw",
+   "created": 1794508673525,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d51ed001iIFhkj4REB1fBM",
+    "id": "call_fake_1_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "observation ok MARKER-TOOL-TEXT"
+     },
+     {
+      "type": "file",
+      "uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAwCAIAAAAuKetIAAAAY0lEQVR4nO3PQQkAMAzAwCqpfymTNRF7HINABFzm7H7dcEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAUNaEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAWPXYknMLX+nGo+AAAAAElFTkSuQmCC",
+      "mime": "image/png"
+     }
+    ],
+    "metadata": {
+     "truncated": false
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d10d51f6001dSr0G7cznM4KOD",
+   "created": 1794508673526,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d51ed001iIFhkj4REB1fBM",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 30000,
+     "output": 50,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d10d51f9002f2rVtEX71ilL9z",
+   "created": 1794508673529,
+   "type": "session.compaction.started",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "reason": "auto"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe001fCsx3X8zHimV7B",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "## Objective\n- P"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe002Ox6uGAVGE0PHgo",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "robe objective M"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe003JsGIvb5JlhivNV",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "ARKER-SUMMARY.\n\n"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe004SSWOamaxufR3ON",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "## Requirements\n"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe005UcVf6TNB7hz4t8",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "- (none)\n\n## Dec"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe006pQqmk8Xu8TfaXZ",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "isions\n- (none)\n"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe007NaoWgK1x3mYEhM",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "\n## Work State\n#"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe008BjS1TRhx4mvcCV",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "## Completed\n- ("
+   }
+  },
+  {
+   "id": "evt_1d10d51fe009zG1fe6ZHAoT73T",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "none)\n\n### Activ"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe00aNKG6pHo30eu5fd",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "e\n- observing\n\n#"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe00bwdUjvrm1tyTlPU",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "## Blocked\n- (no"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe00c8vmpamCdSuM7DJ",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "ne)\n\n## Next Mov"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe00dIYvuNJqCfZ01Vz",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "e\n1. continue\n\n#"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe00eXR8n4TzeXPcByB",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "# Relevant Files"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe00fPpGRiSw4A8p4J6",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "\n(none)\n\n## Impo"
+   }
+  },
+  {
+   "id": "evt_1d10d51fe010cakmuEqrd0cz0A",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "rtant Context\n- "
+   }
+  },
+  {
+   "id": "evt_1d10d51fe011MQMcr6ewHSSgcY",
+   "created": 1794508673534,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "text": "(none)\n"
+   }
+  },
+  {
+   "id": "evt_1d10d51ff002GP06jLnz93zSYU",
+   "created": 1794508673535,
+   "type": "session.compaction.ended",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "reason": "auto",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "text": "## Objective\n- Probe objective MARKER-SUMMARY.\n\n## Requirements\n- (none)\n\n## Decisions\n- (none)\n\n## Work State\n### Completed\n- (none)\n\n### Active\n- observing\n\n### Blocked\n- (none)\n\n## Next Move\n1. continue\n\n## Relevant Files\n(none)\n\n## Important Context\n- (none)\n",
+    "tokens": {
+     "input": 31000,
+     "output": 200,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d10d5205001ESKX1t8AXjaceN",
+   "created": 1794508673541,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d10d5200001NS24l9QzVPlu1z",
+    "started": 1794508673539
+   }
+  },
+  {
+   "id": "evt_1d10d5206001fb6KH2cOFzsJSa",
+   "created": 1794508673542,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d5200001NS24l9QzVPlu1z",
+    "id": "call_fake_3_0",
+    "name": "ni_rua_observe"
+   }
+  },
+  {
+   "id": "evt_1d10d5206002I8YZhljwcWX0Jj",
+   "created": 1794508673542,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d5200001NS24l9QzVPlu1z",
+    "id": "call_fake_3_0",
+    "text": "{\"camera\": \"post\"}"
+   }
+  },
+  {
+   "id": "evt_1d10d52070012Bm904K4tKc4s2",
+   "created": 1794508673543,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d5200001NS24l9QzVPlu1z",
+    "id": "call_fake_3_0",
+    "input": {
+     "camera": "post"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d10d5208001wendBETrVhja1k",
+   "created": 1794508673544,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d5200001NS24l9QzVPlu1z"
+   }
+  },
+  {
+   "id": "evt_1d10d520a0012T5AiiU5DhZdSm",
+   "created": 1794508673546,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d5200001NS24l9QzVPlu1z",
+    "id": "call_fake_3_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "observation ok MARKER-TOOL-TEXT"
+     },
+     {
+      "type": "file",
+      "uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAwCAIAAAAuKetIAAAAY0lEQVR4nO3PQQkAMAzAwCqpfymTNRF7HINABFzm7H7dcEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAUNaEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAWPXYknMLX+nGo+AAAAAElFTkSuQmCC",
+      "mime": "image/png"
+     }
+    ],
+    "metadata": {
+     "truncated": false
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d10d520b001j6bh18tjEUSvdI",
+   "created": 1794508673547,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d5200001NS24l9QzVPlu1z",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 5000,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d10d52120013nj9envTQWpi5z",
+   "created": 1794508673554,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d10d520e0017UYxXLEh7cSYL7",
+    "started": 1794508673551
+   }
+  },
+  {
+   "id": "evt_1d10d5214001SM99S6SgxDG7ze",
+   "created": 1794508673556,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d520e0017UYxXLEh7cSYL7",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d10d5216001AtwDChciwIIdaJ",
+   "created": 1794508673558,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d520e0017UYxXLEh7cSYL7",
+    "ordinal": 0,
+    "delta": "FINAL-AFTER-COMPACTION"
+   }
+  },
+  {
+   "id": "evt_1d10d5216002Cvx6MYI2XYlqoy",
+   "created": 1794508673558,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d520e0017UYxXLEh7cSYL7",
+    "ordinal": 0,
+    "text": "FINAL-AFTER-COMPACTION"
+   }
+  },
+  {
+   "id": "evt_1d10d5217001XY9la47G2zqc9A",
+   "created": 1794508673559,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d520e0017UYxXLEh7cSYL7"
+   }
+  },
+  {
+   "id": "evt_1d10d52180017seU1JIFqxY1IT",
+   "created": 1794508673560,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg",
+    "assistantMessageID": "msg_1d10d520e0017UYxXLEh7cSYL7",
+    "finish": "stop",
+    "rawFinish": "end_turn",
+    "tokens": {
+     "input": 5000,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d10d5219001AZ6AaQ0b4ieGyx",
+   "created": 1794508673561,
+   "type": "session.execution.succeeded",
+   "data": {
+    "sessionID": "ses_e2ef2b16affe7Z0ZmWV2NfubUg"
+   }
+  }
+ ]
+}

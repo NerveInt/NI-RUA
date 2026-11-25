@@ -1,0 +1,108 @@
+"""Validated, immutable operator configuration shared by launchers and services.
+
+Resolution: built-in defaults < legacy environment < public/local JSON < explicit overrides.
+Snapshots use from_dict(), never load(), so archived behavior cannot drift with the host.
+Credentials and fixed benchmark/security protocol limits are deliberately not settings.
+"""
+from __future__ import annotations
+
+from .hooks import (
+    expand_profiles,
+    register_profile_expander,
+    register_task_notes_validator,
+    validate_task_notes,
+)
+from .loader import (
+    CLI_FIELDS,
+    CLI_OPTIONS,
+    CLI_OPTIONS_BY_DEST,
+    CliOptionSpec,
+    Config,
+    DEFAULT_PROFILES_DIR,
+    DEFAULT_SUBPROCESS_THREAD_ENV,
+    FEATURE_FIELDS,
+    LOCAL_CONFIG_PATH,
+    QUEUE_CASE_OPTIONS,
+    QUEUE_CLI_OPTIONS,
+    RUN_FIELDS,
+    _expand_profiles,
+    _legacy_environment,
+    _read_json,
+    cli_overrides,
+    migrate_v1_to_v2,
+    namespace_values,
+)
+from .sections import (
+    ANTHROPIC_BASE_URL,
+    AgentConfig,
+    AnalysisConfig,
+    BackendConfig,
+    CATALOGUE_DELIVERY_ABSENT,
+    ClaudeCodeConfig,
+    ConfigError,
+    ENV_NAME_PATTERN,
+    EVIDENCE_UPSTREAM_WIRES,
+    EXTERNAL_PERCEPTION_FIELDS,
+    EmbodimentConfig,
+    EvidenceConfig,
+    ExternalConfig,
+    FEATURE_ABSENT_VALUES,
+    FeaturesConfig,
+    ImagesConfig,
+    LibraryConfig,
+    ModelConfig,
+    OomRetryConfig,
+    OpenCodeConfig,
+    PolicyConfig,
+    QueueConfig,
+    REPLY_DELIVERY_ABSENT,
+    RETIRED_FEATURE_FIELDS,
+    RemoteConfig,
+    RemoteServiceConfig,
+    RunConfig,
+    SUPPORT_Z_FROM_PROFILE,
+    SUPPORT_Z_RANGE_M,
+    SceneConfig,
+    Section,
+    TransportRecoveryConfig,
+    UpstreamConfig,
+    _EXTERNAL_PERCEPTION_OPT_IN_SWITCHES,
+    _EXTERNAL_PERCEPTION_SWITCHES,
+    _GRIP_MARGIN_FIELDS,
+    _REMOTE_ENV,
+    _REMOTE_GPU,
+    _REMOTE_NAME,
+    _anthropic_upstream,
+    _construct,
+    _handoff_compat,
+    _merge,
+    _omit_agent_defaults,
+    _section_hints,
+    _section_type,
+    _tuple_item_type,
+    _type_ok,
+    option,
+)
+from .thresholds import (
+    MOTION_THRESHOLD_BOUNDS,
+    MOTION_THRESHOLD_FIELDS,
+    ThresholdMap,
+    _DEFAULT_MOTION_THRESHOLDS,
+    motion_thresholds,
+)
+
+_DEFAULT_FEATURES = FeaturesConfig()
+
+__all__ = [
+    'ANTHROPIC_BASE_URL', 'AgentConfig', 'AnalysisConfig', 'BackendConfig', 'CLI_FIELDS', 'CLI_OPTIONS',
+    'CATALOGUE_DELIVERY_ABSENT', 'CLI_OPTIONS_BY_DEST', 'ClaudeCodeConfig', 'CliOptionSpec', 'Config', 'ConfigError', 'DEFAULT_PROFILES_DIR',
+    'DEFAULT_SUBPROCESS_THREAD_ENV', 'ENV_NAME_PATTERN', 'EVIDENCE_UPSTREAM_WIRES', 'EXTERNAL_PERCEPTION_FIELDS',
+    'EmbodimentConfig', 'EvidenceConfig', 'ExternalConfig', 'FEATURE_ABSENT_VALUES', 'FEATURE_FIELDS', 'FeaturesConfig', 'ImagesConfig',
+    'LOCAL_CONFIG_PATH', 'LibraryConfig', 'MOTION_THRESHOLD_BOUNDS', 'MOTION_THRESHOLD_FIELDS', 'ModelConfig',
+    'OomRetryConfig', 'OpenCodeConfig', 'PolicyConfig', 'QUEUE_CASE_OPTIONS', 'QUEUE_CLI_OPTIONS', 'QueueConfig',
+    'REPLY_DELIVERY_ABSENT', 'RETIRED_FEATURE_FIELDS', 'RUN_FIELDS', 'RemoteConfig', 'RemoteServiceConfig', 'RunConfig',
+    'SUPPORT_Z_FROM_PROFILE', 'SUPPORT_Z_RANGE_M', 'SceneConfig', 'Section', 'ThresholdMap',
+    'TransportRecoveryConfig', 'UpstreamConfig', 'cli_overrides', 'expand_profiles', 'migrate_v1_to_v2',
+    'motion_thresholds', 'namespace_values', 'option', 'register_profile_expander',
+    'register_task_notes_validator', 'validate_task_notes',
+]

@@ -1,0 +1,11 @@
+{
+  "applicability": "Simulation-only boundary notice. libero-franka-panda models ONLY the simulated Franka Emika Panda manipulator inside the LIBERO benchmark (robosuite MuJoCo SingleArm + PandaGripper). It is NOT calibrated, validated, or safe for real Franka Emika Panda or Franka Research 3 hardware.",
+  "simulation_only": true,
+  "simulator": "LIBERO (robosuite MuJoCo)",
+  "simulation_vs_physical_hardware": {
+    "control_interface": "Simulation uses robosuite's 20 Hz OperationalSpaceController (OSC_POSE) over 25 MuJoCo substeps (dt = 0.002 s). Physical Franka arms require a 1 kHz real-time Franka Control Interface (FCI / libfranka) with reflex torque/jerk supervision.",
+    "end_effector_and_pads": "Simulation attaches robosuite PandaGripper with two synthetic 16x8x16 mm rubber pad collision boxes that meet at q1 = +0.0005 m, q2 = -0.0005 m (empty_close_aperture_m = 0.0010 m) and grip_site at +0.097 m along panda_hand +Z. Physical Franka Hand finger pads, compliance, and grasp force control (franka::Gripper) have different geometry and force limits.",
+    "wrist_camera": "Simulation mounts a virtual pinhole camera robot0_eye_in_hand (fovy = 75 deg, zero lens distortion) rigidly at (0.0, +0.050, 0.0) m on panda_hand. Physical wrist cameras require per-rig hand-eye and intrinsic calibration.",
+    "inertials_and_actuators": "Link masses (total 18.52 kg), joint armature, joint damping, and actuator torque bounds (+-80 N m on joints 1-5, +-12 N m on joints 6-7) are robosuite MuJoCo XML parameters, not certified physical hardware specifications."
+  }
+}

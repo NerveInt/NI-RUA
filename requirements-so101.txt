@@ -1,0 +1,16 @@
+# SO-101 hardware worker interpreter dependencies (mamba env: so101)
+# Install with: mamba env create -f environment.so101.yml
+# Or inside an existing python>=3.11 env: pip install -r requirements-so101.txt
+lerobot==0.6.1
+feetech-servo-sdk==1.0.0
+pyserial==3.5
+numpy>=2.0,<2.8
+scipy==1.18.1
+opencv-python-headless>=4.10
+Pillow==12.1.1
+pin==4.1.0
+coal==3.0.3
+pin-pink==4.4.0
+qpsolvers==4.13.0
+daqp==0.11.2
+ruckig==0.19.4

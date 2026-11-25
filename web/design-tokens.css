@@ -1,0 +1,49 @@
+/* Design tokens of the operator pages (/console, /calibration): one palette, type scale, spacing, radii, elevation,
+   motion and focus ring, each with a dark value. Imported by console.js and calibration.js (bundled into
+   console-bundle.css / calibration-bundle.css); console.css, calibration.css and agent-settings.css only read them.
+   Colours keep the console's existing green palette; text tokens (*-text) meet 4.5:1 on panel and raised surfaces. */
+:root{
+  color-scheme:light dark;
+  /* palette */
+  --bg:#f2f4f1;--panel:#fff;--line:#dbe1da;--line-strong:#bfcac1;--text:#1f2b26;--muted:#5f7067;--bar:#e6ebe5;
+  --accent:#285b43;--accent-strong:#1f4a36;--on-accent:#fff;--warn:#b7791f;--danger:#b23a2e;--ok:#2f7a4d;--unknown:#c2410c;
+  --surface-raised:#fff;--surface-sunken:#f5f7f4;--surface-hover:#eef3ed;
+  --accent-soft:color-mix(in srgb,var(--accent) 9%,transparent);
+  --ok-soft:color-mix(in srgb,var(--ok) 13%,transparent);--warn-soft:color-mix(in srgb,var(--warn) 16%,transparent);
+  --bad-soft:color-mix(in srgb,var(--danger) 10%,transparent);--unknown-soft:color-mix(in srgb,var(--unknown) 12%,transparent);
+  --ok-text:#256640;--warn-text:#835000;--bad-text:#a33328;--unknown-text:#9a3412;--on-unknown:#fff;
+  --ab-muted:color-mix(in srgb,var(--muted) 85%,var(--text));  /* secondary text, >= 4.5:1 on raised and hover surfaces */
+  --scrim:rgb(16 24 20/.34);
+  /* E-STOP: the same saturated red in both themes, white text >= 4.5:1 */
+  --estop-bg:#c4301f;--estop-bg-hover:#ab2616;--estop-edge:#7a1a10;--estop-text:#fff;
+  /* type */
+  --font-sans:Inter,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",system-ui,sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;--ab-mono:var(--font-mono);
+  --text-2xs:10.5px;--text-xs:11px;--text-s:12px;--text-m:13px;--text-l:14px;--text-xl:16px;--text-2xl:19px;
+  /* spacing (4 px grid) */
+  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;
+  /* radii */
+  --radius-s:6px;--radius-m:10px;--radius-l:14px;--radius-panel:12px;--radius-pill:999px;
+  /* elevation */
+  --shadow-panel:0 1px 2px rgb(24 44 34/.04),0 1px 1px rgb(24 44 34/.03);
+  --shadow-pop:0 18px 40px -14px rgb(24 44 34/.30),0 4px 12px -4px rgb(24 44 34/.12),0 0 0 1px rgb(24 44 34/.07);
+  --shadow-header:0 1px 0 var(--line),0 6px 18px -12px rgb(24 44 34/.25);
+  /* motion */
+  --motion-fast:140ms;--motion-base:200ms;--ab-ease:cubic-bezier(.2,.8,.2,1);
+  /* focus */
+  --focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 32%,transparent);--ab-ring:var(--focus-ring);
+  /* skeleton */
+  --skeleton:linear-gradient(90deg,var(--surface-sunken) 0%,var(--surface-hover) 50%,var(--surface-sunken) 100%) 0 0/200% 100%;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0f1412;--panel:#161d1a;--line:#28342e;--line-strong:#3d4d44;--text:#dbe6df;--muted:#93a59a;--bar:#232e28;
+  --accent:#5fae83;--accent-strong:#79c39a;--on-accent:#06130c;--warn:#e0a63c;--danger:#ef6b5c;--ok:#5fc48a;--unknown:#fb923c;
+  --surface-raised:#1b2420;--surface-sunken:#121815;--surface-hover:#232e28;
+  --accent-soft:color-mix(in srgb,var(--accent) 14%,transparent);
+  --ok-text:#72d39a;--warn-text:#f1bb59;--bad-text:#ff8f80;--unknown-text:#fdba74;--on-unknown:#1c0b02;--scrim:rgb(0 0 0/.52);
+  --estop-bg:#c4301f;--estop-bg-hover:#d53a28;--estop-edge:#5c120a;
+  --shadow-panel:0 1px 0 rgb(255 255 255/.02),0 1px 3px rgb(0 0 0/.35);
+  --shadow-pop:0 24px 48px -14px rgb(0 0 0/.66),0 0 0 1px rgb(255 255 255/.07);
+  --shadow-header:0 1px 0 var(--line),0 8px 20px -12px rgb(0 0 0/.7);
+}}
+@media(prefers-reduced-motion:reduce){:root{--motion-fast:0ms;--motion-base:0ms}}

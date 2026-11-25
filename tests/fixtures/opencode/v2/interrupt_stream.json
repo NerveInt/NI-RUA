@@ -1,0 +1,139 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "/tmp/ni-rua-agent-harness/oc2/bin/s03_*.py:s03-interrupt-stream",
+  "scenario": "P1 -> the model response is held at a gate; POST /interrupt during the stream",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2ef9cdb6ffe6GoKXJI5m8lwI0",
+ "prompts": [
+  "msg_1d10634ae001EymJkbC08eAsCd"
+ ],
+ "snapshots": [
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d10634ae001EymJkbC08eAsCd",
+     "time": {
+      "created": 1794508207519
+     },
+     "text": "P1",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d10635a2001KTN39WmGQeK0Gd",
+     "time": {
+      "created": 1794508207524,
+      "completed": 1794508208047
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [],
+     "finish": "error",
+     "error": {
+      "type": "aborted",
+      "message": "Step interrupted"
+     }
+    },
+    {
+     "id": "msg_1d10637b5001eTpZXIETn83jyI",
+     "time": {
+      "created": 1794508208053
+     },
+     "type": "idle",
+     "outcome": "interrupted"
+    }
+   ],
+   "active": null,
+   "inbox": null
+  }
+ ],
+ "children": {},
+ "events": [
+  {
+   "id": "evt_1d1063255001Urm56hHa8v3uLG",
+   "created": 1794508206677,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ef9cdb6ffe6GoKXJI5m8lwI0",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d1063587002qrXvVQBw49P8fH",
+   "created": 1794508207495,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d10634ae001EymJkbC08eAsCd",
+    "sessionID": "ses_e2ef9cdb6ffe6GoKXJI5m8lwI0",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "P1"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d106359000107KzaK7EGTMrLb",
+   "created": 1794508207504,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ef9cdb6ffe6GoKXJI5m8lwI0"
+   }
+  },
+  {
+   "id": "evt_1d106359f001Wef8R53BZlV7qs",
+   "created": 1794508207519,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ef9cdb6ffe6GoKXJI5m8lwI0",
+    "inboxID": "msg_1d10634ae001EymJkbC08eAsCd"
+   }
+  },
+  {
+   "id": "evt_1d10637a900197yuqvqYpJSXxD",
+   "created": 1794508208041,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef9cdb6ffe6GoKXJI5m8lwI0",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d10635a2001KTN39WmGQeK0Gd",
+    "started": 1794508207524
+   }
+  },
+  {
+   "id": "evt_1d10637af001qewr9zqlGx0xHB",
+   "created": 1794508208047,
+   "type": "session.step.failed",
+   "data": {
+    "sessionID": "ses_e2ef9cdb6ffe6GoKXJI5m8lwI0",
+    "assistantMessageID": "msg_1d10635a2001KTN39WmGQeK0Gd",
+    "error": {
+     "type": "aborted",
+     "message": "Step interrupted"
+    }
+   }
+  },
+  {
+   "id": "evt_1d10637b5001eTpZXIETn83jyI",
+   "created": 1794508208053,
+   "type": "session.execution.interrupted",
+   "data": {
+    "sessionID": "ses_e2ef9cdb6ffe6GoKXJI5m8lwI0",
+    "reason": "user"
+   }
+  }
+ ]
+}

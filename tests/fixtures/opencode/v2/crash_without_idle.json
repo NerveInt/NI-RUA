@@ -1,0 +1,495 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "OC2-C probe (lab.py of the design probes):crash",
+  "scenario": "T1 answered; T2 -> ni_rua_wait_s 30 s; the server is killed with SIGKILL during the call and restarted (snapshots after_crash/after_crash_later: tool still running, no idle); T3 afterwards",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2ed094cdffehXf3ffJissD04f",
+ "prompts": [
+  "msg_1d12f6d1e001AUiDxToxGf1wYU",
+  "msg_1d12f6ed9001TIiDO42KQ9JvnT",
+  "msg_1d12f82de001uxUMB2OOTFOlNy"
+ ],
+ "snapshots": [
+  {
+   "label": "tool_running",
+   "messages": [
+    {
+     "id": "msg_1d12f6d1e001AUiDxToxGf1wYU",
+     "time": {
+      "created": 1794510908939
+     },
+     "text": "T1",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12f6e0e001CJYylzKHgrUBQM",
+     "time": {
+      "created": 1794510908944,
+      "streamed": 1794510908955,
+      "completed": 1794510908955
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "A1"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12f6e1d001GZsucqFpj2SAXv",
+     "time": {
+      "created": 1794510908957
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    },
+    {
+     "id": "msg_1d12f6ed9001TIiDO42KQ9JvnT",
+     "time": {
+      "created": 1794510909153
+     },
+     "text": "T2 long tool",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12f6ee4001uCvi228HEJ0L4e",
+     "time": {
+      "created": 1794510909158,
+      "streamed": 1794510909169
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_1_0",
+       "name": "ni_rua_wait_s",
+       "executed": false,
+       "state": {
+        "status": "running",
+        "input": {
+         "seconds": 30
+        },
+        "metadata": {}
+       },
+       "time": {
+        "created": 1794510909163,
+        "ran": 1794510909165
+       }
+      }
+     ]
+    }
+   ],
+   "active": {
+    "ses_e2ed094cdffehXf3ffJissD04f": {
+     "type": "running"
+    }
+   },
+   "inbox": []
+  },
+  {
+   "label": "after_crash",
+   "messages": [
+    {
+     "id": "msg_1d12f6d1e001AUiDxToxGf1wYU",
+     "time": {
+      "created": 1794510908939
+     },
+     "text": "T1",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12f6e0e001CJYylzKHgrUBQM",
+     "time": {
+      "created": 1794510908944,
+      "streamed": 1794510908955,
+      "completed": 1794510908955
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "A1"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12f6e1d001GZsucqFpj2SAXv",
+     "time": {
+      "created": 1794510908957
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    },
+    {
+     "id": "msg_1d12f6ed9001TIiDO42KQ9JvnT",
+     "time": {
+      "created": 1794510909153
+     },
+     "text": "T2 long tool",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12f6ee4001uCvi228HEJ0L4e",
+     "time": {
+      "created": 1794510909158,
+      "streamed": 1794510909169
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_1_0",
+       "name": "ni_rua_wait_s",
+       "executed": false,
+       "state": {
+        "status": "running",
+        "input": {
+         "seconds": 30
+        },
+        "metadata": {}
+       },
+       "time": {
+        "created": 1794510909163,
+        "ran": 1794510909165
+       }
+      }
+     ]
+    }
+   ],
+   "active": {},
+   "inbox": []
+  },
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d12f6d1e001AUiDxToxGf1wYU",
+     "time": {
+      "created": 1794510908939
+     },
+     "text": "T1",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12f6e0e001CJYylzKHgrUBQM",
+     "time": {
+      "created": 1794510908944,
+      "streamed": 1794510908955,
+      "completed": 1794510908955
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "A1"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12f6e1d001GZsucqFpj2SAXv",
+     "time": {
+      "created": 1794510908957
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    },
+    {
+     "id": "msg_1d12f6ed9001TIiDO42KQ9JvnT",
+     "time": {
+      "created": 1794510909153
+     },
+     "text": "T2 long tool",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12f6ee4001uCvi228HEJ0L4e",
+     "time": {
+      "created": 1794510909158,
+      "streamed": 1794510909169,
+      "completed": 1794510914494
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_1_0",
+       "name": "ni_rua_wait_s",
+       "executed": false,
+       "state": {
+        "status": "error",
+        "input": {
+         "seconds": 30
+        },
+        "error": {
+         "type": "aborted",
+         "message": "Tool execution interrupted: ni_rua_wait_s"
+        }
+       },
+       "time": {
+        "created": 1794510909163,
+        "ran": 1794510909165,
+        "completed": 1794510914464
+       }
+      }
+     ]
+    },
+    {
+     "id": "msg_1d12f82de001uxUMB2OOTFOlNy",
+     "time": {
+      "created": 1794510914486
+     },
+     "text": "T3 after crash",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12f83b9001Ybg931mSwFY6tc",
+     "time": {
+      "created": 1794510914491,
+      "streamed": 1794510914497,
+      "completed": 1794510914498
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "A3-after-restart"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12f83c3002O4tFxURTsyRIsf",
+     "time": {
+      "created": 1794510914499
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    }
+   ],
+   "active": {},
+   "inbox": []
+  }
+ ],
+ "children": {},
+ "events": [
+  {
+   "id": "evt_1d12f8395004rvCWNfkqniPCWR",
+   "created": 1794510914453,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d12f82de001uxUMB2OOTFOlNy",
+    "sessionID": "ses_e2ed094cdffehXf3ffJissD04f",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "T3 after crash"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d12f839e001VbNVwmygBRse6A",
+   "created": 1794510914462,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ed094cdffehXf3ffJissD04f"
+   }
+  },
+  {
+   "id": "evt_1d12f83a0001DHwN3cM3pOiGPv",
+   "created": 1794510914464,
+   "type": "session.tool.failed",
+   "data": {
+    "sessionID": "ses_e2ed094cdffehXf3ffJissD04f",
+    "assistantMessageID": "msg_1d12f6ee4001uCvi228HEJ0L4e",
+    "id": "call_fake_1_0",
+    "error": {
+     "type": "aborted",
+     "message": "Tool execution interrupted: ni_rua_wait_s"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12f83b6001J2ELPMZmH2JiaK",
+   "created": 1794510914486,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ed094cdffehXf3ffJissD04f",
+    "inboxID": "msg_1d12f82de001uxUMB2OOTFOlNy"
+   }
+  },
+  {
+   "id": "evt_1d12f83be001gfGUHt3JbyUaR1",
+   "created": 1794510914494,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed094cdffehXf3ffJissD04f",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12f83b9001Ybg931mSwFY6tc",
+    "started": 1794510914491
+   }
+  },
+  {
+   "id": "evt_1d12f83c00010EYRJaw475Vgfm",
+   "created": 1794510914496,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ed094cdffehXf3ffJissD04f",
+    "assistantMessageID": "msg_1d12f83b9001Ybg931mSwFY6tc",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d12f83c00021QKdRCuUrNZcrR",
+   "created": 1794510914496,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ed094cdffehXf3ffJissD04f",
+    "assistantMessageID": "msg_1d12f83b9001Ybg931mSwFY6tc",
+    "ordinal": 0,
+    "delta": "A3-after-restart"
+   }
+  },
+  {
+   "id": "evt_1d12f83c0003630LVQ8GH98vL6",
+   "created": 1794510914496,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ed094cdffehXf3ffJissD04f",
+    "assistantMessageID": "msg_1d12f83b9001Ybg931mSwFY6tc",
+    "ordinal": 0,
+    "text": "A3-after-restart"
+   }
+  },
+  {
+   "id": "evt_1d12f83c1001efDb0nDIouWkHz",
+   "created": 1794510914497,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed094cdffehXf3ffJissD04f",
+    "assistantMessageID": "msg_1d12f83b9001Ybg931mSwFY6tc"
+   }
+  },
+  {
+   "id": "evt_1d12f83c20018pYZU3ACqcyN20",
+   "created": 1794510914498,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed094cdffehXf3ffJissD04f",
+    "assistantMessageID": "msg_1d12f83b9001Ybg931mSwFY6tc",
+    "finish": "stop",
+    "rawFinish": "end_turn",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12f83c3002O4tFxURTsyRIsf",
+   "created": 1794510914499,
+   "type": "session.execution.succeeded",
+   "data": {
+    "sessionID": "ses_e2ed094cdffehXf3ffJissD04f"
+   }
+  }
+ ]
+}

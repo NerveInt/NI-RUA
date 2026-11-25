@@ -1,0 +1,8 @@
+[
+  {
+    "resource_id": "geometry_model",
+    "name": "SO-101 geometry and assembly",
+    "format": "ZIP",
+    "description": "URDF and every referenced binary STL mesh of the SO-101 follower arm with gripper, moving jaw, wrist camera mount and wrist camera housing, preserving relative directories. Current camera calibration is provided separately."
+  }
+]

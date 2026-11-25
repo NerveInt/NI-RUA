@@ -1,0 +1,1400 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "/tmp/ni-rua-agent-harness/oc2/bin/s03_*.py:s03-stream-error",
+  "scenario": "8 responses fail mid-stream after partial text; OpenCode continues each with a synthetic message; the 9th succeeds",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+ "prompts": [
+  "msg_1d108e0ee001uJUG7dg4jK4jfU"
+ ],
+ "snapshots": [
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d108e0ee001uJUG7dg4jK4jfU",
+     "time": {
+      "created": 1794508382681
+     },
+     "text": "P1",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d108e1dd001byuVPgQwH3kxlN",
+     "time": {
+      "created": 1794508382687,
+      "streamed": 1794508382694,
+      "completed": 1794508382694
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "partial text her"
+      }
+     ],
+     "finish": "error",
+     "error": {
+      "type": "provider.internal",
+      "message": "overloaded_error: midstream",
+      "status": 200,
+      "response": {
+       "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+      }
+     },
+     "retry": {
+      "attempt": 2,
+      "at": 1794508384426,
+      "error": {
+       "type": "provider.internal",
+       "message": "overloaded_error: midstream",
+       "status": 200,
+       "response": {
+        "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+       }
+      }
+     }
+    },
+    {
+     "id": "msg_1d108e8ac001i7YsAdNyIdYbXY",
+     "time": {
+      "created": 1794508384428
+     },
+     "text": "The previous response was interrupted. Continue from where you left off without repeating completed content.",
+     "type": "synthetic"
+    },
+    {
+     "id": "msg_1d108e8ad001i6eCXlNlYCKe0l",
+     "time": {
+      "created": 1794508384436,
+      "streamed": 1794508384442,
+      "completed": 1794508384443
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "partial text her"
+      }
+     ],
+     "finish": "error",
+     "error": {
+      "type": "provider.internal",
+      "message": "overloaded_error: midstream",
+      "status": 200,
+      "response": {
+       "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+      }
+     },
+     "retry": {
+      "attempt": 3,
+      "at": 1794508388554,
+      "error": {
+       "type": "provider.internal",
+       "message": "overloaded_error: midstream",
+       "status": 200,
+       "response": {
+        "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+       }
+      }
+     }
+    },
+    {
+     "id": "msg_1d108f8cb0012aT4AF47Nyzm4w",
+     "time": {
+      "created": 1794508388555
+     },
+     "text": "The previous response was interrupted. Continue from where you left off without repeating completed content.",
+     "type": "synthetic"
+    },
+    {
+     "id": "msg_1d108f8d0001gdLH4NWfOmulrV",
+     "time": {
+      "created": 1794508388579,
+      "streamed": 1794508388600,
+      "completed": 1794508388601
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "partial text her"
+      }
+     ],
+     "finish": "error",
+     "error": {
+      "type": "provider.internal",
+      "message": "overloaded_error: midstream",
+      "status": 200,
+      "response": {
+       "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+      }
+     },
+     "retry": {
+      "attempt": 4,
+      "at": 1794508397550,
+      "error": {
+       "type": "provider.internal",
+       "message": "overloaded_error: midstream",
+       "status": 200,
+       "response": {
+        "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+       }
+      }
+     }
+    },
+    {
+     "id": "msg_1d1091bef001HxpC8yVIBKHzQa",
+     "time": {
+      "created": 1794508397552
+     },
+     "text": "The previous response was interrupted. Continue from where you left off without repeating completed content.",
+     "type": "synthetic"
+    },
+    {
+     "id": "msg_1d1091bf3001XLM8qpx503pQj5",
+     "time": {
+      "created": 1794508397576,
+      "streamed": 1794508397590,
+      "completed": 1794508397592
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "partial text her"
+      }
+     ],
+     "finish": "error",
+     "error": {
+      "type": "provider.internal",
+      "message": "overloaded_error: midstream",
+      "status": 200,
+      "response": {
+       "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+      }
+     },
+     "retry": {
+      "attempt": 5,
+      "at": 1794508406863,
+      "error": {
+       "type": "provider.internal",
+       "message": "overloaded_error: midstream",
+       "status": 200,
+       "response": {
+        "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+       }
+      }
+     }
+    },
+    {
+     "id": "msg_1d1094051001tbKlNAxaEDB9aQ",
+     "time": {
+      "created": 1794508406865
+     },
+     "text": "The previous response was interrupted. Continue from where you left off without repeating completed content.",
+     "type": "synthetic"
+    },
+    {
+     "id": "msg_1d1094056001RnYdd0ZNhqFwJw",
+     "time": {
+      "created": 1794508406887,
+      "streamed": 1794508406900,
+      "completed": 1794508406901
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "partial text her"
+      }
+     ],
+     "finish": "error",
+     "error": {
+      "type": "provider.internal",
+      "message": "overloaded_error: midstream",
+      "status": 200,
+      "response": {
+       "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+      }
+     },
+     "retry": {
+      "attempt": 6,
+      "at": 1794508418609,
+      "error": {
+       "type": "provider.internal",
+       "message": "overloaded_error: midstream",
+       "status": 200,
+       "response": {
+        "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+       }
+      }
+     }
+    },
+    {
+     "id": "msg_1d1096e32001mTCDMUz2mWAqgl",
+     "time": {
+      "created": 1794508418610
+     },
+     "text": "The previous response was interrupted. Continue from where you left off without repeating completed content.",
+     "type": "synthetic"
+    },
+    {
+     "id": "msg_1d1096e35001hBgFwJdN8w6dVy",
+     "time": {
+      "created": 1794508418628,
+      "streamed": 1794508418643,
+      "completed": 1794508418644
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "partial text her"
+      }
+     ],
+     "finish": "error",
+     "error": {
+      "type": "provider.internal",
+      "message": "overloaded_error: midstream",
+      "status": 200,
+      "response": {
+       "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+      }
+     },
+     "retry": {
+      "attempt": 7,
+      "at": 1794508428190,
+      "error": {
+       "type": "provider.internal",
+       "message": "overloaded_error: midstream",
+       "status": 200,
+       "response": {
+        "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+       }
+      }
+     }
+    },
+    {
+     "id": "msg_1d109939f001s72mONZbzdr5ml",
+     "time": {
+      "created": 1794508428191
+     },
+     "text": "The previous response was interrupted. Continue from where you left off without repeating completed content.",
+     "type": "synthetic"
+    },
+    {
+     "id": "msg_1d10993a1001f14j20BP8TYts0",
+     "time": {
+      "created": 1794508428210,
+      "streamed": 1794508428224,
+      "completed": 1794508428225
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "partial text her"
+      }
+     ],
+     "finish": "error",
+     "error": {
+      "type": "provider.internal",
+      "message": "overloaded_error: midstream",
+      "status": 200,
+      "response": {
+       "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+      }
+     },
+     "retry": {
+      "attempt": 8,
+      "at": 1794508439023,
+      "error": {
+       "type": "provider.internal",
+       "message": "overloaded_error: midstream",
+       "status": 200,
+       "response": {
+        "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+       }
+      }
+     }
+    },
+    {
+     "id": "msg_1d109bdef001uIf0qrOGBgbmkh",
+     "time": {
+      "created": 1794508439023
+     },
+     "text": "The previous response was interrupted. Continue from where you left off without repeating completed content.",
+     "type": "synthetic"
+    },
+    {
+     "id": "msg_1d109bdf1001QwRu55h2CJkkhf",
+     "time": {
+      "created": 1794508439036,
+      "streamed": 1794508439046,
+      "completed": 1794508439047
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "partial text her"
+      }
+     ],
+     "finish": "error",
+     "error": {
+      "type": "provider.internal",
+      "message": "overloaded_error: midstream",
+      "status": 200,
+      "response": {
+       "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+      }
+     },
+     "retry": {
+      "attempt": 9,
+      "at": 1794508450595,
+      "error": {
+       "type": "provider.internal",
+       "message": "overloaded_error: midstream",
+       "status": 200,
+       "response": {
+        "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+       }
+      }
+     }
+    },
+    {
+     "id": "msg_1d109eb24001K2x3xcmDkYEyN2",
+     "time": {
+      "created": 1794508450596
+     },
+     "text": "The previous response was interrupted. Continue from where you left off without repeating completed content.",
+     "type": "synthetic"
+    },
+    {
+     "id": "msg_1d109eb25001aA9lyJTwk5Am2Y",
+     "time": {
+      "created": 1794508450600,
+      "streamed": 1794508450605,
+      "completed": 1794508450605
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "RECOVERED-SE"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d109eb2e002l1J39FIZyXbDQz",
+     "time": {
+      "created": 1794508450606
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    }
+   ],
+   "active": null,
+   "inbox": null
+  }
+ ],
+ "children": {},
+ "events": [
+  {
+   "id": "evt_1d108defa001HSsYbcFutdTsfX",
+   "created": 1794508381946,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d108e1b7001Zhkn09PkcW2KkO",
+   "created": 1794508382647,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d108e0ee001uJUG7dg4jK4jfU",
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "P1"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d108e1c0001Mz1zVAQrolA4IP",
+   "created": 1794508382656,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB"
+   }
+  },
+  {
+   "id": "evt_1d108e1d9001YA9jxLaX6zcb4x",
+   "created": 1794508382681,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "inboxID": "msg_1d108e0ee001uJUG7dg4jK4jfU"
+   }
+  },
+  {
+   "id": "evt_1d108e1e2001NE8ddIzqvnPKFN",
+   "created": 1794508382690,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d108e1dd001byuVPgQwH3kxlN",
+    "started": 1794508382687
+   }
+  },
+  {
+   "id": "evt_1d108e1e30010NW1gJkS66B24K",
+   "created": 1794508382691,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108e1dd001byuVPgQwH3kxlN",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d108e1e5001qTgEDH49abWmHd",
+   "created": 1794508382693,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108e1dd001byuVPgQwH3kxlN",
+    "ordinal": 0,
+    "delta": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d108e1e5002i2GjntZXX6EPV8",
+   "created": 1794508382693,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108e1dd001byuVPgQwH3kxlN",
+    "ordinal": 0,
+    "text": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d108e1e6001bJc03v6zLl4O26",
+   "created": 1794508382694,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108e1dd001byuVPgQwH3kxlN"
+   }
+  },
+  {
+   "id": "evt_1d108e1e6002DxyLG2FQEjoNIo",
+   "created": 1794508382694,
+   "type": "session.step.failed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108e1dd001byuVPgQwH3kxlN",
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d108e1e7001198NSJ5W8i236I",
+   "created": 1794508382695,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108e1dd001byuVPgQwH3kxlN",
+    "attempt": 2,
+    "at": 1794508384426,
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d108e8ac001i7YsAdNyIdYbXY",
+   "created": 1794508384428,
+   "type": "session.synthetic",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "text": "The previous response was interrupted. Continue from where you left off without repeating completed content."
+   }
+  },
+  {
+   "id": "evt_1d108e8b7001Un3HFQPYj7fc7o",
+   "created": 1794508384439,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d108e8ad001i6eCXlNlYCKe0l",
+    "started": 1794508384436
+   }
+  },
+  {
+   "id": "evt_1d108e8b8001CCrZHpw4aAmMc9",
+   "created": 1794508384440,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108e8ad001i6eCXlNlYCKe0l",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d108e8b9001J646tI1ZGLbGtn",
+   "created": 1794508384441,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108e8ad001i6eCXlNlYCKe0l",
+    "ordinal": 0,
+    "delta": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d108e8b9002kqBY9Qs0oyjhuE",
+   "created": 1794508384441,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108e8ad001i6eCXlNlYCKe0l",
+    "ordinal": 0,
+    "text": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d108e8ba0014BKaJvT2y5gYUt",
+   "created": 1794508384442,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108e8ad001i6eCXlNlYCKe0l"
+   }
+  },
+  {
+   "id": "evt_1d108e8bb001E2ubSyLyc4v5wH",
+   "created": 1794508384443,
+   "type": "session.step.failed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108e8ad001i6eCXlNlYCKe0l",
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d108e8bb002bRxKeqXZHPhOZs",
+   "created": 1794508384443,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108e8ad001i6eCXlNlYCKe0l",
+    "attempt": 3,
+    "at": 1794508388554,
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d108f8cb0012aT4AF47Nyzm4w",
+   "created": 1794508388555,
+   "type": "session.synthetic",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "text": "The previous response was interrupted. Continue from where you left off without repeating completed content."
+   }
+  },
+  {
+   "id": "evt_1d108f8f1001Grz1rCWMysA4ZG",
+   "created": 1794508388593,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d108f8d0001gdLH4NWfOmulrV",
+    "started": 1794508388579
+   }
+  },
+  {
+   "id": "evt_1d108f8f4001zXfFMXnaSX0NhF",
+   "created": 1794508388596,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108f8d0001gdLH4NWfOmulrV",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d108f8f60014XGAw8g9kmkPVW",
+   "created": 1794508388598,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108f8d0001gdLH4NWfOmulrV",
+    "ordinal": 0,
+    "delta": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d108f8f600278JdEURz88I46U",
+   "created": 1794508388598,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108f8d0001gdLH4NWfOmulrV",
+    "ordinal": 0,
+    "text": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d108f8f8001rB87Ck3SMnZLTR",
+   "created": 1794508388600,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108f8d0001gdLH4NWfOmulrV"
+   }
+  },
+  {
+   "id": "evt_1d108f8f90012xeEojxCZX2vng",
+   "created": 1794508388601,
+   "type": "session.step.failed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108f8d0001gdLH4NWfOmulrV",
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d108f8fa0014Cro7LTr94B7Gd",
+   "created": 1794508388602,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d108f8d0001gdLH4NWfOmulrV",
+    "attempt": 4,
+    "at": 1794508397550,
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d1091bef001HxpC8yVIBKHzQa",
+   "created": 1794508397552,
+   "type": "session.synthetic",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "text": "The previous response was interrupted. Continue from where you left off without repeating completed content."
+   }
+  },
+  {
+   "id": "evt_1d1091c0f001acob8lKH3zcBfV",
+   "created": 1794508397583,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d1091bf3001XLM8qpx503pQj5",
+    "started": 1794508397576
+   }
+  },
+  {
+   "id": "evt_1d1091c11001Uzfvi089MzKjNk",
+   "created": 1794508397585,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1091bf3001XLM8qpx503pQj5",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d1091c14001VMCiLSRIqWBcOs",
+   "created": 1794508397588,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1091bf3001XLM8qpx503pQj5",
+    "ordinal": 0,
+    "delta": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d1091c14002TXbKp715h4fTt0",
+   "created": 1794508397588,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1091bf3001XLM8qpx503pQj5",
+    "ordinal": 0,
+    "text": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d1091c16001czTEtDilytnWOd",
+   "created": 1794508397590,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1091bf3001XLM8qpx503pQj5"
+   }
+  },
+  {
+   "id": "evt_1d1091c18001W4DcCpnVXtlhfo",
+   "created": 1794508397592,
+   "type": "session.step.failed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1091bf3001XLM8qpx503pQj5",
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d1091c19001nGN1QRljhEgHhj",
+   "created": 1794508397593,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1091bf3001XLM8qpx503pQj5",
+    "attempt": 5,
+    "at": 1794508406863,
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d1094051001tbKlNAxaEDB9aQ",
+   "created": 1794508406865,
+   "type": "session.synthetic",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "text": "The previous response was interrupted. Continue from where you left off without repeating completed content."
+   }
+  },
+  {
+   "id": "evt_1d109406e001FWRZEffGZK8PVr",
+   "created": 1794508406894,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d1094056001RnYdd0ZNhqFwJw",
+    "started": 1794508406887
+   }
+  },
+  {
+   "id": "evt_1d1094070001up3uIdaLVuDnFv",
+   "created": 1794508406896,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1094056001RnYdd0ZNhqFwJw",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d10940730010rf6Jj7RdCzQEA",
+   "created": 1794508406899,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1094056001RnYdd0ZNhqFwJw",
+    "ordinal": 0,
+    "delta": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d1094073002qBpS7tpVfB1SJV",
+   "created": 1794508406899,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1094056001RnYdd0ZNhqFwJw",
+    "ordinal": 0,
+    "text": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d10940740011cIIaXauu1GFS0",
+   "created": 1794508406900,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1094056001RnYdd0ZNhqFwJw"
+   }
+  },
+  {
+   "id": "evt_1d1094075001ljJpzB7hOv0SeW",
+   "created": 1794508406901,
+   "type": "session.step.failed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1094056001RnYdd0ZNhqFwJw",
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d1094077001ctoL8ns4TIQqtK",
+   "created": 1794508406903,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1094056001RnYdd0ZNhqFwJw",
+    "attempt": 6,
+    "at": 1794508418609,
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d1096e32001mTCDMUz2mWAqgl",
+   "created": 1794508418610,
+   "type": "session.synthetic",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "text": "The previous response was interrupted. Continue from where you left off without repeating completed content."
+   }
+  },
+  {
+   "id": "evt_1d1096e4b001yd32x0oX11bkgl",
+   "created": 1794508418635,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d1096e35001hBgFwJdN8w6dVy",
+    "started": 1794508418628
+   }
+  },
+  {
+   "id": "evt_1d1096e4e001TZFl7yot1G25Er",
+   "created": 1794508418638,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1096e35001hBgFwJdN8w6dVy",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d1096e520015RKBx52qir29G6",
+   "created": 1794508418642,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1096e35001hBgFwJdN8w6dVy",
+    "ordinal": 0,
+    "delta": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d1096e52002Ou4xGWeeMgEkq1",
+   "created": 1794508418642,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1096e35001hBgFwJdN8w6dVy",
+    "ordinal": 0,
+    "text": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d1096e53001yF2vcKQ2vwTtLW",
+   "created": 1794508418643,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1096e35001hBgFwJdN8w6dVy"
+   }
+  },
+  {
+   "id": "evt_1d1096e54001HQ7OuynYGHA5AH",
+   "created": 1794508418644,
+   "type": "session.step.failed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1096e35001hBgFwJdN8w6dVy",
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d1096e56001DzW6tmiYD2cgQT",
+   "created": 1794508418646,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d1096e35001hBgFwJdN8w6dVy",
+    "attempt": 7,
+    "at": 1794508428190,
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d109939f001s72mONZbzdr5ml",
+   "created": 1794508428191,
+   "type": "session.synthetic",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "text": "The previous response was interrupted. Continue from where you left off without repeating completed content."
+   }
+  },
+  {
+   "id": "evt_1d10993b9001Vzi6IZRx6Hzq2g",
+   "created": 1794508428217,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d10993a1001f14j20BP8TYts0",
+    "started": 1794508428210
+   }
+  },
+  {
+   "id": "evt_1d10993bc001Zs2J8TSbUp2EkS",
+   "created": 1794508428220,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d10993a1001f14j20BP8TYts0",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d10993bf001VahV9R6XXihcf3",
+   "created": 1794508428223,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d10993a1001f14j20BP8TYts0",
+    "ordinal": 0,
+    "delta": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d10993bf002NecSI3F515BumH",
+   "created": 1794508428223,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d10993a1001f14j20BP8TYts0",
+    "ordinal": 0,
+    "text": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d10993c0001Kuj7veeaTbebSV",
+   "created": 1794508428224,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d10993a1001f14j20BP8TYts0"
+   }
+  },
+  {
+   "id": "evt_1d10993c1001OUzdhFfzix9R7F",
+   "created": 1794508428225,
+   "type": "session.step.failed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d10993a1001f14j20BP8TYts0",
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d10993c2001mDK6Mdwm3TwKwP",
+   "created": 1794508428226,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d10993a1001f14j20BP8TYts0",
+    "attempt": 8,
+    "at": 1794508439023,
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d109bdef001uIf0qrOGBgbmkh",
+   "created": 1794508439023,
+   "type": "session.synthetic",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "text": "The previous response was interrupted. Continue from where you left off without repeating completed content."
+   }
+  },
+  {
+   "id": "evt_1d109be00001QqlFvFuBC9CiJs",
+   "created": 1794508439040,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d109bdf1001QwRu55h2CJkkhf",
+    "started": 1794508439036
+   }
+  },
+  {
+   "id": "evt_1d109be02001Qo7lQmyNL1lZVo",
+   "created": 1794508439042,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d109bdf1001QwRu55h2CJkkhf",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d109be04001gEbwe4SXwgOIb9",
+   "created": 1794508439044,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d109bdf1001QwRu55h2CJkkhf",
+    "ordinal": 0,
+    "delta": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d109be040026TxZLqpeRS8rb6",
+   "created": 1794508439044,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d109bdf1001QwRu55h2CJkkhf",
+    "ordinal": 0,
+    "text": "partial text her"
+   }
+  },
+  {
+   "id": "evt_1d109be06001k12C33WwME8Vvj",
+   "created": 1794508439046,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d109bdf1001QwRu55h2CJkkhf"
+   }
+  },
+  {
+   "id": "evt_1d109be070011OLvzVdLEp9F8x",
+   "created": 1794508439047,
+   "type": "session.step.failed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d109bdf1001QwRu55h2CJkkhf",
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d109be070024GtCoagpdVzh5X",
+   "created": 1794508439047,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d109bdf1001QwRu55h2CJkkhf",
+    "attempt": 9,
+    "at": 1794508450595,
+    "error": {
+     "type": "provider.internal",
+     "message": "overloaded_error: midstream",
+     "status": 200,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"overloaded_error\", \"message\": \"midstream\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d109eb24001K2x3xcmDkYEyN2",
+   "created": 1794508450596,
+   "type": "session.synthetic",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "text": "The previous response was interrupted. Continue from where you left off without repeating completed content."
+   }
+  },
+  {
+   "id": "evt_1d109eb2a001myBtL5JUTH3GAN",
+   "created": 1794508450602,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d109eb25001aA9lyJTwk5Am2Y",
+    "started": 1794508450600
+   }
+  },
+  {
+   "id": "evt_1d109eb2b0016FfitVs5PsBrHN",
+   "created": 1794508450603,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d109eb25001aA9lyJTwk5Am2Y",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d109eb2c001W851PeAIs90r3L",
+   "created": 1794508450604,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d109eb25001aA9lyJTwk5Am2Y",
+    "ordinal": 0,
+    "delta": "RECOVERED-SE"
+   }
+  },
+  {
+   "id": "evt_1d109eb2c002JPI3scJtCPQ2nZ",
+   "created": 1794508450604,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d109eb25001aA9lyJTwk5Am2Y",
+    "ordinal": 0,
+    "text": "RECOVERED-SE"
+   }
+  },
+  {
+   "id": "evt_1d109eb2d001S0N2SrQ4PqeFz5",
+   "created": 1794508450605,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d109eb25001aA9lyJTwk5Am2Y"
+   }
+  },
+  {
+   "id": "evt_1d109eb2d002RNO3UYFzeou31n",
+   "created": 1794508450605,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB",
+    "assistantMessageID": "msg_1d109eb25001aA9lyJTwk5Am2Y",
+    "finish": "stop",
+    "rawFinish": "end_turn",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d109eb2e002l1J39FIZyXbDQz",
+   "created": 1794508450606,
+   "type": "session.execution.succeeded",
+   "data": {
+    "sessionID": "ses_e2ef7210fffeqSiIwfP2xAZmbB"
+   }
+  }
+ ]
+}

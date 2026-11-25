@@ -1,0 +1,553 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "OC2-C probe (lab.py of the design probes):permission",
+  "scenario": "default permissions (read *.env -> ask); P1 -> read .env; the permission request is answered POST .../permission/{id}/reply {decision: reject} (snapshots permission_asked, after_reject, after_reject_later: no idle is written); P2 answered normally",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+ "prompts": [
+  "msg_1d14c93bf0018rPAveaNhdBclB",
+  "msg_1d14c9f920018LRjHDLl7U9uYN"
+ ],
+ "snapshots": [
+  {
+   "label": "permission_asked",
+   "messages": [
+    {
+     "id": "msg_1d14c93bf0018rPAveaNhdBclB",
+     "time": {
+      "created": 1794512819368
+     },
+     "text": "P1 read env",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d14c94ac001VNavRCLsO3Kp0w",
+     "time": {
+      "created": 1794512819375,
+      "streamed": 1794512819391
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_0_0",
+       "name": "read",
+       "executed": false,
+       "state": {
+        "status": "running",
+        "input": {
+         "path": ".env"
+        },
+        "metadata": {}
+       },
+       "time": {
+        "created": 1794512819385,
+        "ran": 1794512819388
+       }
+      }
+     ]
+    }
+   ],
+   "active": {
+    "ses_e2eb36e74ffe1IAVtsbgHX3YLP": {
+     "type": "running"
+    }
+   },
+   "inbox": []
+  },
+  {
+   "label": "after_reject",
+   "messages": [
+    {
+     "id": "msg_1d14c93bf0018rPAveaNhdBclB",
+     "time": {
+      "created": 1794512819368
+     },
+     "text": "P1 read env",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d14c94ac001VNavRCLsO3Kp0w",
+     "time": {
+      "created": 1794512819375,
+      "streamed": 1794512819391,
+      "completed": 1794512819600
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_0_0",
+       "name": "read",
+       "executed": false,
+       "state": {
+        "status": "error",
+        "input": {
+         "path": ".env"
+        },
+        "error": {
+         "type": "aborted",
+         "message": "The user declined this tool call"
+        }
+       },
+       "time": {
+        "created": 1794512819385,
+        "ran": 1794512819388,
+        "completed": 1794512819598
+       }
+      }
+     ],
+     "finish": "error",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     },
+     "error": {
+      "type": "aborted",
+      "message": "Step interrupted"
+     }
+    }
+   ],
+   "active": {},
+   "inbox": []
+  },
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d14c93bf0018rPAveaNhdBclB",
+     "time": {
+      "created": 1794512819368
+     },
+     "text": "P1 read env",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d14c94ac001VNavRCLsO3Kp0w",
+     "time": {
+      "created": 1794512819375,
+      "streamed": 1794512819391,
+      "completed": 1794512819600
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_0_0",
+       "name": "read",
+       "executed": false,
+       "state": {
+        "status": "error",
+        "input": {
+         "path": ".env"
+        },
+        "error": {
+         "type": "aborted",
+         "message": "The user declined this tool call"
+        }
+       },
+       "time": {
+        "created": 1794512819385,
+        "ran": 1794512819388,
+        "completed": 1794512819598
+       }
+      }
+     ],
+     "finish": "error",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     },
+     "error": {
+      "type": "aborted",
+      "message": "Step interrupted"
+     }
+    },
+    {
+     "id": "msg_1d14c9f920018LRjHDLl7U9uYN",
+     "time": {
+      "created": 1794512822180
+     },
+     "text": "P2 after reject",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d14c9fa8001YupZBcSGsEbJYl",
+     "time": {
+      "created": 1794512822187,
+      "streamed": 1794512822195,
+      "completed": 1794512822196
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "AFTER-REJECT-ANSWER"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d14c9fb6001Rbw91sdEjcMPBH",
+     "time": {
+      "created": 1794512822198
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    }
+   ],
+   "active": {},
+   "inbox": []
+  }
+ ],
+ "children": {},
+ "events": [
+  {
+   "id": "evt_1d14c918f001ga0QdYdvpE3F4R",
+   "created": 1794512818575,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d14c9488004GOkXHMo0vdxX9N",
+   "created": 1794512819336,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d14c93bf0018rPAveaNhdBclB",
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "P1 read env"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d14c94970018oKF2bVRZO5jTI",
+   "created": 1794512819351,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP"
+   }
+  },
+  {
+   "id": "evt_1d14c94a8001aaTkKZ5Rap9l88",
+   "created": 1794512819368,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "inboxID": "msg_1d14c93bf0018rPAveaNhdBclB"
+   }
+  },
+  {
+   "id": "evt_1d14c94b8001MGVSJmKJ2GyS5w",
+   "created": 1794512819384,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d14c94ac001VNavRCLsO3Kp0w",
+    "started": 1794512819375
+   }
+  },
+  {
+   "id": "evt_1d14c94b9001cUfiMHqs5eoupC",
+   "created": 1794512819385,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "assistantMessageID": "msg_1d14c94ac001VNavRCLsO3Kp0w",
+    "id": "call_fake_0_0",
+    "name": "read"
+   }
+  },
+  {
+   "id": "evt_1d14c94bb001fegEBuHFkYnlGz",
+   "created": 1794512819387,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "assistantMessageID": "msg_1d14c94ac001VNavRCLsO3Kp0w",
+    "id": "call_fake_0_0",
+    "text": "{\"path\": \".env\"}"
+   }
+  },
+  {
+   "id": "evt_1d14c94bc001n6Ma5AWFhOXDZV",
+   "created": 1794512819388,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "assistantMessageID": "msg_1d14c94ac001VNavRCLsO3Kp0w",
+    "id": "call_fake_0_0",
+    "input": {
+     "path": ".env"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d14c94be00247iZlxW5V0JAII",
+   "created": 1794512819390,
+   "type": "permission.asked",
+   "data": {
+    "id": "per_1d14c94be001Yxz5v1di6EFBxq",
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "action": "read",
+    "resources": [
+     ".env"
+    ],
+    "save": [
+     "*"
+    ],
+    "source": {
+     "type": "tool",
+     "messageID": "msg_1d14c94ac001VNavRCLsO3Kp0w",
+     "id": "call_fake_0_0"
+    }
+   }
+  },
+  {
+   "id": "evt_1d14c94bf001tM5Kv1kyGVfF6G",
+   "created": 1794512819391,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "assistantMessageID": "msg_1d14c94ac001VNavRCLsO3Kp0w"
+   }
+  },
+  {
+   "id": "evt_1d14c958e001fYuJpL27H1bLNS",
+   "created": 1794512819598,
+   "type": "permission.replied",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "requestID": "per_1d14c94be001Yxz5v1di6EFBxq",
+    "reply": "reject"
+   }
+  },
+  {
+   "id": "evt_1d14c958e002mqzI3GFHUEaNEs",
+   "created": 1794512819598,
+   "type": "session.tool.failed",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "assistantMessageID": "msg_1d14c94ac001VNavRCLsO3Kp0w",
+    "id": "call_fake_0_0",
+    "error": {
+     "type": "aborted",
+     "message": "The user declined this tool call"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d14c9590001FyLGsk2BqDA8WI",
+   "created": 1794512819600,
+   "type": "session.step.failed",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "assistantMessageID": "msg_1d14c94ac001VNavRCLsO3Kp0w",
+    "error": {
+     "type": "aborted",
+     "message": "Step interrupted"
+    },
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d14c9592002zHyoEJY3NS8N9q",
+   "created": 1794512819602,
+   "type": "session.execution.interrupted",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "reason": "shutdown"
+   }
+  },
+  {
+   "id": "evt_1d14c9f9400146iYEUnyNfdBlF",
+   "created": 1794512822164,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d14c9f920018LRjHDLl7U9uYN",
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "P2 after reject"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d14c9f98001boO94M3efRnPTI",
+   "created": 1794512822168,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP"
+   }
+  },
+  {
+   "id": "evt_1d14c9fa3001NaeNatmX0zY0u9",
+   "created": 1794512822180,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "inboxID": "msg_1d14c9f920018LRjHDLl7U9uYN"
+   }
+  },
+  {
+   "id": "evt_1d14c9faf001Af6oIUVx4tPvfr",
+   "created": 1794512822191,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d14c9fa8001YupZBcSGsEbJYl",
+    "started": 1794512822187
+   }
+  },
+  {
+   "id": "evt_1d14c9fb0001ipfQt2kiBmvzCY",
+   "created": 1794512822192,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "assistantMessageID": "msg_1d14c9fa8001YupZBcSGsEbJYl",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d14c9fb2001RNPQc2mRok6mcv",
+   "created": 1794512822194,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "assistantMessageID": "msg_1d14c9fa8001YupZBcSGsEbJYl",
+    "ordinal": 0,
+    "delta": "AFTER-REJECT-ANSWER"
+   }
+  },
+  {
+   "id": "evt_1d14c9fb2002dVvPTjiBe65Kkk",
+   "created": 1794512822194,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "assistantMessageID": "msg_1d14c9fa8001YupZBcSGsEbJYl",
+    "ordinal": 0,
+    "text": "AFTER-REJECT-ANSWER"
+   }
+  },
+  {
+   "id": "evt_1d14c9fb3001wPhDl0WSnOUO8k",
+   "created": 1794512822195,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "assistantMessageID": "msg_1d14c9fa8001YupZBcSGsEbJYl"
+   }
+  },
+  {
+   "id": "evt_1d14c9fb4001wd3cEL0EKVrscn",
+   "created": 1794512822196,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP",
+    "assistantMessageID": "msg_1d14c9fa8001YupZBcSGsEbJYl",
+    "finish": "stop",
+    "rawFinish": "end_turn",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d14c9fb6001Rbw91sdEjcMPBH",
+   "created": 1794512822198,
+   "type": "session.execution.succeeded",
+   "data": {
+    "sessionID": "ses_e2eb36e74ffe1IAVtsbgHX3YLP"
+   }
+  }
+ ]
+}

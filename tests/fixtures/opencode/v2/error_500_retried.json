@@ -1,0 +1,312 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "OC2-C probe (lab.py of the design probes):retry",
+  "scenario": "the provider answers 500 twice, then text (snapshot retrying read during the retry wait)",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2ed10638ffe1wMIrc3h82m2xV",
+ "prompts": [
+  "msg_1d12efba9001R5XU1vORtwbZ0j"
+ ],
+ "snapshots": [
+  {
+   "label": "retrying",
+   "messages": [
+    {
+     "id": "msg_1d12efba9001R5XU1vORtwbZ0j",
+     "time": {
+      "created": 1794510879898
+     },
+     "text": "P1 retried",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12efc9d001IgnJ1Tigsrnr6t",
+     "time": {
+      "created": 1794510879903
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [],
+     "retry": {
+      "attempt": 2,
+      "at": 1794510881792,
+      "error": {
+       "type": "provider.internal",
+       "message": "boom",
+       "status": 500,
+       "response": {
+        "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+       }
+      }
+     }
+    }
+   ],
+   "active": {
+    "ses_e2ed10638ffe1wMIrc3h82m2xV": {
+     "type": "running"
+    }
+   },
+   "inbox": []
+  },
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d12efba9001R5XU1vORtwbZ0j",
+     "time": {
+      "created": 1794510879898
+     },
+     "text": "P1 retried",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12efc9d001IgnJ1Tigsrnr6t",
+     "time": {
+      "created": 1794510885795,
+      "streamed": 1794510885817,
+      "completed": 1794510885818
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "RECOVERED-500"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12f13bc001UQCJNFHHBTlLDJ",
+     "time": {
+      "created": 1794510885820
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    }
+   ],
+   "active": {},
+   "inbox": []
+  }
+ ],
+ "children": {},
+ "events": [
+  {
+   "id": "evt_1d12ef9cf001oybZ7IrmdYN5yt",
+   "created": 1794510879183,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d12efc83004sfa8RKMA4yNA5Z",
+   "created": 1794510879875,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d12efba9001R5XU1vORtwbZ0j",
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "P1 retried"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d12efc8d001K3x9Upk1R5zOnL",
+   "created": 1794510879885,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV"
+   }
+  },
+  {
+   "id": "evt_1d12efc9a002HCDxrhuD11KNqv",
+   "created": 1794510879898,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV",
+    "inboxID": "msg_1d12efba9001R5XU1vORtwbZ0j"
+   }
+  },
+  {
+   "id": "evt_1d12efca3001ReXzZrN4wJNliT",
+   "created": 1794510879907,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12efc9d001IgnJ1Tigsrnr6t",
+    "started": 1794510879903
+   }
+  },
+  {
+   "id": "evt_1d12efca4001fWgpQy8SHmEgdL",
+   "created": 1794510879908,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV",
+    "assistantMessageID": "msg_1d12efc9d001IgnJ1Tigsrnr6t",
+    "attempt": 2,
+    "at": 1794510881792,
+    "error": {
+     "type": "provider.internal",
+     "message": "boom",
+     "status": 500,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d12f0421001GjaXtLA7qgp40s",
+   "created": 1794510881825,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12efc9d001IgnJ1Tigsrnr6t",
+    "started": 1794510881819
+   }
+  },
+  {
+   "id": "evt_1d12f0425001fKI0Bqq41E2izA",
+   "created": 1794510881829,
+   "type": "session.retry.scheduled",
+   "data": {
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV",
+    "assistantMessageID": "msg_1d12efc9d001IgnJ1Tigsrnr6t",
+    "attempt": 3,
+    "at": 1794510885778,
+    "error": {
+     "type": "provider.internal",
+     "message": "boom",
+     "status": 500,
+     "response": {
+      "body": "{\"type\": \"error\", \"error\": {\"type\": \"api_error\", \"message\": \"boom\"}}"
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d12f13ad001bqmfWgUg84IF5X",
+   "created": 1794510885805,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12efc9d001IgnJ1Tigsrnr6t",
+    "started": 1794510885795
+   }
+  },
+  {
+   "id": "evt_1d12f13b2001UAe49ecp4CgRcl",
+   "created": 1794510885810,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV",
+    "assistantMessageID": "msg_1d12efc9d001IgnJ1Tigsrnr6t",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d12f13b5001vzYsAjDZVH2BH3",
+   "created": 1794510885813,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV",
+    "assistantMessageID": "msg_1d12efc9d001IgnJ1Tigsrnr6t",
+    "ordinal": 0,
+    "delta": "RECOVERED-500"
+   }
+  },
+  {
+   "id": "evt_1d12f13b6001U3BUPlsDZNKFWt",
+   "created": 1794510885814,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV",
+    "assistantMessageID": "msg_1d12efc9d001IgnJ1Tigsrnr6t",
+    "ordinal": 0,
+    "text": "RECOVERED-500"
+   }
+  },
+  {
+   "id": "evt_1d12f13b9001PJr42ngrknntIa",
+   "created": 1794510885817,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV",
+    "assistantMessageID": "msg_1d12efc9d001IgnJ1Tigsrnr6t"
+   }
+  },
+  {
+   "id": "evt_1d12f13ba001z6M63z80xnIJIb",
+   "created": 1794510885818,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV",
+    "assistantMessageID": "msg_1d12efc9d001IgnJ1Tigsrnr6t",
+    "finish": "stop",
+    "rawFinish": "end_turn",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12f13bc001UQCJNFHHBTlLDJ",
+   "created": 1794510885820,
+   "type": "session.execution.succeeded",
+   "data": {
+    "sessionID": "ses_e2ed10638ffe1wMIrc3h82m2xV"
+   }
+  }
+ ]
+}

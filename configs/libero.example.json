@@ -1,0 +1,76 @@
+{
+  "version": 2,
+  "backend": {
+    "environment": "libero",
+    "robot_model_id": "libero-franka-panda",
+    "python": "~/miniforge3/envs/libero/bin/python"
+  },
+  "run": {
+    "title": "LIBERO Franka Panda (simulation-only robosuite MuJoCo)",
+    "tag": ["simulation-only", "libero-mujoco"],
+    "task": "libero_spatial:0",
+    "seed": 0,
+    "layout_id": 0,
+    "gpu": 0,
+    "benchmark": true
+  },
+  "features": {
+    "sandbox_enabled": false,
+    "program_seccomp_enabled": true,
+    "observation_profile": "rgb_proprio_calibrated_v1",
+    "actor_payload_profile": "lean_v2",
+    "tool_catalog_profile": "layered_v3",
+    "robot_urdf_delivery": "file",
+    "default_task_notes": true,
+    "task_instruction_overrides": false,
+    "startup_inline_grounding": true,
+    "startup_grounding_views": "overview",
+    "vision_compare": true,
+    "enable_wait": true,
+    "motion_review": false,
+    "tracking_guard": false,
+    "joint_replan": false,
+    "motion_execution_mode": "resampled",
+    "default_motion_speed_scale": 1.0,
+    "bounded_continuation": true,
+    "motion_safety_guard": false,
+    "trajectory_preview": true,
+    "manipulation_protocol": true,
+    "task_scheduling": true,
+    "recovery_evidence": true,
+    "action_trajectory_delivery": "automatic",
+    "completion_guidance": "none",
+    "external_perception": false,
+    "record_video": true,
+    "export_video": true,
+    "terminal": true,
+    "budgeted_action_reply": true,
+    "reply_same_as": true,
+    "reply_float32": true,
+    "reply_static_once": true,
+    "action_reply_profile": "summary_first",
+    "reply_compact_encoding": true
+  },
+  "images": {
+    "action_feedback_policy": "all"
+  },
+  "agent": {
+    "backend": "opencode",
+    "opencode": {
+      "executable": "~/.local/share/ni-rua/opencode-2.2.7/opencode",
+      "subagents": false,
+      "tool_search": true,
+      "allow_shell": false,
+      "allow_external_read": false,
+      "upstream": {
+        "source": "explicit",
+        "wire_api": "openai_responses",
+        "base_url": "http://127.0.0.1:8000/v1",
+        "api_key_env": "OPENAI_API_KEY"
+      }
+    }
+  },
+  "embodiment": {
+    "thresholds": {}
+  }
+}

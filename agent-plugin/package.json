@@ -1,0 +1,41 @@
+{
+  "name": "ni-rua-agent-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NI-RUA robot tools and skills for Claude Code, Codex and OpenCode, served by a local NI-RUA gateway over MCP.",
+  "author": "Nerve Intelligence",
+  "homepage": "https://github.com/NerveInt/NI-RUA#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NerveInt/NI-RUA.git",
+    "directory": "agent-plugin"
+  },
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "ni-rua-plugin": "bin/cli.mjs"
+  },
+  "exports": {
+    ".": "./opencode/plugin.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    ".claude-plugin",
+    ".codex-plugin",
+    ".mcp.json",
+    ".codex-mcp.json",
+    "codex-models.direct.json",
+    "hooks",
+    "manifest.generated.json",
+    "opencode",
+    "skills",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  }
+}

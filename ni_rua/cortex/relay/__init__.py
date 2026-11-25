@@ -1,0 +1,106 @@
+"""Modular model relay package: continuity tracking, admission guards, payload shaping, and HTTP server."""
+
+from __future__ import annotations
+
+from importlib import import_module
+
+__all__ = [
+    "ACTOR_UPSTREAM",
+    "AUTH_HEADERS",
+    "AUX_REQUEST_TIMEOUT_S",
+    "CALL_PURPOSES",
+    "CLIENT_AUTH_HEADERS",
+    "CODEX_PROFILE_NAME",
+    "DEFAULT_MAX_RETRIES",
+    "HELPER",
+    "HISTORY_REWRITTEN",
+    "HISTORY_SHORTENED",
+    "HOP_HEADERS",
+    "IMAGES_REMOVED",
+    "MAIN",
+    "MAX_CLIENT_BODY_BYTES",
+    "MIN_TRIM_IMAGE_LIMIT",
+    "PRIVATE_HEADERS",
+    "PROVIDER_CONTEXT_EDIT",
+    "REASONS",
+    "REFUSAL_DRAIN_TIMEOUT_S",
+    "RETRY_POLICY",
+    "SUBAGENT",
+    "SYSTEM_CHANGED",
+    "TOOL_RESULT_IMAGE_PLACEMENTS",
+    "TRANSPORT_RECOVERY_KEYS",
+    "UPSTREAM_NAME",
+    "UPSTREAM_PREFIX",
+    "Admission",
+    "ContinuityAdmission",
+    "ContinuityTracker",
+    "GuardMixin",
+    "HistoryView",
+    "IdleRun",
+    "ModelRequestProxy",
+    "PayloadMixin",
+    "UpstreamBinding",
+    "anthropic_messages_history",
+    "conversation_key",
+    "history_fingerprints",
+    "image_count",
+    "is_helper_request",
+    "openai_chat_history",
+    "openai_responses_history",
+    "upstream_auth_headers_copy",
+]
+
+_EXPORTS = {
+    "CALL_PURPOSES": ".continuity",
+    "HELPER": ".continuity",
+    "HISTORY_REWRITTEN": ".continuity",
+    "HISTORY_SHORTENED": ".continuity",
+    "IMAGES_REMOVED": ".continuity",
+    "MAIN": ".continuity",
+    "REASONS": ".continuity",
+    "SUBAGENT": ".continuity",
+    "SYSTEM_CHANGED": ".continuity",
+    "Admission": ".continuity",
+    "ContinuityTracker": ".continuity",
+    "HistoryView": ".continuity",
+    "anthropic_messages_history": ".continuity",
+    "conversation_key": ".continuity",
+    "history_fingerprints": ".continuity",
+    "image_count": ".continuity",
+    "is_helper_request": ".continuity",
+    "openai_chat_history": ".continuity",
+    "openai_responses_history": ".continuity",
+    "CODEX_PROFILE_NAME": ".guard",
+    "DEFAULT_MAX_RETRIES": ".guard",
+    "RETRY_POLICY": ".guard",
+    "TRANSPORT_RECOVERY_KEYS": ".guard",
+    "ContinuityAdmission": ".guard",
+    "GuardMixin": ".guard",
+    "IdleRun": ".guard",
+    "ACTOR_UPSTREAM": ".payload",
+    "AUTH_HEADERS": ".payload",
+    "CLIENT_AUTH_HEADERS": ".payload",
+    "HOP_HEADERS": ".payload",
+    "MIN_TRIM_IMAGE_LIMIT": ".payload",
+    "PRIVATE_HEADERS": ".payload",
+    "PROVIDER_CONTEXT_EDIT": ".payload",
+    "TOOL_RESULT_IMAGE_PLACEMENTS": ".payload",
+    "UPSTREAM_NAME": ".payload",
+    "UPSTREAM_PREFIX": ".payload",
+    "PayloadMixin": ".payload",
+    "UpstreamBinding": ".payload",
+    "upstream_auth_headers_copy": ".payload",
+    "AUX_REQUEST_TIMEOUT_S": ".server",
+    "MAX_CLIENT_BODY_BYTES": ".server",
+    "REFUSAL_DRAIN_TIMEOUT_S": ".server",
+    "ModelRequestProxy": ".server",
+}
+
+
+def __getattr__(name: str):
+    mod_name = _EXPORTS.get(name)
+    if mod_name is None:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    value = getattr(import_module(mod_name, __name__), name)
+    globals()[name] = value
+    return value

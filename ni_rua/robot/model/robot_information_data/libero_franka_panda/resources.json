@@ -1,0 +1,8 @@
+[
+  {
+    "resource_id": "geometry_model",
+    "name": "LIBERO Franka Emika Panda simulation geometry and assembly",
+    "format": "ZIP",
+    "description": "Self-contained URDF (panda.urdf) and every referenced binary STL visual and collision mesh of the simulated LIBERO (robosuite MuJoCo) Franka Emika Panda arm and PandaGripper, preserving relative directories. Simulation-only model; live camera and scene calibration come from observations."
+  }
+]

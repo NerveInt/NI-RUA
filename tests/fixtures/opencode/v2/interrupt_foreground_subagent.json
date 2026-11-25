@@ -1,0 +1,496 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "/tmp/ni-rua-agent-harness/oc2/bin/s04_*.py:s04-interrupt-fg-sub",
+  "scenario": "main calls a foreground subagent whose child waits 6 s in ni_rua_wait_s; POST /interrupt on the main session cascades to the child",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2ef54a50ffe0mGPyT3uCP7BfE",
+ "prompts": [
+  "msg_1d10ab7b9001lE2WU4i41VRGEt"
+ ],
+ "snapshots": [
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d10ab7b9001lE2WU4i41VRGEt",
+     "time": {
+      "created": 1794508503216
+     },
+     "text": "P1 spawn fg",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d10ab8b3001aKPFKhtjJjBkfK",
+     "time": {
+      "created": 1794508503221,
+      "streamed": 1794508503237,
+      "completed": 1794508505726
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_0_0",
+       "name": "subagent",
+       "executed": false,
+       "state": {
+        "status": "error",
+        "input": {
+         "agent": "general",
+         "description": "fg work",
+         "prompt": "wait 20s"
+        },
+        "error": {
+         "type": "aborted",
+         "message": "Tool execution interrupted (sessionID: ses_e2ef5473bffeADpzaQEypVZOuP)"
+        },
+        "metadata": {
+         "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP",
+         "status": "running"
+        }
+       },
+       "time": {
+        "created": 1794508503231,
+        "ran": 1794508503234,
+        "completed": 1794508505722
+       }
+      }
+     ],
+     "finish": "error",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     },
+     "error": {
+      "type": "aborted",
+      "message": "Step interrupted"
+     }
+    },
+    {
+     "id": "msg_1d10ac27f002xIKwcQuK0x4LN5",
+     "time": {
+      "created": 1794508505727
+     },
+     "type": "idle",
+     "outcome": "interrupted"
+    }
+   ],
+   "active": null,
+   "inbox": null
+  }
+ ],
+ "children": {
+  "ses_e2ef5473bffeADpzaQEypVZOuP": {
+   "messages": [
+    {
+     "id": "msg_1d10ab8c7003S8KolhBEDTp40Z",
+     "time": {
+      "created": 1794508503242
+     },
+     "text": "You are a subagent spawned by another session.\nwait 20s",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d10ab8cc001oGAkBehj7DO3IV",
+     "time": {
+      "created": 1794508503245,
+      "streamed": 1794508503251,
+      "completed": 1794508505712
+     },
+     "type": "assistant",
+     "agent": "general",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_1_0",
+       "name": "ni_rua_wait_s",
+       "executed": false,
+       "state": {
+        "status": "error",
+        "input": {
+         "seconds": 6
+        },
+        "error": {
+         "type": "aborted",
+         "message": "Tool execution interrupted"
+        }
+       },
+       "time": {
+        "created": 1794508503248,
+        "ran": 1794508503249,
+        "completed": 1794508505707
+       }
+      }
+     ],
+     "finish": "error",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     },
+     "error": {
+      "type": "aborted",
+      "message": "Step interrupted"
+     }
+    },
+    {
+     "id": "msg_1d10ac2750010SbqraBIYHiq3r",
+     "time": {
+      "created": 1794508505717
+     },
+     "type": "idle",
+     "outcome": "interrupted"
+    }
+   ]
+  }
+ },
+ "events": [
+  {
+   "id": "evt_1d10ab5b9001qUnLhaESYa4SFe",
+   "created": 1794508502457,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ef54a50ffe0mGPyT3uCP7BfE",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d10ab8960015RaNCLHoGAOnRw",
+   "created": 1794508503190,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d10ab7b9001lE2WU4i41VRGEt",
+    "sessionID": "ses_e2ef54a50ffe0mGPyT3uCP7BfE",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "P1 spawn fg"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d10ab8a1001hsoz5z9YvYdQFK",
+   "created": 1794508503201,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ef54a50ffe0mGPyT3uCP7BfE"
+   }
+  },
+  {
+   "id": "evt_1d10ab8b0001Mn6e9dkNKCZ0pJ",
+   "created": 1794508503216,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ef54a50ffe0mGPyT3uCP7BfE",
+    "inboxID": "msg_1d10ab7b9001lE2WU4i41VRGEt"
+   }
+  },
+  {
+   "id": "evt_1d10ab8be001fhHZLWJdnG9goh",
+   "created": 1794508503230,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef54a50ffe0mGPyT3uCP7BfE",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d10ab8b3001aKPFKhtjJjBkfK",
+    "started": 1794508503221
+   }
+  },
+  {
+   "id": "evt_1d10ab8bf001D1KoejvCGCIPhH",
+   "created": 1794508503231,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ef54a50ffe0mGPyT3uCP7BfE",
+    "assistantMessageID": "msg_1d10ab8b3001aKPFKhtjJjBkfK",
+    "id": "call_fake_0_0",
+    "name": "subagent"
+   }
+  },
+  {
+   "id": "evt_1d10ab8c1001CKJA7WgzYIYYhl",
+   "created": 1794508503233,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ef54a50ffe0mGPyT3uCP7BfE",
+    "assistantMessageID": "msg_1d10ab8b3001aKPFKhtjJjBkfK",
+    "id": "call_fake_0_0",
+    "text": "{\"agent\": \"general\", \"description\": \"fg work\", \"prompt\": \"wait 20s\"}"
+   }
+  },
+  {
+   "id": "evt_1d10ab8c2001EItBObtq89AuEz",
+   "created": 1794508503234,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ef54a50ffe0mGPyT3uCP7BfE",
+    "assistantMessageID": "msg_1d10ab8b3001aKPFKhtjJjBkfK",
+    "id": "call_fake_0_0",
+    "input": {
+     "agent": "general",
+     "description": "fg work",
+     "prompt": "wait 20s"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d10ab8c4002PeaiCg6S1eoGIV",
+   "created": 1794508503237,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef54a50ffe0mGPyT3uCP7BfE",
+    "assistantMessageID": "msg_1d10ab8b3001aKPFKhtjJjBkfK"
+   }
+  },
+  {
+   "id": "evt_1d10ab8c7001LQ17NfuCR0kamt",
+   "created": 1794508503239,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP",
+    "parentID": "ses_e2ef54a50ffe0mGPyT3uCP7BfE",
+    "title": "fg work",
+    "agent": "general"
+   }
+  },
+  {
+   "id": "evt_1d10ab8c7002z6YSXyIrW2rtb1",
+   "created": 1794508503239,
+   "type": "session.tool.progress",
+   "data": {
+    "sessionID": "ses_e2ef54a50ffe0mGPyT3uCP7BfE",
+    "assistantMessageID": "msg_1d10ab8b3001aKPFKhtjJjBkfK",
+    "id": "call_fake_0_0",
+    "metadata": {
+     "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP",
+     "status": "running"
+    }
+   }
+  },
+  {
+   "id": "evt_1d10ab8c8001zEdcQofJRTUMhE",
+   "created": 1794508503240,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d10ab8c7003S8KolhBEDTp40Z",
+    "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "You are a subagent spawned by another session.\nwait 20s"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d10ab8c9001njDlNQBLXieYj2",
+   "created": 1794508503241,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP"
+   }
+  },
+  {
+   "id": "evt_1d10ab8ca002HEjBRDhhoCbeqY",
+   "created": 1794508503242,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP",
+    "inboxID": "msg_1d10ab8c7003S8KolhBEDTp40Z"
+   }
+  },
+  {
+   "id": "evt_1d10ab8cf001QJ7kYkK6wmvz5I",
+   "created": 1794508503247,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP",
+    "agent": "general",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d10ab8cc001oGAkBehj7DO3IV",
+    "started": 1794508503245
+   }
+  },
+  {
+   "id": "evt_1d10ab8d0001WpZW1PxLiksRkb",
+   "created": 1794508503248,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP",
+    "assistantMessageID": "msg_1d10ab8cc001oGAkBehj7DO3IV",
+    "id": "call_fake_1_0",
+    "name": "ni_rua_wait_s"
+   }
+  },
+  {
+   "id": "evt_1d10ab8d1001lc3Wwkaz71XQB7",
+   "created": 1794508503249,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP",
+    "assistantMessageID": "msg_1d10ab8cc001oGAkBehj7DO3IV",
+    "id": "call_fake_1_0",
+    "text": "{\"seconds\": 6}"
+   }
+  },
+  {
+   "id": "evt_1d10ab8d1002WazwLT14ajS1IR",
+   "created": 1794508503249,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP",
+    "assistantMessageID": "msg_1d10ab8cc001oGAkBehj7DO3IV",
+    "id": "call_fake_1_0",
+    "input": {
+     "seconds": 6
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d10ab8d3001iHUHYRf7Y4uLaz",
+   "created": 1794508503251,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP",
+    "assistantMessageID": "msg_1d10ab8cc001oGAkBehj7DO3IV"
+   }
+  },
+  {
+   "id": "evt_1d10ac26a0019dgW8xOpqEPw7M",
+   "created": 1794508505707,
+   "type": "session.tool.failed",
+   "data": {
+    "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP",
+    "assistantMessageID": "msg_1d10ab8cc001oGAkBehj7DO3IV",
+    "id": "call_fake_1_0",
+    "error": {
+     "type": "aborted",
+     "message": "Tool execution interrupted"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d10ac2700015VEDPYDbuvJjIh",
+   "created": 1794508505712,
+   "type": "session.step.failed",
+   "data": {
+    "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP",
+    "assistantMessageID": "msg_1d10ab8cc001oGAkBehj7DO3IV",
+    "error": {
+     "type": "aborted",
+     "message": "Step interrupted"
+    },
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d10ac2750010SbqraBIYHiq3r",
+   "created": 1794508505717,
+   "type": "session.execution.interrupted",
+   "data": {
+    "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP",
+    "reason": "user"
+   }
+  },
+  {
+   "id": "evt_1d10ac27a001blVjlUzp7nmKUC",
+   "created": 1794508505722,
+   "type": "session.tool.failed",
+   "data": {
+    "sessionID": "ses_e2ef54a50ffe0mGPyT3uCP7BfE",
+    "assistantMessageID": "msg_1d10ab8b3001aKPFKhtjJjBkfK",
+    "id": "call_fake_0_0",
+    "error": {
+     "type": "aborted",
+     "message": "Tool execution interrupted (sessionID: ses_e2ef5473bffeADpzaQEypVZOuP)"
+    },
+    "metadata": {
+     "sessionID": "ses_e2ef5473bffeADpzaQEypVZOuP",
+     "status": "running"
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d10ac27e001GkRCh5VffiUYA0",
+   "created": 1794508505726,
+   "type": "session.step.failed",
+   "data": {
+    "sessionID": "ses_e2ef54a50ffe0mGPyT3uCP7BfE",
+    "assistantMessageID": "msg_1d10ab8b3001aKPFKhtjJjBkfK",
+    "error": {
+     "type": "aborted",
+     "message": "Step interrupted"
+    },
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d10ac27f002xIKwcQuK0x4LN5",
+   "created": 1794508505727,
+   "type": "session.execution.interrupted",
+   "data": {
+    "sessionID": "ses_e2ef54a50ffe0mGPyT3uCP7BfE",
+    "reason": "user"
+   }
+  }
+ ]
+}

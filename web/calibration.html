@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>NI-RUA · SO-101 标定向导</title>
+    <link rel="stylesheet" href="/calibration.css">
+    <link rel="stylesheet" href="/calibration-bundle.css">
+    <script type="module" src="/calibration.js"></script>
+  </head>
+  <body>
+    <header class="bar">
+      <div class="brand"><strong>NI-RUA</strong><span>SO-101 标定向导 · 仅操作员可见</span><nav class="workspace-nav" aria-label="工作区导航"><a href="/console">真机工作台</a><a href="/calibration" aria-current="page">标定</a><a href="/index.html">轨迹与记录</a></nav></div>
+      <div class="head-state">
+        <span id="calib-badge" class="pill">标定状态 —</span>
+        <span id="lease-state" role="status">监看模式</span>
+        <button id="claim" type="button">取得控制</button><button id="release" type="button" hidden>释放控制</button>
+      </div>
+      <button id="estop" type="button" class="estop" title="stop + hold：中断 Codex 轮次、关闭动作准入并保持当前位置。无需控制租约。">紧急停止<small>E-STOP</small></button>
+    </header>
+    <div id="banners" aria-live="assertive"></div>
+    <main class="layout">
+      <nav aria-label="标定步骤">
+        <button id="home-link" type="button" class="home-link">标定首页</button>
+        <ol id="stepper" class="stepper"></ol>
+      </nav>
+      <section id="content" aria-live="polite"><p class="meta">正在读取标定状态…</p></section>
+    </main>
+  </body>
+</html>

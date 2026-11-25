@@ -1,0 +1,1014 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "OC2-C probe (lab.py of the design probes):background",
+  "scenario": "main calls subagent with background:true, answers and goes idle while the child runs ni_rua_wait_s 3 s; the child's report is enqueued as a synthetic message and the main session runs again",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2ed07827ffe5RInJ87BVSwDir",
+ "prompts": [
+  "msg_1d12f89c0001ViIGuOYyVDeU51"
+ ],
+ "snapshots": [
+  {
+   "label": "first_idle_child_running",
+   "messages": [
+    {
+     "id": "msg_1d12f89c0001ViIGuOYyVDeU51",
+     "time": {
+      "created": 1794510916262
+     },
+     "text": "P1 spawn background",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12f8aa9001NMVVHO8Sk04aMV",
+     "time": {
+      "created": 1794510916267,
+      "streamed": 1794510916275,
+      "completed": 1794510916279
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_0_0",
+       "name": "subagent",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {
+         "agent": "general",
+         "description": "bg work",
+         "prompt": "wait 3s",
+         "background": true
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "The subagent is working in the background (sessionID: ses_e2ed0754dffeYCvIeqO2dWWJZu). You will be notified automatically when it finishes.\nDO NOT sleep, poll for progress, ask the subagent for status, or duplicate this subagent's work; avoid working with the same files or topics it is using.\nWork on non-overlapping tasks, or briefly tell the user what you launched and end your response.\nTo send it follow-ups or change its instructions while it runs, call subagent again with this sessionID."
+         }
+        ],
+        "metadata": {
+         "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+         "status": "running",
+         "truncated": false
+        }
+       },
+       "time": {
+        "created": 1794510916271,
+        "ran": 1794510916273,
+        "completed": 1794510916278
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12f8aba0013rXuCW8YzQZjz5",
+     "time": {
+      "created": 1794510916283,
+      "streamed": 1794510916298,
+      "completed": 1794510916298
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "MAIN-FINAL-BEFORE-CHILD-DONE"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12f8acb002vNlUIFb5cNOsaF",
+     "time": {
+      "created": 1794510916299
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    }
+   ],
+   "active": {
+    "ses_e2ed0754dffeYCvIeqO2dWWJZu": {
+     "type": "running"
+    }
+   },
+   "inbox": []
+  },
+  {
+   "label": "poll",
+   "messages": [
+    {
+     "id": "msg_1d12f89c0001ViIGuOYyVDeU51",
+     "time": {
+      "created": 1794510916262
+     },
+     "text": "P1 spawn background",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12f8aa9001NMVVHO8Sk04aMV",
+     "time": {
+      "created": 1794510916267,
+      "streamed": 1794510916275,
+      "completed": 1794510916279
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_0_0",
+       "name": "subagent",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {
+         "agent": "general",
+         "description": "bg work",
+         "prompt": "wait 3s",
+         "background": true
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "The subagent is working in the background (sessionID: ses_e2ed0754dffeYCvIeqO2dWWJZu). You will be notified automatically when it finishes.\nDO NOT sleep, poll for progress, ask the subagent for status, or duplicate this subagent's work; avoid working with the same files or topics it is using.\nWork on non-overlapping tasks, or briefly tell the user what you launched and end your response.\nTo send it follow-ups or change its instructions while it runs, call subagent again with this sessionID."
+         }
+        ],
+        "metadata": {
+         "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+         "status": "running",
+         "truncated": false
+        }
+       },
+       "time": {
+        "created": 1794510916271,
+        "ran": 1794510916273,
+        "completed": 1794510916278
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12f8aba0013rXuCW8YzQZjz5",
+     "time": {
+      "created": 1794510916283,
+      "streamed": 1794510916298,
+      "completed": 1794510916298
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "MAIN-FINAL-BEFORE-CHILD-DONE"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12f8acb002vNlUIFb5cNOsaF",
+     "time": {
+      "created": 1794510916299
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    },
+    {
+     "id": "msg_1d12f8ab6002BBVJW0HH6RQos3",
+     "metadata": {
+      "source": "subagent",
+      "childID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+      "agent": "General",
+      "state": "completed"
+     },
+     "time": {
+      "created": 1794510919357
+     },
+     "text": "<subagent sessionID=\"ses_e2ed0754dffeYCvIeqO2dWWJZu\" state=\"completed\" description=\"bg work\">\nCHILD-RESULT\n</subagent>",
+     "description": "bg work",
+     "type": "synthetic"
+    },
+    {
+     "id": "msg_1d12f96bf001lbjEz40ZRLm4FM",
+     "time": {
+      "created": 1794510919361,
+      "streamed": 1794510919367,
+      "completed": 1794510919368
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "MAIN-AFTER-CHILD-REPORT"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12f96c9002mehYBKUXQgaQmj",
+     "time": {
+      "created": 1794510919369
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    }
+   ],
+   "active": {},
+   "inbox": []
+  }
+ ],
+ "children": {
+  "ses_e2ed0754dffeYCvIeqO2dWWJZu": {
+   "messages": [
+    {
+     "id": "msg_1d12f8ab5002E1SoNTc8LYvbl0",
+     "time": {
+      "created": 1794510916286
+     },
+     "text": "You are a subagent spawned by another session.\nwait 3s",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d12f8abf001hGCx23eNjgZ9gC",
+     "time": {
+      "created": 1794510916288,
+      "streamed": 1794510916303,
+      "completed": 1794510919321
+     },
+     "type": "assistant",
+     "agent": "general",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_2_0",
+       "name": "ni_rua_wait_s",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {
+         "seconds": 3
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "waited"
+         }
+        ],
+        "metadata": {
+         "truncated": false
+        }
+       },
+       "time": {
+        "created": 1794510916300,
+        "ran": 1794510916301,
+        "completed": 1794510919317
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12f96a7001WE2sANnryn8Igu",
+     "time": {
+      "created": 1794510919339,
+      "streamed": 1794510919348,
+      "completed": 1794510919349
+     },
+     "type": "assistant",
+     "agent": "general",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "CHILD-RESULT"
+      }
+     ],
+     "finish": "stop",
+     "rawFinish": "end_turn",
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d12f96b70016Pt27JA4bSiYSc",
+     "time": {
+      "created": 1794510919351
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    }
+   ]
+  }
+ },
+ "events": [
+  {
+   "id": "evt_1d12f87e2001l9JcfUqD8AQDQX",
+   "created": 1794510915554,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d12f8a86001cwuBEiFRamMSLs",
+   "created": 1794510916230,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d12f89c0001ViIGuOYyVDeU51",
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "P1 spawn background"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d12f8a90001cxfNTGDYWc1Scv",
+   "created": 1794510916240,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir"
+   }
+  },
+  {
+   "id": "evt_1d12f8aa6001FhtoHxkYoUXiNz",
+   "created": 1794510916262,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "inboxID": "msg_1d12f89c0001ViIGuOYyVDeU51"
+   }
+  },
+  {
+   "id": "evt_1d12f8aae0014UQjRSuA7ds74C",
+   "created": 1794510916270,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12f8aa9001NMVVHO8Sk04aMV",
+    "started": 1794510916267
+   }
+  },
+  {
+   "id": "evt_1d12f8aaf001yrGgWd7OC7sMvr",
+   "created": 1794510916271,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f8aa9001NMVVHO8Sk04aMV",
+    "id": "call_fake_0_0",
+    "name": "subagent"
+   }
+  },
+  {
+   "id": "evt_1d12f8ab00017w3181bLEyw7qB",
+   "created": 1794510916272,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f8aa9001NMVVHO8Sk04aMV",
+    "id": "call_fake_0_0",
+    "text": "{\"agent\": \"general\", \"description\": \"bg work\", \"prompt\": \"wait 3s\", \"background\": true}"
+   }
+  },
+  {
+   "id": "evt_1d12f8ab1001nkcxbHXQVNn7GK",
+   "created": 1794510916273,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f8aa9001NMVVHO8Sk04aMV",
+    "id": "call_fake_0_0",
+    "input": {
+     "agent": "general",
+     "description": "bg work",
+     "prompt": "wait 3s",
+     "background": true
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12f8ab3001QojIt17xxuMhKB",
+   "created": 1794510916275,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f8aa9001NMVVHO8Sk04aMV"
+   }
+  },
+  {
+   "id": "evt_1d12f8ab4001e1C9X0VpgM3XVZ",
+   "created": 1794510916276,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "parentID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "title": "bg work",
+    "agent": "general"
+   }
+  },
+  {
+   "id": "evt_1d12f8ab5001xxnyEjl6bzs5bB",
+   "created": 1794510916277,
+   "type": "session.tool.progress",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f8aa9001NMVVHO8Sk04aMV",
+    "id": "call_fake_0_0",
+    "metadata": {
+     "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+     "status": "running"
+    }
+   }
+  },
+  {
+   "id": "evt_1d12f8ab6001Xv90pCvCEHtaqt",
+   "created": 1794510916278,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d12f8ab5002E1SoNTc8LYvbl0",
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "You are a subagent spawned by another session.\nwait 3s"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d12f8ab60032fC7RDXoKi6TgN",
+   "created": 1794510916278,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f8aa9001NMVVHO8Sk04aMV",
+    "id": "call_fake_0_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "The subagent is working in the background (sessionID: ses_e2ed0754dffeYCvIeqO2dWWJZu). You will be notified automatically when it finishes.\nDO NOT sleep, poll for progress, ask the subagent for status, or duplicate this subagent's work; avoid working with the same files or topics it is using.\nWork on non-overlapping tasks, or briefly tell the user what you launched and end your response.\nTo send it follow-ups or change its instructions while it runs, call subagent again with this sessionID."
+     }
+    ],
+    "metadata": {
+     "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+     "status": "running",
+     "truncated": false
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12f8ab7001HMlsj2CFiXFZ1G",
+   "created": 1794510916279,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f8aa9001NMVVHO8Sk04aMV",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12f8abc001jdslHJdlYQDWoo",
+   "created": 1794510916284,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu"
+   }
+  },
+  {
+   "id": "evt_1d12f8abe001K4Vkhm5o5Sl304",
+   "created": 1794510916286,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "inboxID": "msg_1d12f8ab5002E1SoNTc8LYvbl0"
+   }
+  },
+  {
+   "id": "evt_1d12f8ac6001gzRLfUDSkOnmSt",
+   "created": 1794510916294,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12f8aba0013rXuCW8YzQZjz5",
+    "started": 1794510916283
+   }
+  },
+  {
+   "id": "evt_1d12f8ac7001uvhMEFeu7hufdb",
+   "created": 1794510916295,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f8aba0013rXuCW8YzQZjz5",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d12f8ac8001nm1933T7y7TK0G",
+   "created": 1794510916296,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f8aba0013rXuCW8YzQZjz5",
+    "ordinal": 0,
+    "delta": "MAIN-FINAL-BEFORE-CHILD-DONE"
+   }
+  },
+  {
+   "id": "evt_1d12f8ac8002amEg4hGgdcW50T",
+   "created": 1794510916296,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f8aba0013rXuCW8YzQZjz5",
+    "ordinal": 0,
+    "text": "MAIN-FINAL-BEFORE-CHILD-DONE"
+   }
+  },
+  {
+   "id": "evt_1d12f8ac9001uU1VsmaBWRIyDf",
+   "created": 1794510916298,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f8aba0013rXuCW8YzQZjz5"
+   }
+  },
+  {
+   "id": "evt_1d12f8aca001bGL0X1igV6wPmw",
+   "created": 1794510916298,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f8aba0013rXuCW8YzQZjz5",
+    "finish": "stop",
+    "rawFinish": "end_turn",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12f8acb002vNlUIFb5cNOsaF",
+   "created": 1794510916299,
+   "type": "session.execution.succeeded",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir"
+   }
+  },
+  {
+   "id": "evt_1d12f8acc00188TSBnTuVyLLj0",
+   "created": 1794510916300,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "agent": "general",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12f8abf001hGCx23eNjgZ9gC",
+    "started": 1794510916288
+   }
+  },
+  {
+   "id": "evt_1d12f8acc002Q5AApqSCOik2yZ",
+   "created": 1794510916300,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "assistantMessageID": "msg_1d12f8abf001hGCx23eNjgZ9gC",
+    "id": "call_fake_2_0",
+    "name": "ni_rua_wait_s"
+   }
+  },
+  {
+   "id": "evt_1d12f8acd001itGMxchhlOgg3s",
+   "created": 1794510916301,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "assistantMessageID": "msg_1d12f8abf001hGCx23eNjgZ9gC",
+    "id": "call_fake_2_0",
+    "text": "{\"seconds\": 3}"
+   }
+  },
+  {
+   "id": "evt_1d12f8acd002wMej2WhudWTcGp",
+   "created": 1794510916301,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "assistantMessageID": "msg_1d12f8abf001hGCx23eNjgZ9gC",
+    "id": "call_fake_2_0",
+    "input": {
+     "seconds": 3
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12f8acf001grrsRYkHxIQdbO",
+   "created": 1794510916303,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "assistantMessageID": "msg_1d12f8abf001hGCx23eNjgZ9gC"
+   }
+  },
+  {
+   "id": "evt_1d12f9695001DQLVx0aTRvRzZM",
+   "created": 1794510919317,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "assistantMessageID": "msg_1d12f8abf001hGCx23eNjgZ9gC",
+    "id": "call_fake_2_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "waited"
+     }
+    ],
+    "metadata": {
+     "truncated": false
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d12f9699001L9fQETgYeTiR0y",
+   "created": 1794510919321,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "assistantMessageID": "msg_1d12f8abf001hGCx23eNjgZ9gC",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12f96af001xiccLJ5Q01P7Yc",
+   "created": 1794510919343,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "agent": "general",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12f96a7001WE2sANnryn8Igu",
+    "started": 1794510919339
+   }
+  },
+  {
+   "id": "evt_1d12f96b10018ro2WrnXYkqU2F",
+   "created": 1794510919345,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "assistantMessageID": "msg_1d12f96a7001WE2sANnryn8Igu",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d12f96b3001H9Y9BoMgqqoshw",
+   "created": 1794510919347,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "assistantMessageID": "msg_1d12f96a7001WE2sANnryn8Igu",
+    "ordinal": 0,
+    "delta": "CHILD-RESULT"
+   }
+  },
+  {
+   "id": "evt_1d12f96b3002C8ooUxBKJ0NMRG",
+   "created": 1794510919347,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "assistantMessageID": "msg_1d12f96a7001WE2sANnryn8Igu",
+    "ordinal": 0,
+    "text": "CHILD-RESULT"
+   }
+  },
+  {
+   "id": "evt_1d12f96b4001TeS7ExyKJ5OOKU",
+   "created": 1794510919348,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "assistantMessageID": "msg_1d12f96a7001WE2sANnryn8Igu"
+   }
+  },
+  {
+   "id": "evt_1d12f96b50011FrSIXdJuWhSUY",
+   "created": 1794510919349,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+    "assistantMessageID": "msg_1d12f96a7001WE2sANnryn8Igu",
+    "finish": "stop",
+    "rawFinish": "end_turn",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12f96b70016Pt27JA4bSiYSc",
+   "created": 1794510919351,
+   "type": "session.execution.succeeded",
+   "data": {
+    "sessionID": "ses_e2ed0754dffeYCvIeqO2dWWJZu"
+   }
+  },
+  {
+   "id": "evt_1d12f96b9001yytaJGg09LMhJm",
+   "created": 1794510919353,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d12f8ab6002BBVJW0HH6RQos3",
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "item": {
+     "type": "synthetic",
+     "payload": {
+      "text": "<subagent sessionID=\"ses_e2ed0754dffeYCvIeqO2dWWJZu\" state=\"completed\" description=\"bg work\">\nCHILD-RESULT\n</subagent>",
+      "description": "bg work",
+      "metadata": {
+       "source": "subagent",
+       "childID": "ses_e2ed0754dffeYCvIeqO2dWWJZu",
+       "agent": "General",
+       "state": "completed"
+      }
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d12f96ba001e7hPjhcsX6glPC",
+   "created": 1794510919354,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir"
+   }
+  },
+  {
+   "id": "evt_1d12f96bd001X557l8XUvZVmiJ",
+   "created": 1794510919357,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "inboxID": "msg_1d12f8ab6002BBVJW0HH6RQos3"
+   }
+  },
+  {
+   "id": "evt_1d12f96c5001o9xHEi5NjkTNkn",
+   "created": 1794510919365,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d12f96bf001lbjEz40ZRLm4FM",
+    "started": 1794510919361
+   }
+  },
+  {
+   "id": "evt_1d12f96c5002h4kaS3yNoDGJOq",
+   "created": 1794510919365,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f96bf001lbjEz40ZRLm4FM",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d12f96c6001gwaUV6mMDIPMTE",
+   "created": 1794510919366,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f96bf001lbjEz40ZRLm4FM",
+    "ordinal": 0,
+    "delta": "MAIN-AFTER-CHILD-REPORT"
+   }
+  },
+  {
+   "id": "evt_1d12f96c6002drj6CqxMCrNb7Z",
+   "created": 1794510919366,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f96bf001lbjEz40ZRLm4FM",
+    "ordinal": 0,
+    "text": "MAIN-AFTER-CHILD-REPORT"
+   }
+  },
+  {
+   "id": "evt_1d12f96c7001bKQD4Q7Ua4itkK",
+   "created": 1794510919367,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f96bf001lbjEz40ZRLm4FM"
+   }
+  },
+  {
+   "id": "evt_1d12f96c8001dqG1WB3x31sGIi",
+   "created": 1794510919368,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir",
+    "assistantMessageID": "msg_1d12f96bf001lbjEz40ZRLm4FM",
+    "finish": "stop",
+    "rawFinish": "end_turn",
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d12f96c9002mehYBKUXQgaQmj",
+   "created": 1794510919369,
+   "type": "session.execution.succeeded",
+   "data": {
+    "sessionID": "ses_e2ed07827ffe5RInJ87BVSwDir"
+   }
+  }
+ ]
+}

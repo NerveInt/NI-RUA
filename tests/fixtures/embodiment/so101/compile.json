@@ -1,0 +1,1181 @@
+{
+ "schema": "ni_rua.embodiment_golden.v1",
+ "embodiment": "so101",
+ "family": "compile",
+ "label": "current SO-101 behaviour at 5fd93c6, expected to change: reference for the SO-101 diff of later work packages, never asserted",
+ "captured_from": {"revision":"5fd93c61a32933bd13c8191f6093ffad5e573aec","production_tree_clean":true},
+ "regenerate": "PYTHONPATH=tests mamba run -n ni-rua python -m support.embodiment_golden --write --force --embodiment so101 --family compile",
+ "items": {
+  "001 base/move_link6/left": {"request":{"observation_id":"obs-golden","action_id":"golden-001","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "002 base/move_grasp/left": {"request":{"observation_id":"obs-golden","action_id":"golden-002","stages":[{"id":"g","kind":"move","arm":"left","grasp_position_m":[0.3,0.25,0.8],"angles_deg":[0.0,0.0,0.0]}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "003 base/gripper/left": {"request":{"observation_id":"obs-golden","action_id":"golden-003","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "004 base/move_with_jaw_goal/left": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-004\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"gripper_goal_normalized\" = 0.0"]]
+  ]},
+  "005 base/observe_named_arm/left": {"request":{"observation_id":"obs-golden","action_id":"golden-005","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"o","kind":"observe","reason":"inspect the grasp","arm":"left"}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "006 base/pick_sequence/left": {"request":{"observation_id":"obs-golden","action_id":"golden-006","stages":[{"id":"approach","kind":"move","arm":"left","grasp_position_m":[0.3,0.25,0.8],"angles_deg":[0.0,0.0,0.0]},{"id":"close","kind":"gripper","arm":"left","goal_normalized":0.0},{"id":"lift","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "007 base/move_link6/right": {"request":{"observation_id":"obs-golden","action_id":"golden-007","stages":[{"id":"m","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":"ok","compile":"ValueError: out_of_workspace: target [0.3, 0.25, 0.95] m outside so101_base box min_m=[-0.45, -0.45, 0.01] max_m=[0.45, 0.45, 0.45]"},
+  "008 base/move_grasp/right": {"request":{"observation_id":"obs-golden","action_id":"golden-008","stages":[{"id":"g","kind":"move","arm":"right","grasp_position_m":[0.3,0.25,0.8],"angles_deg":[0.0,0.0,0.0]}]},"schema":"ok","compile":"ValueError: unsupported_capability: angles_deg (SO-101 accepts position_m + quaternion_xyzw of gripper_frame_link in so101_base)"},
+  "009 base/gripper/right": {"request":{"observation_id":"obs-golden","action_id":"golden-009","stages":[{"id":"j","kind":"gripper","arm":"right","goal_normalized":0.0}]},"schema":"ok","compile":{"schema_version":"0.1","run_id":"golden-run","episode_id":"golden-episode","env_instance_id":"golden-env","env_generation":1,"world_kind":"observed","type":"BatchAction","action_id":"golden-009","based_on_observation_id":"obs-golden","mode":"absolute","frame_id":"so101_base","tcp_config_id":"so101-gripper-frame-v1","limits_profile":"so101-deployment-v1","timeout_s":120.0,"stages":[{"id":"j","arm":"right","kind":"gripper","action":{"schema_version":"0.1","run_id":"golden-run","episode_id":"golden-episode","env_instance_id":"golden-env","env_generation":1,"world_kind":"observed","action_id":"<action#1>","based_on_observation_id":"obs-golden","frame_id":"so101_base","tcp_config_id":"so101-gripper-frame-v1","mode":"absolute","path":{"kind":"hold","orientation":"backend_free","blend_radius_m":0.0,"waypoints":[]},"gripper_events":[{"arm":"right","phase":"after_motion","goal_normalized":0.0}],"limits_profile":"so101-deployment-v1","timeout_s":120.0,"gripper_speed_scale":1.0}}]},"dependencies":{"j":[]},"backend":"ok"},
+  "010 base/move_with_jaw_goal/right": {"$derive": "007 base/move_link6/right", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-010\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"gripper_goal_normalized\" = 0.0"]]
+  ]},
+  "011 base/observe_named_arm/right": {"request":{"observation_id":"obs-golden","action_id":"golden-011","stages":[{"id":"m","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"o","kind":"observe","reason":"inspect the grasp","arm":"right"}]},"schema":"ok","compile":"ValueError: out_of_workspace: target [0.3, 0.25, 0.95] m outside so101_base box min_m=[-0.45, -0.45, 0.01] max_m=[0.45, 0.45, 0.45]"},
+  "012 base/pick_sequence/right": {"request":{"observation_id":"obs-golden","action_id":"golden-012","stages":[{"id":"approach","kind":"move","arm":"right","grasp_position_m":[0.3,0.25,0.8],"angles_deg":[0.0,0.0,0.0]},{"id":"close","kind":"gripper","arm":"right","goal_normalized":0.0},{"id":"lift","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":"ok","compile":"ValueError: unsupported_capability: angles_deg (SO-101 accepts position_m + quaternion_xyzw of gripper_frame_link in so101_base)"},
+  "013 base/observe_only": {"request":{"observation_id":"obs-golden","action_id":"golden-013","stages":[{"id":"o","kind":"observe","reason":"inspect the grasp"}]},"schema":"ok","compile":{"schema_version":"0.1","run_id":"golden-run","episode_id":"golden-episode","env_instance_id":"golden-env","env_generation":1,"world_kind":"observed","type":"BatchAction","action_id":"golden-013","based_on_observation_id":"obs-golden","mode":"absolute","frame_id":"so101_base","tcp_config_id":"so101-gripper-frame-v1","limits_profile":"so101-deployment-v1","timeout_s":120.0,"stages":[{"id":"o","kind":"observe","reason":"inspect the grasp"}]},"dependencies":{"o":[]},"backend":"ok"},
+  "014 base/observe_barrier": {"request":{"observation_id":"obs-golden","action_id":"golden-014","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"o","kind":"observe","reason":"inspect the grasp"},{"id":"m2","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "015 stage/move/grasp_position_m=[0.3,0.25,0.8]": {"$derive": "002 base/move_grasp/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-015\""]]
+  ]},
+  "016 stage/move/grasp_position_m=[0.3,0.25]": {"request":{"observation_id":"obs-golden","action_id":"golden-016","stages":[{"id":"g","kind":"move","arm":"left","grasp_position_m":[0.3,0.25],"angles_deg":[0.0,0.0,0.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/grasp_position_m","actual":[0.3,0.25],"suggestion":"[0.3, 0.25] is too short. <field description> Field constraints: {'type': 'array', 'minItems': 3, 'maxItems': 3}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/grasp_position_m","value":"<array of 3+ entries matching items schema>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "017 stage/move/grasp_position_m=[0.3,0.25,0.8,0.0]": {"$derive": "016 stage/move/grasp_position_m=[0.3,0.25]", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-017\""]],
+   [7,7,[".\"request\".\"stages\"[0].\"grasp_position_m\"[2] = 0.8",".\"request\".\"stages\"[0].\"grasp_position_m\"[3] = 0.0"]],
+   [15,16,[".\"schema\".\"actual\"[2] = 0.8",".\"schema\".\"actual\"[3] = 0.0",".\"schema\".\"suggestion\" = \"[0.3, 0.25, 0.8, 0.0] is too long. \""]]
+  ]},
+  "018 stage/move/grasp_position_m=[\"0.3\",0.25,0.8]": {"request":{"observation_id":"obs-golden","action_id":"golden-018","stages":[{"id":"g","kind":"move","arm":"left","grasp_position_m":["0.3",0.25,0.8],"angles_deg":[0.0,0.0,0.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/grasp_position_m/0","actual":"0.3","suggestion":"'0.3' is not of type 'number'. Field constraints: {'type': 'number'}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/grasp_position_m/0","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "019 stage/move/angles_deg=[0.0,0.0,0.0]": {"$derive": "002 base/move_grasp/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-019\""]]
+  ]},
+  "020 stage/move/angles_deg=[0.0,0.0]": {"request":{"observation_id":"obs-golden","action_id":"golden-020","stages":[{"id":"g","kind":"move","arm":"left","grasp_position_m":[0.3,0.25,0.8],"angles_deg":[0.0,0.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/angles_deg","actual":[0.0,0.0],"suggestion":"[0.0, 0.0] is too short. <field description> Field constraints: {'type': 'array', 'minItems': 3, 'maxItems': 3}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/angles_deg","value":"<array of 3+ entries matching items schema>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "021 stage/move/angles_deg=[0.0,0.0,\"0\"]": {"request":{"observation_id":"obs-golden","action_id":"golden-021","stages":[{"id":"g","kind":"move","arm":"left","grasp_position_m":[0.3,0.25,0.8],"angles_deg":[0.0,0.0,"0"]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/angles_deg/2","actual":"0","suggestion":"'0' is not of type 'number'. Field constraints: {'type': 'number', 'minimum': -180.0, 'maximum': 180.0}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/angles_deg/2","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "022 stage/move/angles_deg=[-180.0,0.0,0.0]": {"$derive": "002 base/move_grasp/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-022\""]],
+   [8,9,[".\"request\".\"stages\"[0].\"angles_deg\"[0] = -180.0"]]
+  ]},
+  "023 stage/move/angles_deg=[-180.000001,0.0,0.0]": {"request":{"observation_id":"obs-golden","action_id":"golden-023","stages":[{"id":"g","kind":"move","arm":"left","grasp_position_m":[0.3,0.25,0.8],"angles_deg":[-180.000001,0.0,0.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/angles_deg/0","actual":-180.000001,"suggestion":"-180.000001 is less than the minimum of -180.0. Field constraints: {'type': 'number', 'minimum': -180.0, 'maximum': 180.0}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/angles_deg/0","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "024 stage/move/angles_deg=[180.0,0.0,0.0]": {"$derive": "002 base/move_grasp/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-024\""]],
+   [8,9,[".\"request\".\"stages\"[0].\"angles_deg\"[0] = 180.0"]]
+  ]},
+  "025 stage/move/angles_deg=[180.000001,0.0,0.0]": {"$derive": "023 stage/move/angles_deg=[-180.000001,0.0,0.0]", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-025\""]],
+   [8,9,[".\"request\".\"stages\"[0].\"angles_deg\"[0] = 180.000001"]],
+   [14,16,[".\"schema\".\"actual\" = 180.000001",".\"schema\".\"suggestion\" = \"180.000001 is greater than the maximum of 180.0. \""]]
+  ]},
+  "026 stage/move/angles_deg=[0.0,-90.0,0.0]": {"$derive": "002 base/move_grasp/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-026\""]],
+   [9,10,[".\"request\".\"stages\"[0].\"angles_deg\"[1] = -90.0"]]
+  ]},
+  "027 stage/move/angles_deg=[0.0,-90.000001,0.0]": {"request":{"observation_id":"obs-golden","action_id":"golden-027","stages":[{"id":"g","kind":"move","arm":"left","grasp_position_m":[0.3,0.25,0.8],"angles_deg":[0.0,-90.000001,0.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/angles_deg/1","actual":-90.000001,"suggestion":"-90.000001 is less than the minimum of -90.0. Field constraints: {'type': 'number', 'minimum': -90.0, 'maximum': 90.0}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/angles_deg/1","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "028 stage/move/angles_deg=[0.0,90.0,0.0]": {"$derive": "002 base/move_grasp/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-028\""]],
+   [9,10,[".\"request\".\"stages\"[0].\"angles_deg\"[1] = 90.0"]]
+  ]},
+  "029 stage/move/angles_deg=[0.0,90.000001,0.0]": {"$derive": "027 stage/move/angles_deg=[0.0,-90.000001,0.0]", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-029\""]],
+   [9,10,[".\"request\".\"stages\"[0].\"angles_deg\"[1] = 90.000001"]],
+   [14,16,[".\"schema\".\"actual\" = 90.000001",".\"schema\".\"suggestion\" = \"90.000001 is greater than the maximum of 90.0. \""]]
+  ]},
+  "030 stage/move/angles_deg=[0.0,0.0,-180.0]": {"$derive": "002 base/move_grasp/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-030\""]],
+   [10,11,[".\"request\".\"stages\"[0].\"angles_deg\"[2] = -180.0"]]
+  ]},
+  "031 stage/move/angles_deg=[0.0,0.0,-180.000001]": {"$derive": "021 stage/move/angles_deg=[0.0,0.0,\"0\"]", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-031\""]],
+   [10,11,[".\"request\".\"stages\"[0].\"angles_deg\"[2] = -180.000001"]],
+   [14,16,[".\"schema\".\"actual\" = -180.000001",".\"schema\".\"suggestion\" = \"-180.000001 is less than the minimum of -180.0. \""]]
+  ]},
+  "032 stage/move/angles_deg=[0.0,0.0,180.0]": {"$derive": "002 base/move_grasp/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-032\""]],
+   [10,11,[".\"request\".\"stages\"[0].\"angles_deg\"[2] = 180.0"]]
+  ]},
+  "033 stage/move/angles_deg=[0.0,0.0,180.000001]": {"$derive": "021 stage/move/angles_deg=[0.0,0.0,\"0\"]", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-033\""]],
+   [10,11,[".\"request\".\"stages\"[0].\"angles_deg\"[2] = 180.000001"]],
+   [14,16,[".\"schema\".\"actual\" = 180.000001",".\"schema\".\"suggestion\" = \"180.000001 is greater than the maximum of 180.0. \""]]
+  ]},
+  "034 stage/move/position_m=[0.3,0.25,0.95]": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-034\""]]
+  ]},
+  "035 stage/move/position_m=[0.3,0.25]": {"request":{"observation_id":"obs-golden","action_id":"golden-035","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/position_m","actual":[0.3,0.25],"suggestion":"[0.3, 0.25] is too short. <field description> Field constraints: {'type': 'array', 'minItems': 3, 'maxItems': 3}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/position_m","value":"<array of 3+ entries matching items schema>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "036 stage/move/position_m=[0.3,0.25,0.95,0.0]": {"$derive": "035 stage/move/position_m=[0.3,0.25]", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-036\""]],
+   [7,7,[".\"request\".\"stages\"[0].\"position_m\"[2] = 0.95",".\"request\".\"stages\"[0].\"position_m\"[3] = 0.0"]],
+   [16,17,[".\"schema\".\"actual\"[2] = 0.95",".\"schema\".\"actual\"[3] = 0.0",".\"schema\".\"suggestion\" = \"[0.3, 0.25, 0.95, 0.0] is too long. \""]]
+  ]},
+  "037 stage/move/position_m=[\"0.3\",0.25,0.8]": {"request":{"observation_id":"obs-golden","action_id":"golden-037","stages":[{"id":"m","kind":"move","arm":"left","position_m":["0.3",0.25,0.8],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/position_m/0","actual":"0.3","suggestion":"'0.3' is not of type 'number'. Field constraints: {'type': 'number'}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/position_m/0","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "038 stage/move/quaternion_xyzw=[0.0,0.0,0.0,1.0]": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-038\""]]
+  ]},
+  "039 stage/move/quaternion_xyzw=[0.0,0.7071068,0.0,0.7071068]": {"request":{"observation_id":"obs-golden","action_id":"golden-039","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.7071068,0.0,0.7071068]}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "040 stage/move/quaternion_xyzw=[0.0,0.0,1.0]": {"request":{"observation_id":"obs-golden","action_id":"golden-040","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,1.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/quaternion_xyzw","actual":[0.0,0.0,1.0],"suggestion":"[0.0, 0.0, 1.0] is too short. <field description> Field constraints: {'type': 'array', 'minItems': 4, 'maxItems': 4}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/quaternion_xyzw","value":"<array of 4+ entries matching items schema>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "041 stage/move/quaternion_xyzw=[0.0,0.0,0.0,2.0]": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-041\""]],
+   [11,12,[".\"request\".\"stages\"[0].\"quaternion_xyzw\"[3] = 2.0"]]
+  ]},
+  "042 stage/move/contact_region=\"pad_center\"": {"$derive": "002 base/move_grasp/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-042\""]],
+   [11,11,[".\"request\".\"stages\"[0].\"contact_region\" = \"pad_center\""]]
+  ]},
+  "043 stage/move/contact_region=\"finger_middle\"": {"$derive": "002 base/move_grasp/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-043\""]],
+   [11,11,[".\"request\".\"stages\"[0].\"contact_region\" = \"finger_middle\""]]
+  ]},
+  "044 stage/move/contact_region=\"fingertip\"": {"$derive": "002 base/move_grasp/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-044\""]],
+   [11,11,[".\"request\".\"stages\"[0].\"contact_region\" = \"fingertip\""]]
+  ]},
+  "045 stage/move/contact_region=\"bogus\"": {"request":{"observation_id":"obs-golden","action_id":"golden-045","stages":[{"id":"g","kind":"move","arm":"left","grasp_position_m":[0.3,0.25,0.8],"angles_deg":[0.0,0.0,0.0],"contact_region":"bogus"}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/contact_region","actual":"bogus","suggestion":"'bogus' is not one of ['pad_center', 'finger_middle', 'fingertip']. <field description> Field constraints: {'type': 'string', 'enum': ['pad_center', 'finger_middle', 'fingertip']}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/contact_region","value":"<one of: pad_center, finger_middle, fingertip>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "046 stage/move/contact_depth_m=-0.0075": {"$derive": "002 base/move_grasp/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-046\""]],
+   [11,11,[".\"request\".\"stages\"[0].\"contact_depth_m\" = -0.0075"]]
+  ]},
+  "047 stage/move/contact_depth_m=-0.007501": {"request":{"observation_id":"obs-golden","action_id":"golden-047","stages":[{"id":"g","kind":"move","arm":"left","grasp_position_m":[0.3,0.25,0.8],"angles_deg":[0.0,0.0,0.0],"contact_depth_m":-0.007501}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/contact_depth_m","actual":-0.007501,"suggestion":"-0.007501 is less than the minimum of -0.0075. <field description> Field constraints: {'type': 'number', 'minimum': -0.0075, 'maximum': 0.0625}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/contact_depth_m","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "048 stage/move/contact_depth_m=0.0625": {"$derive": "002 base/move_grasp/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-048\""]],
+   [11,11,[".\"request\".\"stages\"[0].\"contact_depth_m\" = 0.0625"]]
+  ]},
+  "049 stage/move/contact_depth_m=0.062501": {"$derive": "047 stage/move/contact_depth_m=-0.007501", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-049\""]],
+   [11,12,[".\"request\".\"stages\"[0].\"contact_depth_m\" = 0.062501"]],
+   [15,17,[".\"schema\".\"actual\" = 0.062501",".\"schema\".\"suggestion\" = \"0.062501 is greater than the maximum of 0.0625. \""]]
+  ]},
+  "050 stage/move/contact_depth_m=\"1\"": {"$derive": "047 stage/move/contact_depth_m=-0.007501", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-050\""]],
+   [11,12,[".\"request\".\"stages\"[0].\"contact_depth_m\" = \"1\""]],
+   [15,17,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "051 stage/move/speed_scale=0.25": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-051\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"speed_scale\" = 0.25"]]
+  ]},
+  "052 stage/move/speed_scale=0.249999": {"request":{"observation_id":"obs-golden","action_id":"golden-052","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"speed_scale":0.249999}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/speed_scale","actual":0.249999,"suggestion":"0.249999 is less than the minimum of 0.25. <field description> Field constraints: {'type': 'number', 'minimum': 0.25, 'maximum': 2}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/speed_scale","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "053 stage/move/speed_scale=2": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-053\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"speed_scale\" = 2"]]
+  ]},
+  "054 stage/move/speed_scale=2.000001": {"$derive": "052 stage/move/speed_scale=0.249999", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-054\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"speed_scale\" = 2.000001"]],
+   [16,18,[".\"schema\".\"actual\" = 2.000001",".\"schema\".\"suggestion\" = \"2.000001 is greater than the maximum of 2. \""]]
+  ]},
+  "055 stage/move/speed_scale=\"1\"": {"$derive": "052 stage/move/speed_scale=0.249999", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-055\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"speed_scale\" = \"1\""]],
+   [16,18,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "056 stage/move/speed_preset=\"slower\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-056\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"speed_preset\" = \"slower\""]]
+  ]},
+  "057 stage/move/speed_preset=\"slow\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-057\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"speed_preset\" = \"slow\""]]
+  ]},
+  "058 stage/move/speed_preset=\"careful\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-058\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"speed_preset\" = \"careful\""]]
+  ]},
+  "059 stage/move/speed_preset=\"normal\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-059\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"speed_preset\" = \"normal\""]]
+  ]},
+  "060 stage/move/speed_preset=\"fast\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-060\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"speed_preset\" = \"fast\""]]
+  ]},
+  "061 stage/move/speed_preset=\"faster\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-061\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"speed_preset\" = \"faster\""]]
+  ]},
+  "062 stage/move/speed_preset=\"bogus\"": {"request":{"observation_id":"obs-golden","action_id":"golden-062","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"speed_preset":"bogus"}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/speed_preset","actual":"bogus","suggestion":"'bogus' is not one of ['slower', 'slow', 'careful', 'normal', 'fast', 'faster']. <field description> Field constraints: {'type': 'string', 'enum': ['slower', 'slow', 'careful', 'normal', 'fast', 'faster']}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/speed_preset","value":"<one of: slower, slow, careful, normal, fast, faster>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "063 stage/move/gripper_speed_scale=0.25": {"request":{"observation_id":"obs-golden","action_id":"golden-063","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0,"gripper_speed_scale":0.25}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "064 stage/move/gripper_speed_scale=0.249999": {"request":{"observation_id":"obs-golden","action_id":"golden-064","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0,"gripper_speed_scale":0.249999}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/gripper_speed_scale","actual":0.249999,"suggestion":"0.249999 is less than the minimum of 0.25. <field description> Field constraints: {'type': 'number', 'minimum': 0.25, 'maximum': 1}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/gripper_speed_scale","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "065 stage/move/gripper_speed_scale=1": {"$derive": "063 stage/move/gripper_speed_scale=0.25", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-065\""]],
+   [13,14,[".\"request\".\"stages\"[0].\"gripper_speed_scale\" = 1"]]
+  ]},
+  "066 stage/move/gripper_speed_scale=1.000001": {"$derive": "064 stage/move/gripper_speed_scale=0.249999", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-066\""]],
+   [13,14,[".\"request\".\"stages\"[0].\"gripper_speed_scale\" = 1.000001"]],
+   [17,19,[".\"schema\".\"actual\" = 1.000001",".\"schema\".\"suggestion\" = \"1.000001 is greater than the maximum of 1. \""]]
+  ]},
+  "067 stage/move/gripper_speed_scale=\"1\"": {"$derive": "064 stage/move/gripper_speed_scale=0.249999", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-067\""]],
+   [13,14,[".\"request\".\"stages\"[0].\"gripper_speed_scale\" = \"1\""]],
+   [17,19,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "068 stage/move/gripper_speed_scale/without_gripper_goal": {"request":{"observation_id":"obs-golden","action_id":"golden-068","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_speed_scale":0.25}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0","actual":{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_speed_scale":0.25},"suggestion":"'gripper_goal_normalized' is a dependency of 'gripper_speed_scale'. Field constraints: {'type': 'object'}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0","value":{"id":"<current caller-provided value>","kind":"<current caller-provided value>","arm":"<one of: left, right>"},"example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "069 stage/move/gripper_speed_preset=\"slower\"": {"$derive": "063 stage/move/gripper_speed_scale=0.25", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-069\""]],
+   [13,14,[".\"request\".\"stages\"[0].\"gripper_speed_preset\" = \"slower\""]]
+  ]},
+  "070 stage/move/gripper_speed_preset=\"slow\"": {"$derive": "063 stage/move/gripper_speed_scale=0.25", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-070\""]],
+   [13,14,[".\"request\".\"stages\"[0].\"gripper_speed_preset\" = \"slow\""]]
+  ]},
+  "071 stage/move/gripper_speed_preset=\"normal\"": {"$derive": "063 stage/move/gripper_speed_scale=0.25", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-071\""]],
+   [13,14,[".\"request\".\"stages\"[0].\"gripper_speed_preset\" = \"normal\""]]
+  ]},
+  "072 stage/move/gripper_speed_preset=\"bogus\"": {"request":{"observation_id":"obs-golden","action_id":"golden-072","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0,"gripper_speed_preset":"bogus"}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/gripper_speed_preset","actual":"bogus","suggestion":"'bogus' is not one of ['slower', 'slow', 'normal']. <field description> Field constraints: {'type': 'string', 'enum': ['slower', 'slow', 'normal']}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/gripper_speed_preset","value":"<one of: slower, slow, normal>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "073 stage/move/gripper_speed_preset/without_gripper_goal": {"$derive": "068 stage/move/gripper_speed_scale/without_gripper_goal", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-073\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"gripper_speed_preset\" = \"slower\""]],
+   [26,28,[".\"schema\".\"actual\".\"gripper_speed_preset\" = \"slower\"",".\"schema\".\"suggestion\" = \"'gripper_goal_normalized' is a dependency of 'gripper_speed_preset'. \""]]
+  ]},
+  "074 stage/move/gripper_goal_normalized=0": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-074\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"gripper_goal_normalized\" = 0"]]
+  ]},
+  "075 stage/move/gripper_goal_normalized=-1e-06": {"request":{"observation_id":"obs-golden","action_id":"golden-075","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":-1e-06}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/gripper_goal_normalized","actual":-1e-06,"suggestion":"-1e-06 is less than the minimum of 0. <field description> Field constraints: {'type': 'number', 'minimum': 0, 'maximum': 1}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/gripper_goal_normalized","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "076 stage/move/gripper_goal_normalized=1": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-076\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"gripper_goal_normalized\" = 1"]]
+  ]},
+  "077 stage/move/gripper_goal_normalized=1.000001": {"$derive": "075 stage/move/gripper_goal_normalized=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-077\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"gripper_goal_normalized\" = 1.000001"]],
+   [16,18,[".\"schema\".\"actual\" = 1.000001",".\"schema\".\"suggestion\" = \"1.000001 is greater than the maximum of 1. \""]]
+  ]},
+  "078 stage/move/gripper_goal_normalized=\"1\"": {"$derive": "075 stage/move/gripper_goal_normalized=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-078\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"gripper_goal_normalized\" = \"1\""]],
+   [16,18,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "079 stage/move/gripper_motion={\"start_fraction\":0.2,\"end_fraction\":0.9}": {"request":{"observation_id":"obs-golden","action_id":"golden-079","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0,"gripper_motion":{"start_fraction":0.2,"end_fraction":0.9}}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "080 stage/move/gripper_motion={\"start_fraction\":0.0,\"end_fraction\":1.0}": {"request":{"observation_id":"obs-golden","action_id":"golden-080","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0,"gripper_motion":{"start_fraction":0.0,"end_fraction":1.0}}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "081 stage/move/gripper_motion={\"start_fraction\":0.9,\"end_fraction\":0.2}": {"request":{"observation_id":"obs-golden","action_id":"golden-081","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0,"gripper_motion":{"start_fraction":0.9,"end_fraction":0.2}}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "082 stage/move/gripper_motion={\"start_fraction\":1.0,\"end_fraction\":1.0}": {"request":{"observation_id":"obs-golden","action_id":"golden-082","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0,"gripper_motion":{"start_fraction":1.0,"end_fraction":1.0}}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/gripper_motion/start_fraction","actual":1.0,"suggestion":"1.0 is greater than or equal to the maximum of 1. <field description> Field constraints: {'type': 'number', 'minimum': 0, 'exclusiveMaximum': 1}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/gripper_motion/start_fraction","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "083 stage/move/gripper_motion={\"start_fraction\":0.2}": {"request":{"observation_id":"obs-golden","action_id":"golden-083","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0,"gripper_motion":{"start_fraction":0.2}}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/gripper_motion/end_fraction","actual":{"present":false},"suggestion":"'end_fraction' is a required property. <field description> Allowed fields here: end_fraction, start_fraction. Required fields: start_fraction, end_fraction. Field constraints: {'type': 'object'}. <field description> Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/gripper_motion/end_fraction","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "084 stage/move/gripper_motion={\"start_fraction\":0.2,\"end_fraction\":0.9,\"ramp\":1}": {"request":{"observation_id":"obs-golden","action_id":"golden-084","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0,"gripper_motion":{"start_fraction":0.2,"end_fraction":0.9,"ramp":1}}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/gripper_motion/ramp","actual":1,"suggestion":"Additional properties are not allowed ('ramp' was unexpected). <field description> Allowed fields here: end_fraction, start_fraction. Required fields: start_fraction, end_fraction. Field constraints: {'type': 'object'}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/gripper_motion/ramp","value":{"start_fraction":"<caller-selected number within the stated bounds>","end_fraction":"<caller-selected number within the stated bounds>"},"example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "085 stage/move/gripper_motion/without_gripper_goal": {"$derive": "068 stage/move/gripper_speed_scale/without_gripper_goal", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-085\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"gripper_motion\".\"start_fraction\" = 0.2",".\"request\".\"stages\"[0].\"gripper_motion\".\"end_fraction\" = 0.9"]],
+   [26,28,[".\"schema\".\"actual\".\"gripper_motion\".\"start_fraction\" = 0.2",".\"schema\".\"actual\".\"gripper_motion\".\"end_fraction\" = 0.9",".\"schema\".\"suggestion\" = \"'gripper_goal_normalized' is a dependency of 'gripper_motion'. \""]]
+  ]},
+  "086 stage/move/checkpoint_after_gripper=true": {"$derive": "063 stage/move/gripper_speed_scale=0.25", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-086\""]],
+   [13,14,[".\"request\".\"stages\"[0].\"checkpoint_after_gripper\" = true"]]
+  ]},
+  "087 stage/move/checkpoint_after_gripper=false": {"$derive": "063 stage/move/gripper_speed_scale=0.25", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-087\""]],
+   [13,14,[".\"request\".\"stages\"[0].\"checkpoint_after_gripper\" = false"]]
+  ]},
+  "088 stage/move/checkpoint_after_gripper=\"true\"": {"request":{"observation_id":"obs-golden","action_id":"golden-088","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0,"checkpoint_after_gripper":"true"}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/checkpoint_after_gripper","actual":"true","suggestion":"'true' is not of type 'boolean'. <field description> Field constraints: {'type': 'boolean'}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/checkpoint_after_gripper","value":"<true or false>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "089 stage/move/checkpoint_after_gripper/without_gripper_goal": {"$derive": "068 stage/move/gripper_speed_scale/without_gripper_goal", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-089\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"checkpoint_after_gripper\" = true"]],
+   [26,28,[".\"schema\".\"actual\".\"checkpoint_after_gripper\" = true",".\"schema\".\"suggestion\" = \"'gripper_goal_normalized' is a dependency of 'checkpoint_after_gripper'. \""]]
+  ]},
+  "090 stage/move/grip_guard_preset=\"none\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-090\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"grip_guard_preset\" = \"none\""]]
+  ]},
+  "091 stage/move/grip_guard_preset=\"non_empty\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-091\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"grip_guard_preset\" = \"non_empty\""]]
+  ]},
+  "092 stage/move/grip_guard_preset=\"thin_object\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-092\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"grip_guard_preset\" = \"thin_object\""]]
+  ]},
+  "093 stage/move/grip_guard_preset=\"rigid_object\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-093\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"grip_guard_preset\" = \"rigid_object\""]]
+  ]},
+  "094 stage/move/grip_guard_preset=\"wide_object\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-094\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"grip_guard_preset\" = \"wide_object\""]]
+  ]},
+  "095 stage/move/grip_guard_preset=\"normal\"": {"request":{"observation_id":"obs-golden","action_id":"golden-095","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"grip_guard_preset":"normal"}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/grip_guard_preset","actual":"normal","suggestion":"'normal' is not one of ['none', 'non_empty', 'thin_object', 'rigid_object', 'wide_object']. <field description> Field constraints: {'type': 'string', 'enum': ['none', 'non_empty', 'thin_object', 'rigid_object', 'wide_object']}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/grip_guard_preset","value":"<one of: none, non_empty, thin_object, rigid_object, wide_object>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "096 stage/move/grip_guard_preset=\"thin\"": {"$derive": "095 stage/move/grip_guard_preset=\"normal\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-096\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"grip_guard_preset\" = \"thin\""]],
+   [16,18,[".\"schema\".\"actual\" = \"thin\"",".\"schema\".\"suggestion\" = \"'thin' is not one of ['none', 'non_empty', 'thin_object', 'rigid_object', 'wide_object']. \""]]
+  ]},
+  "097 stage/move/grip_guard_preset=\"solid\"": {"$derive": "095 stage/move/grip_guard_preset=\"normal\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-097\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"grip_guard_preset\" = \"solid\""]],
+   [16,18,[".\"schema\".\"actual\" = \"solid\"",".\"schema\".\"suggestion\" = \"'solid' is not one of ['none', 'non_empty', 'thin_object', 'rigid_object', 'wide_object']. \""]]
+  ]},
+  "098 stage/move/grip_guard_preset=\"empty_only\"": {"$derive": "095 stage/move/grip_guard_preset=\"normal\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-098\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"grip_guard_preset\" = \"empty_only\""]],
+   [16,18,[".\"schema\".\"actual\" = \"empty_only\"",".\"schema\".\"suggestion\" = \"'empty_only' is not one of ['none', 'non_empty', 'thin_object', 'rigid_object', 'wide_object']. \""]]
+  ]},
+  "099 stage/move/grip_guard_preset=\"bogus\"": {"$derive": "095 stage/move/grip_guard_preset=\"normal\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-099\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"grip_guard_preset\" = \"bogus\""]],
+   [16,18,[".\"schema\".\"actual\" = \"bogus\"",".\"schema\".\"suggestion\" = \"'bogus' is not one of ['none', 'non_empty', 'thin_object', 'rigid_object', 'wide_object']. \""]]
+  ]},
+  "100 stage/move/min_aperture_m=0": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-100\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"min_aperture_m\" = 0"]]
+  ]},
+  "101 stage/move/min_aperture_m=-1e-06": {"request":{"observation_id":"obs-golden","action_id":"golden-101","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"min_aperture_m":-1e-06}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/min_aperture_m","actual":-1e-06,"suggestion":"-1e-06 is less than the minimum of 0. <field description> Field constraints: {'type': 'number', 'minimum': 0, 'maximum': 0.088}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/min_aperture_m","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "102 stage/move/min_aperture_m=0.088": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-102\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"min_aperture_m\" = 0.088"]]
+  ]},
+  "103 stage/move/min_aperture_m=0.088001": {"$derive": "101 stage/move/min_aperture_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-103\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"min_aperture_m\" = 0.088001"]],
+   [16,18,[".\"schema\".\"actual\" = 0.088001",".\"schema\".\"suggestion\" = \"0.088001 is greater than the maximum of 0.088. \""]]
+  ]},
+  "104 stage/move/min_aperture_m=\"1\"": {"$derive": "101 stage/move/min_aperture_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-104\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"min_aperture_m\" = \"1\""]],
+   [16,18,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "105 stage/move/max_aperture_m=0": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-105\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"max_aperture_m\" = 0"]]
+  ]},
+  "106 stage/move/max_aperture_m=-1e-06": {"$derive": "101 stage/move/min_aperture_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-106\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"max_aperture_m\" = -1e-06"]],
+   [15,16,[".\"schema\".\"field_path\" = \"/stages/0/max_aperture_m\""]],
+   [20,21,[".\"schema\".\"minimal_example\".\"field_path\" = \"/stages/0/max_aperture_m\""]]
+  ]},
+  "107 stage/move/max_aperture_m=0.088": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-107\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"max_aperture_m\" = 0.088"]]
+  ]},
+  "108 stage/move/max_aperture_m=0.088001": {"$derive": "101 stage/move/min_aperture_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-108\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"max_aperture_m\" = 0.088001"]],
+   [15,18,[".\"schema\".\"field_path\" = \"/stages/0/max_aperture_m\"",".\"schema\".\"actual\" = 0.088001",".\"schema\".\"suggestion\" = \"0.088001 is greater than the maximum of 0.088. \""]],
+   [20,21,[".\"schema\".\"minimal_example\".\"field_path\" = \"/stages/0/max_aperture_m\""]]
+  ]},
+  "109 stage/move/max_aperture_m=\"1\"": {"$derive": "101 stage/move/min_aperture_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-109\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"max_aperture_m\" = \"1\""]],
+   [15,18,[".\"schema\".\"field_path\" = \"/stages/0/max_aperture_m\"",".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]],
+   [20,21,[".\"schema\".\"minimal_example\".\"field_path\" = \"/stages/0/max_aperture_m\""]]
+  ]},
+  "110 stage/move/joint_travel_preset=\"standard\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-110\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"joint_travel_preset\" = \"standard\""]]
+  ]},
+  "111 stage/move/joint_travel_preset=\"extended\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-111\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"joint_travel_preset\" = \"extended\""]]
+  ]},
+  "112 stage/move/joint_travel_preset=\"unconstrained\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-112\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"joint_travel_preset\" = \"unconstrained\""]]
+  ]},
+  "113 stage/move/joint_travel_preset=\"bogus\"": {"request":{"observation_id":"obs-golden","action_id":"golden-113","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"joint_travel_preset":"bogus"}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/joint_travel_preset","actual":"bogus","suggestion":"'bogus' is not one of ['standard', 'extended', 'unconstrained']. <field description> Field constraints: {'type': 'string', 'enum': ['standard', 'extended', 'unconstrained']}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/joint_travel_preset","value":"<one of: standard, extended, unconstrained>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "114 stage/move/max_joint_travel_rad=0": {"request":{"observation_id":"obs-golden","action_id":"golden-114","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"max_joint_travel_rad":0}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/max_joint_travel_rad","actual":0,"suggestion":"0 is less than or equal to the minimum of 0. <field description> Field constraints: {'type': 'number', 'exclusiveMinimum': 0}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/max_joint_travel_rad","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "115 stage/move/max_joint_travel_rad=1e-06": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-115\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"max_joint_travel_rad\" = 1e-06"]]
+  ]},
+  "116 stage/move/max_joint_travel_rad=\"1\"": {"$derive": "114 stage/move/max_joint_travel_rad=0", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-116\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"max_joint_travel_rad\" = \"1\""]],
+   [16,18,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "117 stage/move/max_backtracking_rad=0": {"$derive": "114 stage/move/max_joint_travel_rad=0", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-117\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"max_backtracking_rad\" = 0"]],
+   [15,16,[".\"schema\".\"field_path\" = \"/stages/0/max_backtracking_rad\""]],
+   [20,21,[".\"schema\".\"minimal_example\".\"field_path\" = \"/stages/0/max_backtracking_rad\""]]
+  ]},
+  "118 stage/move/max_backtracking_rad=1e-06": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-118\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"max_backtracking_rad\" = 1e-06"]]
+  ]},
+  "119 stage/move/max_backtracking_rad=\"1\"": {"request":{"observation_id":"obs-golden","action_id":"golden-119","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"max_backtracking_rad":"1"}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/max_backtracking_rad","actual":"1","suggestion":"'1' is not of type 'number'. <field description> Field constraints: {'type': 'number', 'exclusiveMinimum': 0}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/max_backtracking_rad","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "120 stage/move/tolerance_preset=\"tight\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-120\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"tolerance_preset\" = \"tight\""]]
+  ]},
+  "121 stage/move/tolerance_preset=\"normal\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-121\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"tolerance_preset\" = \"normal\""]]
+  ]},
+  "122 stage/move/tolerance_preset=\"relaxed\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-122\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"tolerance_preset\" = \"relaxed\""]]
+  ]},
+  "123 stage/move/tolerance_preset=\"compliant\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-123\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"tolerance_preset\" = \"compliant\""]]
+  ]},
+  "124 stage/move/tolerance_preset=\"coarse\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-124\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"tolerance_preset\" = \"coarse\""]]
+  ]},
+  "125 stage/move/tolerance_preset=\"unconstrained_orientation\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-125\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"tolerance_preset\" = \"unconstrained_orientation\""]]
+  ]},
+  "126 stage/move/tolerance_preset=\"fine\"": {"request":{"observation_id":"obs-golden","action_id":"golden-126","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"tolerance_preset":"fine"}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/tolerance_preset","actual":"fine","suggestion":"'fine' is not one of ['tight', 'normal', 'relaxed', 'compliant', 'coarse', 'unconstrained_orientation']. <field description> Field constraints: {'type': 'string', 'enum': ['tight', 'normal', 'relaxed', 'compliant', 'coarse', 'unconstrained_orientation']}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/tolerance_preset","value":"<one of: tight, normal, relaxed, compliant, coarse, unconstrained_orientation>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "127 stage/move/tolerance_preset=\"strict\"": {"$derive": "126 stage/move/tolerance_preset=\"fine\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-127\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"tolerance_preset\" = \"strict\""]],
+   [16,18,[".\"schema\".\"actual\" = \"strict\"",".\"schema\".\"suggestion\" = \"'strict' is not one of ['tight', 'normal', 'relaxed', 'compliant', 'coarse', 'unconstrained_orientation']. \""]]
+  ]},
+  "128 stage/move/tolerance_preset=\"grasp\"": {"$derive": "126 stage/move/tolerance_preset=\"fine\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-128\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"tolerance_preset\" = \"grasp\""]],
+   [16,18,[".\"schema\".\"actual\" = \"grasp\"",".\"schema\".\"suggestion\" = \"'grasp' is not one of ['tight', 'normal', 'relaxed', 'compliant', 'coarse', 'unconstrained_orientation']. \""]]
+  ]},
+  "129 stage/move/tolerance_preset=\"transit\"": {"$derive": "126 stage/move/tolerance_preset=\"fine\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-129\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"tolerance_preset\" = \"transit\""]],
+   [16,18,[".\"schema\".\"actual\" = \"transit\"",".\"schema\".\"suggestion\" = \"'transit' is not one of ['tight', 'normal', 'relaxed', 'compliant', 'coarse', 'unconstrained_orientation']. \""]]
+  ]},
+  "130 stage/move/tolerance_preset=\"seating\"": {"$derive": "126 stage/move/tolerance_preset=\"fine\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-130\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"tolerance_preset\" = \"seating\""]],
+   [16,18,[".\"schema\".\"actual\" = \"seating\"",".\"schema\".\"suggestion\" = \"'seating' is not one of ['tight', 'normal', 'relaxed', 'compliant', 'coarse', 'unconstrained_orientation']. \""]]
+  ]},
+  "131 stage/move/tolerance_preset=\"bogus\"": {"$derive": "126 stage/move/tolerance_preset=\"fine\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-131\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"tolerance_preset\" = \"bogus\""]],
+   [16,18,[".\"schema\".\"actual\" = \"bogus\"",".\"schema\".\"suggestion\" = \"'bogus' is not one of ['tight', 'normal', 'relaxed', 'compliant', 'coarse', 'unconstrained_orientation']. \""]]
+  ]},
+  "132 stage/move/position_tolerance_m=0": {"request":{"observation_id":"obs-golden","action_id":"golden-132","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"position_tolerance_m":0}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/position_tolerance_m","actual":0,"suggestion":"0 is less than or equal to the minimum of 0. <field description> Field constraints: {'type': 'number', 'maximum': 0.1, 'exclusiveMinimum': 0}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/position_tolerance_m","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "133 stage/move/position_tolerance_m=1e-06": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-133\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"position_tolerance_m\" = 1e-06"]]
+  ]},
+  "134 stage/move/position_tolerance_m=0.1": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-134\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"position_tolerance_m\" = 0.1"]]
+  ]},
+  "135 stage/move/position_tolerance_m=0.100001": {"$derive": "132 stage/move/position_tolerance_m=0", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-135\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"position_tolerance_m\" = 0.100001"]],
+   [16,18,[".\"schema\".\"actual\" = 0.100001",".\"schema\".\"suggestion\" = \"0.100001 is greater than the maximum of 0.1. \""]]
+  ]},
+  "136 stage/move/position_tolerance_m=\"1\"": {"$derive": "132 stage/move/position_tolerance_m=0", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-136\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"position_tolerance_m\" = \"1\""]],
+   [16,18,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "137 stage/move/orientation_tolerance_rad=0": {"request":{"observation_id":"obs-golden","action_id":"golden-137","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"orientation_tolerance_rad":0}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/orientation_tolerance_rad","actual":0,"suggestion":"0 is less than or equal to the minimum of 0. <field description> Field constraints: {'type': 'number', 'maximum': 3.14159265, 'exclusiveMinimum': 0}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/orientation_tolerance_rad","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "138 stage/move/orientation_tolerance_rad=1e-06": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-138\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"orientation_tolerance_rad\" = 1e-06"]]
+  ]},
+  "139 stage/move/orientation_tolerance_rad=3.14159265": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-139\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"orientation_tolerance_rad\" = 3.14159265"]]
+  ]},
+  "140 stage/move/orientation_tolerance_rad=3.14159365": {"$derive": "137 stage/move/orientation_tolerance_rad=0", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-140\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"orientation_tolerance_rad\" = 3.14159365"]],
+   [16,18,[".\"schema\".\"actual\" = 3.14159365",".\"schema\".\"suggestion\" = \"3.14159365 is greater than the maximum of 3.14159265. \""]]
+  ]},
+  "141 stage/move/orientation_tolerance_rad=\"1\"": {"$derive": "137 stage/move/orientation_tolerance_rad=0", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-141\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"orientation_tolerance_rad\" = \"1\""]],
+   [16,18,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "142 stage/move/max_upward_dz_m=0": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-142\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"max_upward_dz_m\" = 0"]]
+  ]},
+  "143 stage/move/max_upward_dz_m=-1e-06": {"request":{"observation_id":"obs-golden","action_id":"golden-143","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"max_upward_dz_m":-1e-06}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/max_upward_dz_m","actual":-1e-06,"suggestion":"-1e-06 is less than the minimum of 0. <field description> Field constraints: {'type': 'number', 'minimum': 0, 'maximum': 0.15}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/max_upward_dz_m","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "144 stage/move/max_upward_dz_m=0.15": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-144\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"max_upward_dz_m\" = 0.15"]]
+  ]},
+  "145 stage/move/max_upward_dz_m=0.150001": {"$derive": "143 stage/move/max_upward_dz_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-145\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"max_upward_dz_m\" = 0.150001"]],
+   [16,18,[".\"schema\".\"actual\" = 0.150001",".\"schema\".\"suggestion\" = \"0.150001 is greater than the maximum of 0.15. \""]]
+  ]},
+  "146 stage/move/max_upward_dz_m=\"1\"": {"$derive": "143 stage/move/max_upward_dz_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-146\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"max_upward_dz_m\" = \"1\""]],
+   [16,18,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "147 stage/move/stall_guard_preset=\"off\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-147\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"stall_guard_preset\" = \"off\""]]
+  ]},
+  "148 stage/move/stall_guard_preset=\"contact_stop\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-148\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"stall_guard_preset\" = \"contact_stop\""]]
+  ]},
+  "149 stage/move/stall_guard_preset=\"strict\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-149\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"stall_guard_preset\" = \"strict\""]]
+  ]},
+  "150 stage/move/stall_guard_preset=\"firm\"": {"request":{"observation_id":"obs-golden","action_id":"golden-150","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"stall_guard_preset":"firm"}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/stall_guard_preset","actual":"firm","suggestion":"'firm' is not one of ['off', 'contact_stop', 'strict']. <field description> Field constraints: {'type': 'string', 'enum': ['off', 'contact_stop', 'strict']}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/stall_guard_preset","value":"<one of: off, contact_stop, strict>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "151 stage/move/stall_guard_preset=\"normal\"": {"$derive": "150 stage/move/stall_guard_preset=\"firm\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-151\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"stall_guard_preset\" = \"normal\""]],
+   [16,18,[".\"schema\".\"actual\" = \"normal\"",".\"schema\".\"suggestion\" = \"'normal' is not one of ['off', 'contact_stop', 'strict']. \""]]
+  ]},
+  "152 stage/move/stall_guard_preset=\"sensitive\"": {"$derive": "150 stage/move/stall_guard_preset=\"firm\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-152\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"stall_guard_preset\" = \"sensitive\""]],
+   [16,18,[".\"schema\".\"actual\" = \"sensitive\"",".\"schema\".\"suggestion\" = \"'sensitive' is not one of ['off', 'contact_stop', 'strict']. \""]]
+  ]},
+  "153 stage/move/stall_guard_preset=\"compliant\"": {"$derive": "150 stage/move/stall_guard_preset=\"firm\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-153\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"stall_guard_preset\" = \"compliant\""]],
+   [16,18,[".\"schema\".\"actual\" = \"compliant\"",".\"schema\".\"suggestion\" = \"'compliant' is not one of ['off', 'contact_stop', 'strict']. \""]]
+  ]},
+  "154 stage/move/stall_guard_preset=\"bogus\"": {"$derive": "150 stage/move/stall_guard_preset=\"firm\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-154\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"stall_guard_preset\" = \"bogus\""]],
+   [16,18,[".\"schema\".\"actual\" = \"bogus\"",".\"schema\".\"suggestion\" = \"'bogus' is not one of ['off', 'contact_stop', 'strict']. \""]]
+  ]},
+  "155 stage/move/max_tracking_divergence_m=0.005": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-155\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"max_tracking_divergence_m\" = 0.005"]]
+  ]},
+  "156 stage/move/max_tracking_divergence_m=0.004999": {"request":{"observation_id":"obs-golden","action_id":"golden-156","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"max_tracking_divergence_m":0.004999}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/max_tracking_divergence_m","actual":0.004999,"suggestion":"0.004999 is less than the minimum of 0.005. <field description> Field constraints: {'type': 'number', 'minimum': 0.005, 'maximum': 0.15}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/max_tracking_divergence_m","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "157 stage/move/max_tracking_divergence_m=0.15": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-157\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"max_tracking_divergence_m\" = 0.15"]]
+  ]},
+  "158 stage/move/max_tracking_divergence_m=0.150001": {"$derive": "156 stage/move/max_tracking_divergence_m=0.004999", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-158\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"max_tracking_divergence_m\" = 0.150001"]],
+   [16,18,[".\"schema\".\"actual\" = 0.150001",".\"schema\".\"suggestion\" = \"0.150001 is greater than the maximum of 0.15. \""]]
+  ]},
+  "159 stage/move/max_tracking_divergence_m=\"1\"": {"$derive": "156 stage/move/max_tracking_divergence_m=0.004999", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-159\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"max_tracking_divergence_m\" = \"1\""]],
+   [16,18,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "160 stage/move/clearance_preset=\"none\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-160\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"clearance_preset\" = \"none\""]]
+  ]},
+  "161 stage/move/clearance_preset=\"low\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-161\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"clearance_preset\" = \"low\""]]
+  ]},
+  "162 stage/move/clearance_preset=\"normal\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-162\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"clearance_preset\" = \"normal\""]]
+  ]},
+  "163 stage/move/clearance_preset=\"high\"": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-163\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"clearance_preset\" = \"high\""]]
+  ]},
+  "164 stage/move/clearance_preset=\"bogus\"": {"request":{"observation_id":"obs-golden","action_id":"golden-164","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"clearance_preset":"bogus"}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/clearance_preset","actual":"bogus","suggestion":"'bogus' is not one of ['none', 'low', 'normal', 'high']. <field description> Field constraints: {'type': 'string', 'enum': ['none', 'low', 'normal', 'high']}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/clearance_preset","value":"<one of: none, low, normal, high>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "165 stage/move/clearance_height_m=0": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-165\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"clearance_height_m\" = 0"]]
+  ]},
+  "166 stage/move/clearance_height_m=-1e-06": {"request":{"observation_id":"obs-golden","action_id":"golden-166","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"clearance_height_m":-1e-06}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/clearance_height_m","actual":-1e-06,"suggestion":"-1e-06 is less than the minimum of 0. <field description> Field constraints: {'type': 'number', 'minimum': 0, 'maximum': 0.25}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/clearance_height_m","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "167 stage/move/clearance_height_m=0.25": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-167\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"clearance_height_m\" = 0.25"]]
+  ]},
+  "168 stage/move/clearance_height_m=0.250001": {"$derive": "166 stage/move/clearance_height_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-168\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"clearance_height_m\" = 0.250001"]],
+   [16,18,[".\"schema\".\"actual\" = 0.250001",".\"schema\".\"suggestion\" = \"0.250001 is greater than the maximum of 0.25. \""]]
+  ]},
+  "169 stage/move/clearance_height_m=\"1\"": {"$derive": "166 stage/move/clearance_height_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-169\""]],
+   [12,13,[".\"request\".\"stages\"[0].\"clearance_height_m\" = \"1\""]],
+   [16,18,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "170 stage/gripper/goal_normalized=0": {"request":{"observation_id":"obs-golden","action_id":"golden-170","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "171 stage/gripper/goal_normalized=-1e-06": {"request":{"observation_id":"obs-golden","action_id":"golden-171","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":-1e-06}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/goal_normalized","actual":-1e-06,"suggestion":"-1e-06 is less than the minimum of 0. <field description> Field constraints: {'type': 'number', 'minimum': 0, 'maximum': 1}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/goal_normalized","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "172 stage/gripper/goal_normalized=1": {"request":{"observation_id":"obs-golden","action_id":"golden-172","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":1}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "173 stage/gripper/goal_normalized=1.000001": {"$derive": "171 stage/gripper/goal_normalized=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-173\""]],
+   [5,6,[".\"request\".\"stages\"[0].\"goal_normalized\" = 1.000001"]],
+   [9,11,[".\"schema\".\"actual\" = 1.000001",".\"schema\".\"suggestion\" = \"1.000001 is greater than the maximum of 1. \""]]
+  ]},
+  "174 stage/gripper/goal_normalized=\"1\"": {"$derive": "171 stage/gripper/goal_normalized=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-174\""]],
+   [5,6,[".\"request\".\"stages\"[0].\"goal_normalized\" = \"1\""]],
+   [9,11,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "175 stage/gripper/checkpoint_after_gripper=true": {"request":{"observation_id":"obs-golden","action_id":"golden-175","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"checkpoint_after_gripper":true}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "176 stage/gripper/checkpoint_after_gripper=false": {"request":{"observation_id":"obs-golden","action_id":"golden-176","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"checkpoint_after_gripper":false}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "177 stage/gripper/checkpoint_after_gripper=\"true\"": {"$derive": "088 stage/move/checkpoint_after_gripper=\"true\"", "$edits": [
+   [1,4,[".\"request\".\"action_id\" = \"golden-177\"",".\"request\".\"stages\"[0].\"id\" = \"j\"",".\"request\".\"stages\"[0].\"kind\" = \"gripper\""]],
+   [5,13,[".\"request\".\"stages\"[0].\"goal_normalized\" = 0.0"]]
+  ]},
+  "178 stage/gripper/grip_guard_preset=\"none\"": {"request":{"observation_id":"obs-golden","action_id":"golden-178","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"grip_guard_preset":"none"}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "179 stage/gripper/grip_guard_preset=\"non_empty\"": {"request":{"observation_id":"obs-golden","action_id":"golden-179","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"grip_guard_preset":"non_empty"}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "180 stage/gripper/grip_guard_preset=\"thin_object\"": {"request":{"observation_id":"obs-golden","action_id":"golden-180","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"grip_guard_preset":"thin_object"}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "181 stage/gripper/grip_guard_preset=\"rigid_object\"": {"request":{"observation_id":"obs-golden","action_id":"golden-181","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"grip_guard_preset":"rigid_object"}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "182 stage/gripper/grip_guard_preset=\"wide_object\"": {"request":{"observation_id":"obs-golden","action_id":"golden-182","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"grip_guard_preset":"wide_object"}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "183 stage/gripper/grip_guard_preset=\"normal\"": {"$derive": "095 stage/move/grip_guard_preset=\"normal\"", "$edits": [
+   [1,4,[".\"request\".\"action_id\" = \"golden-183\"",".\"request\".\"stages\"[0].\"id\" = \"j\"",".\"request\".\"stages\"[0].\"kind\" = \"gripper\""]],
+   [5,12,[".\"request\".\"stages\"[0].\"goal_normalized\" = 0.0"]]
+  ]},
+  "184 stage/gripper/grip_guard_preset=\"thin\"": {"request":{"observation_id":"obs-golden","action_id":"golden-184","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"grip_guard_preset":"thin"}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/grip_guard_preset","actual":"thin","suggestion":"'thin' is not one of ['none', 'non_empty', 'thin_object', 'rigid_object', 'wide_object']. <field description> Field constraints: {'type': 'string', 'enum': ['none', 'non_empty', 'thin_object', 'rigid_object', 'wide_object']}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/grip_guard_preset","value":"<one of: none, non_empty, thin_object, rigid_object, wide_object>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "185 stage/gripper/grip_guard_preset=\"solid\"": {"$derive": "184 stage/gripper/grip_guard_preset=\"thin\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-185\""]],
+   [6,7,[".\"request\".\"stages\"[0].\"grip_guard_preset\" = \"solid\""]],
+   [10,12,[".\"schema\".\"actual\" = \"solid\"",".\"schema\".\"suggestion\" = \"'solid' is not one of ['none', 'non_empty', 'thin_object', 'rigid_object', 'wide_object']. \""]]
+  ]},
+  "186 stage/gripper/grip_guard_preset=\"empty_only\"": {"$derive": "184 stage/gripper/grip_guard_preset=\"thin\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-186\""]],
+   [6,7,[".\"request\".\"stages\"[0].\"grip_guard_preset\" = \"empty_only\""]],
+   [10,12,[".\"schema\".\"actual\" = \"empty_only\"",".\"schema\".\"suggestion\" = \"'empty_only' is not one of ['none', 'non_empty', 'thin_object', 'rigid_object', 'wide_object']. \""]]
+  ]},
+  "187 stage/gripper/grip_guard_preset=\"bogus\"": {"$derive": "184 stage/gripper/grip_guard_preset=\"thin\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-187\""]],
+   [6,7,[".\"request\".\"stages\"[0].\"grip_guard_preset\" = \"bogus\""]],
+   [10,12,[".\"schema\".\"actual\" = \"bogus\"",".\"schema\".\"suggestion\" = \"'bogus' is not one of ['none', 'non_empty', 'thin_object', 'rigid_object', 'wide_object']. \""]]
+  ]},
+  "188 stage/gripper/min_aperture_m=0": {"$derive": "175 stage/gripper/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-188\""]],
+   [6,7,[".\"request\".\"stages\"[0].\"min_aperture_m\" = 0"]]
+  ]},
+  "189 stage/gripper/min_aperture_m=-1e-06": {"$derive": "101 stage/move/min_aperture_m=-1e-06", "$edits": [
+   [1,4,[".\"request\".\"action_id\" = \"golden-189\"",".\"request\".\"stages\"[0].\"id\" = \"j\"",".\"request\".\"stages\"[0].\"kind\" = \"gripper\""]],
+   [5,12,[".\"request\".\"stages\"[0].\"goal_normalized\" = 0.0"]]
+  ]},
+  "190 stage/gripper/min_aperture_m=0.088": {"request":{"observation_id":"obs-golden","action_id":"golden-190","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"min_aperture_m":0.088}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "191 stage/gripper/min_aperture_m=0.088001": {"request":{"observation_id":"obs-golden","action_id":"golden-191","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"min_aperture_m":0.088001}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/min_aperture_m","actual":0.088001,"suggestion":"0.088001 is greater than the maximum of 0.088. <field description> Field constraints: {'type': 'number', 'minimum': 0, 'maximum': 0.088}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/min_aperture_m","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "192 stage/gripper/min_aperture_m=\"1\"": {"$derive": "191 stage/gripper/min_aperture_m=0.088001", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-192\""]],
+   [6,7,[".\"request\".\"stages\"[0].\"min_aperture_m\" = \"1\""]],
+   [10,12,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "193 stage/gripper/max_aperture_m=0": {"$derive": "175 stage/gripper/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-193\""]],
+   [6,7,[".\"request\".\"stages\"[0].\"max_aperture_m\" = 0"]]
+  ]},
+  "194 stage/gripper/max_aperture_m=-1e-06": {"request":{"observation_id":"obs-golden","action_id":"golden-194","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"max_aperture_m":-1e-06}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/max_aperture_m","actual":-1e-06,"suggestion":"-1e-06 is less than the minimum of 0. <field description> Field constraints: {'type': 'number', 'minimum': 0, 'maximum': 0.088}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/max_aperture_m","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "195 stage/gripper/max_aperture_m=0.088": {"request":{"observation_id":"obs-golden","action_id":"golden-195","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"max_aperture_m":0.088}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "196 stage/gripper/max_aperture_m=0.088001": {"$derive": "194 stage/gripper/max_aperture_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-196\""]],
+   [6,7,[".\"request\".\"stages\"[0].\"max_aperture_m\" = 0.088001"]],
+   [10,12,[".\"schema\".\"actual\" = 0.088001",".\"schema\".\"suggestion\" = \"0.088001 is greater than the maximum of 0.088. \""]]
+  ]},
+  "197 stage/gripper/max_aperture_m=\"1\"": {"$derive": "194 stage/gripper/max_aperture_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-197\""]],
+   [6,7,[".\"request\".\"stages\"[0].\"max_aperture_m\" = \"1\""]],
+   [10,12,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "198 stage/gripper/gripper_speed_scale=0.25": {"request":{"observation_id":"obs-golden","action_id":"golden-198","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"gripper_speed_scale":0.25}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "199 stage/gripper/gripper_speed_scale=0.249999": {"request":{"observation_id":"obs-golden","action_id":"golden-199","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"gripper_speed_scale":0.249999}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/gripper_speed_scale","actual":0.249999,"suggestion":"0.249999 is less than the minimum of 0.25. <field description> Field constraints: {'type': 'number', 'minimum': 0.25, 'maximum': 1}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/gripper_speed_scale","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "200 stage/gripper/gripper_speed_scale=1": {"request":{"observation_id":"obs-golden","action_id":"golden-200","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"gripper_speed_scale":1}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "201 stage/gripper/gripper_speed_scale=1.000001": {"$derive": "199 stage/gripper/gripper_speed_scale=0.249999", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-201\""]],
+   [6,7,[".\"request\".\"stages\"[0].\"gripper_speed_scale\" = 1.000001"]],
+   [10,12,[".\"schema\".\"actual\" = 1.000001",".\"schema\".\"suggestion\" = \"1.000001 is greater than the maximum of 1. \""]]
+  ]},
+  "202 stage/gripper/gripper_speed_scale=\"1\"": {"$derive": "199 stage/gripper/gripper_speed_scale=0.249999", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-202\""]],
+   [6,7,[".\"request\".\"stages\"[0].\"gripper_speed_scale\" = \"1\""]],
+   [10,12,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "203 stage/gripper/gripper_speed_preset=\"slower\"": {"request":{"observation_id":"obs-golden","action_id":"golden-203","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"gripper_speed_preset":"slower"}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "204 stage/gripper/gripper_speed_preset=\"slow\"": {"request":{"observation_id":"obs-golden","action_id":"golden-204","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"gripper_speed_preset":"slow"}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "205 stage/gripper/gripper_speed_preset=\"normal\"": {"request":{"observation_id":"obs-golden","action_id":"golden-205","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"gripper_speed_preset":"normal"}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "206 stage/gripper/gripper_speed_preset=\"bogus\"": {"request":{"observation_id":"obs-golden","action_id":"golden-206","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"gripper_speed_preset":"bogus"}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/gripper_speed_preset","actual":"bogus","suggestion":"'bogus' is not one of ['slower', 'slow', 'normal']. <field description> Field constraints: {'type': 'string', 'enum': ['slower', 'slow', 'normal']}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/gripper_speed_preset","value":"<one of: slower, slow, normal>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "207 stage/observe/reason=\"x\"": {"request":{"observation_id":"obs-golden","action_id":"golden-207","stages":[{"id":"o","kind":"observe","reason":"x"}]},"schema":"ok","compile":{"schema_version":"0.1","run_id":"golden-run","episode_id":"golden-episode","env_instance_id":"golden-env","env_generation":1,"world_kind":"observed","type":"BatchAction","action_id":"golden-207","based_on_observation_id":"obs-golden","mode":"absolute","frame_id":"so101_base","tcp_config_id":"so101-gripper-frame-v1","limits_profile":"so101-deployment-v1","timeout_s":120.0,"stages":[{"id":"o","kind":"observe","reason":"x"}]},"dependencies":{"o":[]},"backend":"ok"},
+  "208 stage/observe/reason=\"\"": {"request":{"observation_id":"obs-golden","action_id":"golden-208","stages":[{"id":"o","kind":"observe","reason":""}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/reason","actual":"","suggestion":"'' should be non-empty. <field description> Field constraints: {'type': 'string', 'minLength': 1, 'pattern': '\\\\S'}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/reason","value":"<current caller-provided value>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: batch_observe_requires_reason"},
+  "209 stage/observe/reason=\" \"": {"$derive": "208 stage/observe/reason=\"\"", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-209\""]],
+   [4,5,[".\"request\".\"stages\"[0].\"reason\" = \" \""]],
+   [8,10,[".\"schema\".\"actual\" = \" \"",".\"schema\".\"suggestion\" = \"' ' does not match '\\\\\\\\S'. \""]]
+  ]},
+  "210 batch/checkpoint_after_gripper=true": {"request":{"observation_id":"obs-golden","action_id":"golden-210","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}],"checkpoint_after_gripper":true},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "211 batch/checkpoint_after_gripper=false": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-211\""]],
+   [16,17,[".\"request\".\"checkpoint_after_gripper\" = false"]]
+  ]},
+  "212 batch/checkpoint_after_gripper=\"true\"": {"request":{"observation_id":"obs-golden","action_id":"golden-212","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}],"checkpoint_after_gripper":"true"},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/checkpoint_after_gripper","actual":"true","suggestion":"'true' is not of type 'boolean'. <field description> Field constraints: {'type': 'boolean'}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/checkpoint_after_gripper","value":"<true or false>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "213 batch/grip_guard_preset=\"none\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-213\""]],
+   [16,17,[".\"request\".\"grip_guard_preset\" = \"none\""]]
+  ]},
+  "214 batch/grip_guard_preset=\"non_empty\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-214\""]],
+   [16,17,[".\"request\".\"grip_guard_preset\" = \"non_empty\""]]
+  ]},
+  "215 batch/grip_guard_preset=\"normal\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-215\""]],
+   [16,17,[".\"request\".\"grip_guard_preset\" = \"normal\""]]
+  ]},
+  "216 batch/grip_guard_preset=\"thin_object\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-216\""]],
+   [16,17,[".\"request\".\"grip_guard_preset\" = \"thin_object\""]]
+  ]},
+  "217 batch/grip_guard_preset=\"thin\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-217\""]],
+   [16,17,[".\"request\".\"grip_guard_preset\" = \"thin\""]]
+  ]},
+  "218 batch/grip_guard_preset=\"rigid_object\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-218\""]],
+   [16,17,[".\"request\".\"grip_guard_preset\" = \"rigid_object\""]]
+  ]},
+  "219 batch/grip_guard_preset=\"solid\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-219\""]],
+   [16,17,[".\"request\".\"grip_guard_preset\" = \"solid\""]]
+  ]},
+  "220 batch/grip_guard_preset=\"wide_object\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-220\""]],
+   [16,17,[".\"request\".\"grip_guard_preset\" = \"wide_object\""]]
+  ]},
+  "221 batch/grip_guard_preset=\"empty_only\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-221\""]],
+   [16,17,[".\"request\".\"grip_guard_preset\" = \"empty_only\""]]
+  ]},
+  "222 batch/grip_guard_preset=\"bogus\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-222\""]],
+   [16,17,[".\"request\".\"grip_guard_preset\" = \"bogus\""]]
+  ]},
+  "223 batch/min_aperture_m=0": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-223\""]],
+   [16,17,[".\"request\".\"min_aperture_m\" = 0"]]
+  ]},
+  "224 batch/min_aperture_m=-1e-06": {"request":{"observation_id":"obs-golden","action_id":"golden-224","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}],"min_aperture_m":-1e-06},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/min_aperture_m","actual":-1e-06,"suggestion":"-1e-06 is less than the minimum of 0. <field description> Field constraints: {'type': 'number', 'minimum': 0, 'maximum': 0.088}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/min_aperture_m","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "225 batch/min_aperture_m=0.088": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-225\""]],
+   [16,17,[".\"request\".\"min_aperture_m\" = 0.088"]]
+  ]},
+  "226 batch/min_aperture_m=0.088001": {"$derive": "224 batch/min_aperture_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-226\""]],
+   [16,17,[".\"request\".\"min_aperture_m\" = 0.088001"]],
+   [20,22,[".\"schema\".\"actual\" = 0.088001",".\"schema\".\"suggestion\" = \"0.088001 is greater than the maximum of 0.088. \""]]
+  ]},
+  "227 batch/min_aperture_m=\"1\"": {"$derive": "224 batch/min_aperture_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-227\""]],
+   [16,17,[".\"request\".\"min_aperture_m\" = \"1\""]],
+   [20,22,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "228 batch/max_aperture_m=0": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-228\""]],
+   [16,17,[".\"request\".\"max_aperture_m\" = 0"]]
+  ]},
+  "229 batch/max_aperture_m=-1e-06": {"$derive": "224 batch/min_aperture_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-229\""]],
+   [16,17,[".\"request\".\"max_aperture_m\" = -1e-06"]],
+   [19,20,[".\"schema\".\"field_path\" = \"/max_aperture_m\""]],
+   [24,25,[".\"schema\".\"minimal_example\".\"field_path\" = \"/max_aperture_m\""]]
+  ]},
+  "230 batch/max_aperture_m=0.088": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-230\""]],
+   [16,17,[".\"request\".\"max_aperture_m\" = 0.088"]]
+  ]},
+  "231 batch/max_aperture_m=0.088001": {"$derive": "224 batch/min_aperture_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-231\""]],
+   [16,17,[".\"request\".\"max_aperture_m\" = 0.088001"]],
+   [19,22,[".\"schema\".\"field_path\" = \"/max_aperture_m\"",".\"schema\".\"actual\" = 0.088001",".\"schema\".\"suggestion\" = \"0.088001 is greater than the maximum of 0.088. \""]],
+   [24,25,[".\"schema\".\"minimal_example\".\"field_path\" = \"/max_aperture_m\""]]
+  ]},
+  "232 batch/max_aperture_m=\"1\"": {"$derive": "224 batch/min_aperture_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-232\""]],
+   [16,17,[".\"request\".\"max_aperture_m\" = \"1\""]],
+   [19,22,[".\"schema\".\"field_path\" = \"/max_aperture_m\"",".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]],
+   [24,25,[".\"schema\".\"minimal_example\".\"field_path\" = \"/max_aperture_m\""]]
+  ]},
+  "233 batch/joint_travel_preset=\"standard\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-233\""]],
+   [16,17,[".\"request\".\"joint_travel_preset\" = \"standard\""]]
+  ]},
+  "234 batch/joint_travel_preset=\"extended\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-234\""]],
+   [16,17,[".\"request\".\"joint_travel_preset\" = \"extended\""]]
+  ]},
+  "235 batch/joint_travel_preset=\"unconstrained\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-235\""]],
+   [16,17,[".\"request\".\"joint_travel_preset\" = \"unconstrained\""]]
+  ]},
+  "236 batch/joint_travel_preset=\"bogus\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-236\""]],
+   [16,17,[".\"request\".\"joint_travel_preset\" = \"bogus\""]]
+  ]},
+  "237 batch/max_joint_travel_rad=0": {"request":{"observation_id":"obs-golden","action_id":"golden-237","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}],"max_joint_travel_rad":0},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/max_joint_travel_rad","actual":0,"suggestion":"0 is less than or equal to the minimum of 0. <field description> Field constraints: {'type': 'number', 'exclusiveMinimum': 0}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/max_joint_travel_rad","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "238 batch/max_joint_travel_rad=1e-06": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-238\""]],
+   [16,17,[".\"request\".\"max_joint_travel_rad\" = 1e-06"]]
+  ]},
+  "239 batch/max_joint_travel_rad=\"1\"": {"$derive": "237 batch/max_joint_travel_rad=0", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-239\""]],
+   [16,17,[".\"request\".\"max_joint_travel_rad\" = \"1\""]],
+   [20,22,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "240 batch/max_backtracking_rad=0": {"$derive": "237 batch/max_joint_travel_rad=0", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-240\""]],
+   [16,17,[".\"request\".\"max_backtracking_rad\" = 0"]],
+   [19,20,[".\"schema\".\"field_path\" = \"/max_backtracking_rad\""]],
+   [24,25,[".\"schema\".\"minimal_example\".\"field_path\" = \"/max_backtracking_rad\""]]
+  ]},
+  "241 batch/max_backtracking_rad=1e-06": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-241\""]],
+   [16,17,[".\"request\".\"max_backtracking_rad\" = 1e-06"]]
+  ]},
+  "242 batch/max_backtracking_rad=\"1\"": {"$derive": "237 batch/max_joint_travel_rad=0", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-242\""]],
+   [16,17,[".\"request\".\"max_backtracking_rad\" = \"1\""]],
+   [19,22,[".\"schema\".\"field_path\" = \"/max_backtracking_rad\"",".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]],
+   [24,25,[".\"schema\".\"minimal_example\".\"field_path\" = \"/max_backtracking_rad\""]]
+  ]},
+  "243 batch/tolerance_preset=\"tight\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-243\""]],
+   [16,17,[".\"request\".\"tolerance_preset\" = \"tight\""]]
+  ]},
+  "244 batch/tolerance_preset=\"fine\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-244\""]],
+   [16,17,[".\"request\".\"tolerance_preset\" = \"fine\""]]
+  ]},
+  "245 batch/tolerance_preset=\"strict\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-245\""]],
+   [16,17,[".\"request\".\"tolerance_preset\" = \"strict\""]]
+  ]},
+  "246 batch/tolerance_preset=\"normal\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-246\""]],
+   [16,17,[".\"request\".\"tolerance_preset\" = \"normal\""]]
+  ]},
+  "247 batch/tolerance_preset=\"grasp\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-247\""]],
+   [16,17,[".\"request\".\"tolerance_preset\" = \"grasp\""]]
+  ]},
+  "248 batch/tolerance_preset=\"relaxed\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-248\""]],
+   [16,17,[".\"request\".\"tolerance_preset\" = \"relaxed\""]]
+  ]},
+  "249 batch/tolerance_preset=\"transit\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-249\""]],
+   [16,17,[".\"request\".\"tolerance_preset\" = \"transit\""]]
+  ]},
+  "250 batch/tolerance_preset=\"compliant\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-250\""]],
+   [16,17,[".\"request\".\"tolerance_preset\" = \"compliant\""]]
+  ]},
+  "251 batch/tolerance_preset=\"seating\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-251\""]],
+   [16,17,[".\"request\".\"tolerance_preset\" = \"seating\""]]
+  ]},
+  "252 batch/tolerance_preset=\"coarse\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-252\""]],
+   [16,17,[".\"request\".\"tolerance_preset\" = \"coarse\""]]
+  ]},
+  "253 batch/tolerance_preset=\"unconstrained_orientation\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-253\""]],
+   [16,17,[".\"request\".\"tolerance_preset\" = \"unconstrained_orientation\""]]
+  ]},
+  "254 batch/tolerance_preset=\"bogus\"": {"request":{"observation_id":"obs-golden","action_id":"golden-254","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}],"tolerance_preset":"bogus"},"schema":"ok","compile":"ValueError: invalid_tolerance_preset"},
+  "255 batch/position_tolerance_m=0": {"request":{"observation_id":"obs-golden","action_id":"golden-255","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}],"position_tolerance_m":0},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/position_tolerance_m","actual":0,"suggestion":"0 is less than or equal to the minimum of 0. <field description> Field constraints: {'type': 'number', 'maximum': 0.1, 'exclusiveMinimum': 0}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/position_tolerance_m","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: invalid_position_tolerance_m"},
+  "256 batch/position_tolerance_m=1e-06": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-256\""]],
+   [16,17,[".\"request\".\"position_tolerance_m\" = 1e-06"]]
+  ]},
+  "257 batch/position_tolerance_m=0.1": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-257\""]],
+   [16,17,[".\"request\".\"position_tolerance_m\" = 0.1"]]
+  ]},
+  "258 batch/position_tolerance_m=0.100001": {"$derive": "255 batch/position_tolerance_m=0", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-258\""]],
+   [16,17,[".\"request\".\"position_tolerance_m\" = 0.100001"]],
+   [20,22,[".\"schema\".\"actual\" = 0.100001",".\"schema\".\"suggestion\" = \"0.100001 is greater than the maximum of 0.1. \""]]
+  ]},
+  "259 batch/position_tolerance_m=\"1\"": {"$derive": "255 batch/position_tolerance_m=0", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-259\""]],
+   [16,17,[".\"request\".\"position_tolerance_m\" = \"1\""]],
+   [20,22,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "260 batch/orientation_tolerance_rad=0": {"request":{"observation_id":"obs-golden","action_id":"golden-260","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}],"orientation_tolerance_rad":0},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/orientation_tolerance_rad","actual":0,"suggestion":"0 is less than or equal to the minimum of 0. <field description> Field constraints: {'type': 'number', 'maximum': 3.14159265, 'exclusiveMinimum': 0}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/orientation_tolerance_rad","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: invalid_orientation_tolerance_rad"},
+  "261 batch/orientation_tolerance_rad=1e-06": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-261\""]],
+   [16,17,[".\"request\".\"orientation_tolerance_rad\" = 1e-06"]]
+  ]},
+  "262 batch/orientation_tolerance_rad=3.14159265": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-262\""]],
+   [16,17,[".\"request\".\"orientation_tolerance_rad\" = 3.14159265"]]
+  ]},
+  "263 batch/orientation_tolerance_rad=3.14159365": {"$derive": "260 batch/orientation_tolerance_rad=0", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-263\""]],
+   [16,17,[".\"request\".\"orientation_tolerance_rad\" = 3.14159365"]],
+   [20,22,[".\"schema\".\"actual\" = 3.14159365",".\"schema\".\"suggestion\" = \"3.14159365 is greater than the maximum of 3.14159265. \""]]
+  ]},
+  "264 batch/orientation_tolerance_rad=\"1\"": {"$derive": "260 batch/orientation_tolerance_rad=0", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-264\""]],
+   [16,17,[".\"request\".\"orientation_tolerance_rad\" = \"1\""]],
+   [20,22,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "265 batch/max_upward_dz_m=0": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-265\""]],
+   [16,17,[".\"request\".\"max_upward_dz_m\" = 0"]]
+  ]},
+  "266 batch/max_upward_dz_m=-1e-06": {"request":{"observation_id":"obs-golden","action_id":"golden-266","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}],"max_upward_dz_m":-1e-06},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/max_upward_dz_m","actual":-1e-06,"suggestion":"-1e-06 is less than the minimum of 0. <field description> Field constraints: {'type': 'number', 'minimum': 0, 'maximum': 0.15}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/max_upward_dz_m","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: invalid_max_upward_dz_m"},
+  "267 batch/max_upward_dz_m=0.15": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-267\""]],
+   [16,17,[".\"request\".\"max_upward_dz_m\" = 0.15"]]
+  ]},
+  "268 batch/max_upward_dz_m=0.150001": {"$derive": "266 batch/max_upward_dz_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-268\""]],
+   [16,17,[".\"request\".\"max_upward_dz_m\" = 0.150001"]],
+   [20,22,[".\"schema\".\"actual\" = 0.150001",".\"schema\".\"suggestion\" = \"0.150001 is greater than the maximum of 0.15. \""]]
+  ]},
+  "269 batch/max_upward_dz_m=\"1\"": {"$derive": "266 batch/max_upward_dz_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-269\""]],
+   [16,17,[".\"request\".\"max_upward_dz_m\" = \"1\""]],
+   [20,22,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "270 batch/stall_guard_preset=\"off\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-270\""]],
+   [16,17,[".\"request\".\"stall_guard_preset\" = \"off\""]]
+  ]},
+  "271 batch/stall_guard_preset=\"contact_stop\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-271\""]],
+   [16,17,[".\"request\".\"stall_guard_preset\" = \"contact_stop\""]]
+  ]},
+  "272 batch/stall_guard_preset=\"firm\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-272\""]],
+   [16,17,[".\"request\".\"stall_guard_preset\" = \"firm\""]]
+  ]},
+  "273 batch/stall_guard_preset=\"normal\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-273\""]],
+   [16,17,[".\"request\".\"stall_guard_preset\" = \"normal\""]]
+  ]},
+  "274 batch/stall_guard_preset=\"sensitive\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-274\""]],
+   [16,17,[".\"request\".\"stall_guard_preset\" = \"sensitive\""]]
+  ]},
+  "275 batch/stall_guard_preset=\"compliant\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-275\""]],
+   [16,17,[".\"request\".\"stall_guard_preset\" = \"compliant\""]]
+  ]},
+  "276 batch/stall_guard_preset=\"strict\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-276\""]],
+   [16,17,[".\"request\".\"stall_guard_preset\" = \"strict\""]]
+  ]},
+  "277 batch/stall_guard_preset=\"bogus\"": {"request":{"observation_id":"obs-golden","action_id":"golden-277","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}],"stall_guard_preset":"bogus"},"schema":"ok","compile":"ValueError: invalid_stall_guard_preset"},
+  "278 batch/max_tracking_divergence_m=0.005": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-278\""]],
+   [16,17,[".\"request\".\"max_tracking_divergence_m\" = 0.005"]]
+  ]},
+  "279 batch/max_tracking_divergence_m=0.004999": {"request":{"observation_id":"obs-golden","action_id":"golden-279","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}],"max_tracking_divergence_m":0.004999},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/max_tracking_divergence_m","actual":0.004999,"suggestion":"0.004999 is less than the minimum of 0.005. <field description> Field constraints: {'type': 'number', 'minimum': 0.005, 'maximum': 0.15}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/max_tracking_divergence_m","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: invalid_max_tracking_divergence_m"},
+  "280 batch/max_tracking_divergence_m=0.15": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-280\""]],
+   [16,17,[".\"request\".\"max_tracking_divergence_m\" = 0.15"]]
+  ]},
+  "281 batch/max_tracking_divergence_m=0.150001": {"$derive": "279 batch/max_tracking_divergence_m=0.004999", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-281\""]],
+   [16,17,[".\"request\".\"max_tracking_divergence_m\" = 0.150001"]],
+   [20,22,[".\"schema\".\"actual\" = 0.150001",".\"schema\".\"suggestion\" = \"0.150001 is greater than the maximum of 0.15. \""]]
+  ]},
+  "282 batch/max_tracking_divergence_m=\"1\"": {"$derive": "279 batch/max_tracking_divergence_m=0.004999", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-282\""]],
+   [16,17,[".\"request\".\"max_tracking_divergence_m\" = \"1\""]],
+   [20,22,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "283 batch/timeout_s=0.1": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-283\""]],
+   [16,17,[".\"request\".\"timeout_s\" = 0.1"]]
+  ]},
+  "284 batch/timeout_s=0.099999": {"request":{"observation_id":"obs-golden","action_id":"golden-284","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}],"timeout_s":0.099999},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/timeout_s","actual":0.099999,"suggestion":"0.099999 is less than the minimum of 0.1. <field description> Field constraints: {'type': 'number', 'minimum': 0.1, 'maximum': 300}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/timeout_s","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "285 batch/timeout_s=300": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-285\""]],
+   [16,17,[".\"request\".\"timeout_s\" = 300"]]
+  ]},
+  "286 batch/timeout_s=300.000001": {"$derive": "284 batch/timeout_s=0.099999", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-286\""]],
+   [16,17,[".\"request\".\"timeout_s\" = 300.000001"]],
+   [20,22,[".\"schema\".\"actual\" = 300.000001",".\"schema\".\"suggestion\" = \"300.000001 is greater than the maximum of 300. \""]]
+  ]},
+  "287 batch/timeout_s=\"1\"": {"$derive": "284 batch/timeout_s=0.099999", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-287\""]],
+   [16,17,[".\"request\".\"timeout_s\" = \"1\""]],
+   [20,22,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "288 batch/clearance_preset=\"none\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-288\""]],
+   [16,17,[".\"request\".\"clearance_preset\" = \"none\""]]
+  ]},
+  "289 batch/clearance_preset=\"low\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-289\""]],
+   [16,17,[".\"request\".\"clearance_preset\" = \"low\""]]
+  ]},
+  "290 batch/clearance_preset=\"normal\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-290\""]],
+   [16,17,[".\"request\".\"clearance_preset\" = \"normal\""]]
+  ]},
+  "291 batch/clearance_preset=\"high\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-291\""]],
+   [16,17,[".\"request\".\"clearance_preset\" = \"high\""]]
+  ]},
+  "292 batch/clearance_preset=\"bogus\"": {"request":{"observation_id":"obs-golden","action_id":"golden-292","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}],"clearance_preset":"bogus"},"schema":"ok","compile":"ValueError: invalid_clearance_preset"},
+  "293 batch/clearance_height_m=0": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-293\""]],
+   [16,17,[".\"request\".\"clearance_height_m\" = 0"]]
+  ]},
+  "294 batch/clearance_height_m=-1e-06": {"request":{"observation_id":"obs-golden","action_id":"golden-294","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}],"clearance_height_m":-1e-06},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/clearance_height_m","actual":-1e-06,"suggestion":"-1e-06 is less than the minimum of 0. <field description> Field constraints: {'type': 'number', 'minimum': 0, 'maximum': 0.25}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/clearance_height_m","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: invalid_clearance_height_m"},
+  "295 batch/clearance_height_m=0.25": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-295\""]],
+   [16,17,[".\"request\".\"clearance_height_m\" = 0.25"]]
+  ]},
+  "296 batch/clearance_height_m=0.250001": {"$derive": "294 batch/clearance_height_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-296\""]],
+   [16,17,[".\"request\".\"clearance_height_m\" = 0.250001"]],
+   [20,22,[".\"schema\".\"actual\" = 0.250001",".\"schema\".\"suggestion\" = \"0.250001 is greater than the maximum of 0.25. \""]]
+  ]},
+  "297 batch/clearance_height_m=\"1\"": {"$derive": "294 batch/clearance_height_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-297\""]],
+   [16,17,[".\"request\".\"clearance_height_m\" = \"1\""]],
+   [20,22,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "298 batch/target_exemption_preset=\"none\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-298\""]],
+   [16,17,[".\"request\".\"target_exemption_preset\" = \"none\""]]
+  ]},
+  "299 batch/target_exemption_preset=\"tight\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-299\""]],
+   [16,17,[".\"request\".\"target_exemption_preset\" = \"tight\""]]
+  ]},
+  "300 batch/target_exemption_preset=\"normal\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-300\""]],
+   [16,17,[".\"request\".\"target_exemption_preset\" = \"normal\""]]
+  ]},
+  "301 batch/target_exemption_preset=\"wide\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-301\""]],
+   [16,17,[".\"request\".\"target_exemption_preset\" = \"wide\""]]
+  ]},
+  "302 batch/target_exemption_preset=\"bogus\"": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-302\""]],
+   [16,17,[".\"request\".\"target_exemption_preset\" = \"bogus\""]]
+  ]},
+  "303 batch/target_exemption_radius_m=0": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-303\""]],
+   [16,17,[".\"request\".\"target_exemption_radius_m\" = 0"]]
+  ]},
+  "304 batch/target_exemption_radius_m=-1e-06": {"$derive": "266 batch/max_upward_dz_m=-1e-06", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-304\""]],
+   [16,17,[".\"request\".\"target_exemption_radius_m\" = -1e-06"]],
+   [19,20,[".\"schema\".\"field_path\" = \"/target_exemption_radius_m\""]],
+   [24,25,[".\"schema\".\"minimal_example\".\"field_path\" = \"/target_exemption_radius_m\""]],
+   [27,28,[".\"compile\" = \"ValueError: robot_action_stage_requires_arm\""]]
+  ]},
+  "305 batch/target_exemption_radius_m=0.15": {"$derive": "210 batch/checkpoint_after_gripper=true", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-305\""]],
+   [16,17,[".\"request\".\"target_exemption_radius_m\" = 0.15"]]
+  ]},
+  "306 batch/target_exemption_radius_m=0.150001": {"request":{"observation_id":"obs-golden","action_id":"golden-306","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0}],"target_exemption_radius_m":0.150001},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/target_exemption_radius_m","actual":0.150001,"suggestion":"0.150001 is greater than the maximum of 0.15. <field description> Field constraints: {'type': 'number', 'minimum': 0, 'maximum': 0.15}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/target_exemption_radius_m","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "307 batch/target_exemption_radius_m=\"1\"": {"$derive": "306 batch/target_exemption_radius_m=0.150001", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-307\""]],
+   [16,17,[".\"request\".\"target_exemption_radius_m\" = \"1\""]],
+   [20,22,[".\"schema\".\"actual\" = \"1\"",".\"schema\".\"suggestion\" = \"'1' is not of type 'number'. \""]]
+  ]},
+  "308 batch/stage_overrides_batch_tolerance": {"request":{"observation_id":"obs-golden","action_id":"golden-308","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"tolerance_preset":"tight"}],"tolerance_preset":"coarse"},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "309 batch/stage_overrides_batch_grip_guard": {"request":{"observation_id":"obs-golden","action_id":"golden-309","stages":[{"id":"j","kind":"gripper","arm":"left","goal_normalized":0.0,"grip_guard_preset":"none"}],"grip_guard_preset":"rigid_object"},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "310 batch/grip_guard_on_opening_jaw": {"$derive": "309 batch/stage_overrides_batch_grip_guard", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-310\""]],
+   [5,7,[".\"request\".\"stages\"[0].\"goal_normalized\" = 1.0"]]
+  ]},
+  "311 batch/conflicting_clearance": {"request":{"observation_id":"obs-golden","action_id":"golden-311","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}],"clearance_preset":"low","clearance_height_m":0.1},"schema":"ok","compile":"ValueError: conflicting_clearance_preset_and_clearance_height_m"},
+  "312 batch/conflicting_exemption": {"request":{"observation_id":"obs-golden","action_id":"golden-312","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}],"target_exemption_preset":"tight","target_exemption_radius_m":0.02},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "313 structure/dual_arm": {"request":{"observation_id":"obs-golden","action_id":"golden-313","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"m2","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "314 structure/cross_arm_dependency": {"$derive": "313 structure/dual_arm", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-314\""]],
+   [22,22,[".\"request\".\"stages\"[1].\"depends_on\"[0] = \"m\""]]
+  ]},
+  "315 structure/unknown_dependency": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-315\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"depends_on\"[0] = \"nope\""]]
+  ]},
+  "316 structure/self_dependency": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-316\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"depends_on\"[0] = \"m\""]]
+  ]},
+  "317 structure/dependency_cycle": {"$derive": "313 structure/dual_arm", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-317\""]],
+   [12,12,[".\"request\".\"stages\"[0].\"depends_on\"[0] = \"m2\""]],
+   [22,22,[".\"request\".\"stages\"[1].\"depends_on\"[0] = \"m\""]]
+  ]},
+  "318 structure/duplicate_dependency": {"request":{"observation_id":"obs-golden","action_id":"golden-318","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"m2","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"depends_on":["m","m"]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/1/depends_on","actual":["m","m"],"suggestion":"['m', 'm'] has non-unique elements. <field description> Field constraints: {'type': 'array'}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/1/depends_on","value":"<array of permitted+ entries matching items schema>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "319 structure/duplicate_ids": {"request":{"observation_id":"obs-golden","action_id":"golden-319","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"m","kind":"gripper","arm":"left","goal_normalized":0.0}]},"schema":"ok","compile":"ValueError: batch_requires_unique_stage_ids"},
+  "320 structure/id_80_chars": {"request":{"observation_id":"obs-golden","action_id":"golden-320","stages":[{"id":"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "321 structure/id_81_chars": {"request":{"observation_id":"obs-golden","action_id":"golden-321","stages":[{"id":"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/id","actual":"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii","suggestion":"'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii' is too long. <field description> Field constraints: {'type': 'string', 'minLength': 1}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/id","value":"<current caller-provided value>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "322 structure/empty_id": {"request":{"observation_id":"obs-golden","action_id":"golden-322","stages":[{"id":"","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/id","actual":"","suggestion":"'' should be non-empty. <field description> Field constraints: {'type': 'string', 'minLength': 1}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/id","value":"<current caller-provided value>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: batch_requires_unique_stage_ids"},
+  "323 structure/missing_id": {"request":{"observation_id":"obs-golden","action_id":"golden-323","stages":[{"kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/id","actual":{"present":false},"suggestion":"'id' is a required property. Allowed fields here: angles_deg, arm, checkpoint_after_gripper, clearance_height_m, clearance_preset, contact_depth_m, contact_region, depends_on, grasp_position_m, grip_guard_preset, gripper_goal_normalized, gripper_motion, gripper_speed_preset, gripper_speed_scale, id, joint_travel_preset, kind, max_aperture_m, max_backtracking_rad, max_joint_travel_rad, max_tracking_divergence_m, max_upward_dz_m, min_aperture_m, orientation_tolerance_rad, position_m, position_tolerance_m, quaternion_xyzw, speed_preset, speed_scale, stall_guard_preset, tolerance_preset. Required fields: id, kind, arm. Choose grasp_position_m + angles_deg OR position_m + quaternion_xyzw. Optional jaw target is gripper_goal_normalized. Routes are successive move stages, not via/joint fields. Field constraints: {'type': 'object'}. <field description> Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/id","value":"<current caller-provided value>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: batch_requires_unique_stage_ids"},
+  "324 structure/missing_kind": {"request":{"observation_id":"obs-golden","action_id":"golden-324","stages":[{"id":"m","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/kind","actual":{"present":false},"suggestion":"'kind' is a required property. Allowed fields here: angles_deg, arm, checkpoint_after_gripper, clearance_height_m, clearance_preset, contact_depth_m, contact_region, depends_on, goal_normalized, grasp_position_m, grip_guard_preset, gripper_goal_normalized, gripper_motion, gripper_speed_preset, gripper_speed_scale, id, joint_travel_preset, kind, max_aperture_m, max_backtracking_rad, max_joint_travel_rad, max_tracking_divergence_m, max_upward_dz_m, min_aperture_m, orientation_tolerance_rad, position_m, position_tolerance_m, quaternion_xyzw, reason, speed_preset, speed_scale, stall_guard_preset, tolerance_preset. Required fields: kind. Field constraints: {'type': 'object'}. <field description> Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/kind","value":"<one of: move, gripper, observe>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "325 structure/unknown_kind": {"request":{"observation_id":"obs-golden","action_id":"golden-325","stages":[{"id":"m","kind":"joint","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/kind","actual":"joint","suggestion":"'joint' is not one of ['move', 'gripper', 'observe']. <field description> Field constraints: {'type': 'string', 'enum': ['move', 'gripper', 'observe']}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/kind","value":"<one of: move, gripper, observe>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "326 structure/missing_arm": {"$derive": "323 structure/missing_id", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-326\"",".\"request\".\"stages\"[0].\"id\" = \"m\""]],
+   [3,4,[]],
+   [13,14,[".\"schema\".\"field_path\" = \"/stages/0/arm\""]],
+   [15,16,[".\"schema\".\"suggestion\" = \"'arm' is a required property. \""]],
+   [23,25,[".\"schema\".\"minimal_example\".\"field_path\" = \"/stages/0/arm\"",".\"schema\".\"minimal_example\".\"value\" = \"<one of: left, right>\""]],
+   [26,27,[".\"compile\" = \"ValueError: robot_action_stage_requires_arm\""]]
+  ]},
+  "327 structure/arm_both": {"request":{"observation_id":"obs-golden","action_id":"golden-327","stages":[{"id":"m","kind":"move","arm":"both","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/arm","actual":"both","suggestion":"'both' is not one of ['left', 'right']. <field description> Field constraints: {'type': 'string', 'enum': ['left', 'right']}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/arm","value":"<one of: left, right>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "328 structure/unknown_stage_field": {"request":{"observation_id":"obs-golden","action_id":"golden-328","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"via_grasp_poses":[]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/via_grasp_poses","actual":[],"suggestion":"Additional properties are not allowed ('via_grasp_poses' was unexpected). Allowed fields here: angles_deg, arm, checkpoint_after_gripper, clearance_height_m, clearance_preset, contact_depth_m, contact_region, depends_on, grasp_position_m, grip_guard_preset, gripper_goal_normalized, gripper_motion, gripper_speed_preset, gripper_speed_scale, id, joint_travel_preset, kind, max_aperture_m, max_backtracking_rad, max_joint_travel_rad, max_tracking_divergence_m, max_upward_dz_m, min_aperture_m, orientation_tolerance_rad, position_m, position_tolerance_m, quaternion_xyzw, speed_preset, speed_scale, stall_guard_preset, tolerance_preset. Required fields: id, kind, arm. Choose grasp_position_m + angles_deg OR position_m + quaternion_xyzw. Optional jaw target is gripper_goal_normalized. Routes are successive move stages, not via/joint fields. Field constraints: {'type': 'object'}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/via_grasp_poses","value":{"id":"<current caller-provided value>","kind":"<current caller-provided value>","arm":"<one of: left, right>"},"example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "329 structure/both_pose_forms": {"request":{"observation_id":"obs-golden","action_id":"golden-329","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"grasp_position_m":[0.3,0.25,0.8],"angles_deg":[0.0,0.0,0.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0","actual":{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"grasp_position_m":[0.3,0.25,0.8],"angles_deg":[0.0,0.0,0.0]},"suggestion":"{'id': 'm', 'kind': 'move', 'arm': 'left', 'position_m': [0.3, 0.25, 0.95], 'quaternion_xyzw': [0.0, 0.0, 0.0, 1.0], 'grasp_position_m': [0.3, 0.25, 0.8], 'angles_deg': [0.0, 0.0, 0.0]} is not valid under any of the given schemas. Choose exactly one complete required field group: grasp_position_m, angles_deg OR position_m, quaternion_xyzw. Field constraints: {'type': 'object'}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0","value":{"id":"<current caller-provided value>","kind":"<current caller-provided value>","arm":"<one of: left, right>"},"example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "330 structure/position_without_quaternion": {"$derive": "329 structure/both_pose_forms", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-330\""]],
+   [8,18,[]],
+   [27,38,[".\"schema\".\"suggestion\" = \"{'id': 'm', 'kind': 'move', 'arm': 'left', 'position_m': [0.3, 0.25, 0.95]} is not valid under any of the given schemas. \""]]
+  ]},
+  "331 structure/grasp_without_angles": {"$derive": "329 structure/both_pose_forms", "$edits": [
+   [1,3,[".\"request\".\"action_id\" = \"golden-331\"",".\"request\".\"stages\"[0].\"id\" = \"g\""]],
+   [5,12,[]],
+   [15,18,[]],
+   [21,22,[".\"schema\".\"actual\".\"id\" = \"g\""]],
+   [24,31,[]],
+   [34,38,[".\"schema\".\"suggestion\" = \"{'id': 'g', 'kind': 'move', 'arm': 'left', 'grasp_position_m': [0.3, 0.25, 0.8]} is not valid under any of the given schemas. \""]]
+  ]},
+  "332 structure/jaw_split_id_conflict": {"request":{"observation_id":"obs-golden","action_id":"golden-332","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"m/motion","kind":"gripper","arm":"right","goal_normalized":0.0}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "333 structure/gripper_without_goal": {"request":{"observation_id":"obs-golden","action_id":"golden-333","stages":[{"id":"j","kind":"gripper","arm":"left"}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/goal_normalized","actual":{"present":false},"suggestion":"'goal_normalized' is a required property. Allowed fields here: arm, checkpoint_after_gripper, depends_on, goal_normalized, grip_guard_preset, gripper_speed_preset, gripper_speed_scale, id, kind, max_aperture_m, min_aperture_m. Required fields: id, kind, arm, goal_normalized. Use goal_normalized in [0,1] (0 closed, 1 open); gripper/goal/gripper_goal are not field names. Arm speed fields do not apply; use gripper_speed_scale or gripper_speed_preset. Field constraints: {'type': 'object'}. <field description> Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/goal_normalized","value":"<caller-selected number within the stated bounds>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "334 structure/observe_extra_field": {"request":{"observation_id":"obs-golden","action_id":"golden-334","stages":[{"id":"o","kind":"observe","reason":"inspect the grasp","position_m":[0.0,0.0,0.0]}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages/0/position_m","actual":[0.0,0.0,0.0],"suggestion":"Additional properties are not allowed ('position_m' was unexpected). Allowed fields here: arm, depends_on, id, kind, reason. Required fields: id, kind, reason. Supply a nonblank reason describing what to inspect; pose and jaw fields do not belong on observe. Field constraints: {'type': 'object'}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages/0/position_m","value":{"id":"<current caller-provided value>","kind":"<current caller-provided value>","reason":"<current caller-provided value>"},"example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: observe_requires_only_reason"},
+  "335 structure/no_stages": {"request":{"observation_id":"obs-golden","action_id":"golden-335","stages":[]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages","actual":[],"suggestion":"[] should be non-empty. <field description> Field constraints: {'type': 'array', 'minItems': 1, 'maxItems': 32}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages","value":"<array of 1+ entries matching items schema>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_requires_stages"},
+  "336 structure/stages_not_list": {"request":{"observation_id":"obs-golden","action_id":"golden-336","stages":{"m":{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}}},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages","actual":{"m":{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}},"suggestion":"{'m': {'id': 'm', 'kind': 'move', 'arm': 'left', 'position_m': [0.3, 0.25, 0.95], 'quaternion_xyzw': [0.0, 0.0, 0.0, 1.0]}} is not of type 'array'. <field description> Field constraints: {'type': 'array', 'minItems': 1, 'maxItems': 32}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages","value":"<array of 1+ entries matching items schema>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_requires_stages"},
+  "337 structure/32_stages_16_per_arm": {"request":{"observation_id":"obs-golden","action_id":"golden-337","stages":[{"id":"left0","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right0","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left1","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right1","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left2","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right2","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left3","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right3","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left4","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right4","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left5","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right5","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left6","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right6","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left7","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right7","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left8","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right8","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left9","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right9","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left10","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right10","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left11","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right11","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left12","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right12","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left13","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right13","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left14","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right14","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left15","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right15","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "338 structure/33_stages": {"request":{"observation_id":"obs-golden","action_id":"golden-338","stages":[{"id":"left0","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right0","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left1","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right1","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left2","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right2","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left3","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right3","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left4","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right4","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left5","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right5","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left6","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right6","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left7","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right7","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left8","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right8","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left9","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right9","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left10","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right10","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left11","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right11","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left12","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right12","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left13","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right13","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left14","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right14","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left15","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right15","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"extra","kind":"gripper","arm":"left","goal_normalized":0.0}]},"schema":{"error":"ToolInputError","code":"invalid_tool_arguments","field_path":"/stages","actual":[{"id":"left0","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right0","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left1","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right1","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left2","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right2","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left3","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right3","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left4","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right4","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left5","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right5","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left6","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right6","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left7","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right7","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left8","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right8","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left9","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right9","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left10","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right10","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left11","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right11","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left12","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right12","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left13","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right13","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left14","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right14","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left15","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"right15","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"extra","kind":"gripper","arm":"left","goal_normalized":0.0}],"suggestion":"[{'id': 'left0', 'kind': 'move', 'arm': 'left', 'position_m': [0.3, 0.25, 0.95], 'quaternion_xyzw': [0.0, 0.0, 0.0, 1.0]}, {'id': 'right0', 'kind': 'move', 'arm': 'right', 'position_m': [0.3, 0.25, 0.95], 'quaternion_xyzw': [0.0, 0.0, 0.0, 1.0]}, {'id': 'left1', 'kind': 'move', 'arm': 'left', 'position_m': [0.3, 0.25, 0.95], 'quaternion_xyzw': [0.0, 0.0, 0.0, 1.0]}, {'id': 'right1', 'kind': 'move', 'arm': 'right', 'position_m': [0.3, 0.25, 0.95], 'quaternion_xyzw': [0.0, 0.0, 0.0, 1.0]}, {'id': 'left2', 'ki. <field description> Field constraints: {'type': 'array', 'minItems': 1, 'maxItems': 32}. Correct this input field; no action is retried automatically.","minimal_example":{"field_path":"/stages","value":"<array of 1+ entries matching items schema>","example_kind":"structural_placeholder; choose values from current permitted evidence"}},"compile":"ValueError: robot_action_stage_requires_arm"},
+  "339 structure/17_stages_one_arm": {"request":{"observation_id":"obs-golden","action_id":"golden-339","stages":[{"id":"left0","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left1","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left2","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left3","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left4","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left5","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left6","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left7","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left8","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left9","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left10","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left11","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left12","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left13","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left14","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left15","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"left16","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "340 structure/16_moves_with_jaw_goals": {"request":{"observation_id":"obs-golden","action_id":"golden-340","stages":[{"id":"left0","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left1","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left2","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left3","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left4","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left5","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left6","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left7","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left8","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left9","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left10","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left11","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left12","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left13","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left14","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0},{"id":"left15","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0],"gripper_goal_normalized":0.0}]},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "341 structure/checkpoint_without_jaw_event": {"$derive": "329 structure/both_pose_forms", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-341\""]],
+   [12,18,[".\"request\".\"stages\"[0].\"checkpoint_after_gripper\" = true"]],
+   [31,39,[".\"schema\".\"actual\".\"checkpoint_after_gripper\" = true",".\"schema\".\"suggestion\" = \"'gripper_goal_normalized' is a dependency of 'checkpoint_after_gripper'. \""]]
+  ]},
+  "342 continuation/unknown_source_plan": {"request":{"observation_id":"obs-golden","action_id":"golden-342","source_plan_id":"p-unknown","start_from_stage_id":"m"},"schema":"ok","compile":"ValueError: robot_action_plan_unknown_or_expired"},
+  "343 continuation/start_without_source": {"request":{"observation_id":"obs-golden","action_id":"golden-343","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}],"start_from_stage_id":"m"},"schema":"ok","compile":"ValueError: continuation_fields_require_source_plan_id"},
+  "344 continuation/source_and_stages": {"request":{"observation_id":"obs-golden","action_id":"golden-344","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}],"source_plan_id":"p-unknown","start_from_stage_id":"m"},"schema":"ok","compile":"ValueError: choose_stages_or_source_plan_id"},
+  "345 proxies/held_object_single_arm": {"request":{"observation_id":"obs-golden","action_id":"golden-345","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}],"held_object":{"min_m":[0.4,-0.05,0.75],"max_m":[0.45,0.0,0.8],"evidence":"estimated from RGB"}},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "346 proxies/held_object_with_arm": {"$derive": "345 proxies/held_object_single_arm", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-346\""]],
+   [19,19,[".\"request\".\"held_object\".\"arm\" = \"left\""]]
+  ]},
+  "347 proxies/held_object_dual_without_arm": {"request":{"observation_id":"obs-golden","action_id":"golden-347","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]},{"id":"m2","kind":"move","arm":"right","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}],"held_object":{"min_m":[0.4,-0.05,0.75],"max_m":[0.45,0.0,0.8],"evidence":"estimated from RGB"}},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "348 proxies/held_objects": {"request":{"observation_id":"obs-golden","action_id":"golden-348","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}],"held_objects":{"left":{"min_m":[0.4,-0.05,0.75],"max_m":[0.45,0.0,0.8],"evidence":"estimated from RGB"}}},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "349 proxies/held_object_and_held_objects": {"request":{"observation_id":"obs-golden","action_id":"golden-349","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}],"held_object":{"min_m":[0.4,-0.05,0.75],"max_m":[0.45,0.0,0.8],"evidence":"estimated from RGB"},"held_objects":{"left":{"min_m":[0.4,-0.05,0.75],"max_m":[0.45,0.0,0.8],"evidence":"estimated from RGB"}}},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "350 proxies/contact_entity": {"request":{"observation_id":"obs-golden","action_id":"golden-350","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}],"obstacles":[{"id":"b1","min_m":[0.4,-0.05,0.75],"max_m":[0.45,0.0,0.8],"evidence":"estimated from RGB"}],"contact_entity_id":"b1","obstacle_policy":"stateless"},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "351 proxies/initial_contact": {"$derive": "350 proxies/contact_entity", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-351\""]],
+   [20,21,[".\"request\".\"initial_contact\".\"entity_ids\"[0] = \"b1\"",".\"request\".\"initial_contact\".\"evidence\" = \"touching\""]]
+  ]},
+  "352 proxies/placement_contact": {"request":{"observation_id":"obs-golden","action_id":"golden-352","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}],"obstacles":[{"id":"b1","min_m":[0.4,-0.05,0.75],"max_m":[0.45,0.0,0.8],"evidence":"estimated from RGB"}],"obstacle_policy":"stateless","placement_contact":{"entity_id":"b1","evidence":"support","max_penetration_m":0.002}},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"},
+  "353 obstacles/stateless": {"$derive": "350 proxies/contact_entity", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-353\""]],
+   [20,21,[]]
+  ]},
+  "354 obstacles/plain_after_stateless": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-354\""]]
+  ]},
+  "355 obstacles/persist": {"$derive": "350 proxies/contact_entity", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-355\""]],
+   [20,22,[]]
+  ]},
+  "356 obstacles/plain_after_persist": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-356\""]]
+  ]},
+  "357 obstacles/ignore_persisted": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-357\""]],
+   [12,12,[".\"request\".\"ignore_obstacle_ids\"[0] = \"b1\""]]
+  ]},
+  "358 obstacles/clear": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-358\""]],
+   [12,12,[".\"request\".\"obstacle_policy\" = \"clear\""]]
+  ]},
+  "359 obstacles/plain_after_clear": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-359\""]]
+  ]},
+  "360 obstacles/object_ids_without_table": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-360\""]],
+   [12,12,[".\"request\".\"obstacle_object_ids\"[0] = \"o1\""]]
+  ]},
+  "361 obstacles/invalid_policy": {"$derive": "001 base/move_link6/left", "$edits": [
+   [1,2,[".\"request\".\"action_id\" = \"golden-361\""]],
+   [12,12,[".\"request\".\"obstacle_policy\" = \"bogus\""]]
+  ]},
+  "362 obstacles/inverted_box": {"request":{"observation_id":"obs-golden","action_id":"golden-362","stages":[{"id":"m","kind":"move","arm":"left","position_m":[0.3,0.25,0.95],"quaternion_xyzw":[0.0,0.0,0.0,1.0]}],"obstacles":[{"id":"b1","min_m":[0.45,0.0,0.8],"max_m":[0.4,-0.05,0.75],"evidence":"estimated from RGB"}],"obstacle_policy":"stateless"},"schema":"ok","compile":"ValueError: robot_action_stage_requires_arm"}
+ }
+}

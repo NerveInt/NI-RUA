@@ -1,0 +1,9 @@
+name: so101
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - ffmpeg=8.0.1
+  - pip:
+      - -r requirements-so101.txt

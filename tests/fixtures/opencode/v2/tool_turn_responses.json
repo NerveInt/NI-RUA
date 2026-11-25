@@ -1,0 +1,468 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "/tmp/ni-rua-agent-harness/oc2/bin/s01_*.py:s01-openai_responses",
+  "scenario": "same turn on the OpenAI Responses wire (native itemId/responseId/encrypted reasoning fields)",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+ "prompts": [
+  "msg_1d112e837001wUP8S6iQ3wyJCK"
+ ],
+ "snapshots": [
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d112e837001wUP8S6iQ3wyJCK",
+     "time": {
+      "created": 1794509039683
+     },
+     "text": "Take one observation then answer.",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d112e847001Zs3yvu8bxHrHlA",
+     "time": {
+      "created": 1794509039689,
+      "streamed": 1794509039706,
+      "completed": 1794509039724
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "reasoning",
+       "text": "think-1",
+       "native": {
+        "itemId": "rs_fake_0",
+        "reasoningEncryptedContent": "fake-signature-0001"
+       },
+       "time": {
+        "created": 1794509039700,
+        "completed": 1794509039701
+       }
+      },
+      {
+       "type": "text",
+       "text": "Looking.",
+       "native": {
+        "itemId": "msg_fake_0"
+       }
+      },
+      {
+       "type": "tool",
+       "id": "call_fake_0_0",
+       "name": "ni_rua_observe",
+       "executed": false,
+       "native": {
+        "itemId": "fc_fake_0_0"
+       },
+       "state": {
+        "status": "completed",
+        "input": {
+         "camera": "front"
+        },
+        "content": [
+         {
+          "type": "text",
+          "text": "observation ok MARKER-TOOL-TEXT"
+         },
+         {
+          "type": "file",
+          "uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAwCAIAAAAuKetIAAAAY0lEQVR4nO3PQQkAMAzAwCqpfymTNRF7HINABFzm7H7dcEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAUNaEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAWPXYknMLX+nGo+AAAAAElFTkSuQmCC",
+          "mime": "image/png"
+         }
+        ],
+        "metadata": {
+         "truncated": false
+        }
+       },
+       "time": {
+        "created": 1794509039704,
+        "ran": 1794509039705,
+        "completed": 1794509039723
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "native": {
+      "responseId": "resp_fake_0"
+     },
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d112e86f001nVWMHbzdEg26rs",
+     "time": {
+      "created": 1794509039729,
+      "streamed": 1794509039735,
+      "completed": 1794509039735
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "text",
+       "text": "FINAL-ANSWER-1",
+       "native": {
+        "itemId": "msg_fake_1"
+       }
+      }
+     ],
+     "finish": "stop",
+     "native": {
+      "responseId": "resp_fake_1"
+     },
+     "cost": 0,
+     "tokens": {
+      "input": 10,
+      "output": 5,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d112e8780021JcdKVOBAT1PZn",
+     "time": {
+      "created": 1794509039736
+     },
+     "type": "idle",
+     "outcome": "succeeded"
+    }
+   ],
+   "active": null,
+   "inbox": null
+  }
+ ],
+ "children": {},
+ "events": [
+  {
+   "id": "evt_1d112e833001Si5r9yDyXPQw9W",
+   "created": 1794509039667,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d112e838001MchHODg5sX0qnA",
+   "created": 1794509039672,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d112e837001wUP8S6iQ3wyJCK",
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "Take one observation then answer."
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d112e839001CKjGVfEvi517Y3",
+   "created": 1794509039673,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz"
+   }
+  },
+  {
+   "id": "evt_1d112e843002XcJy2S8SONQo2C",
+   "created": 1794509039683,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "inboxID": "msg_1d112e837001wUP8S6iQ3wyJCK"
+   }
+  },
+  {
+   "id": "evt_1d112e853001CqqqZVflWDRA6b",
+   "created": 1794509039699,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d112e847001Zs3yvu8bxHrHlA",
+    "started": 1794509039689
+   }
+  },
+  {
+   "id": "evt_1d112e854001RP70PpOBEOJgHv",
+   "created": 1794509039700,
+   "type": "session.reasoning.started",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e847001Zs3yvu8bxHrHlA",
+    "ordinal": 0,
+    "native": {
+     "itemId": "rs_fake_0",
+     "reasoningEncryptedContent": "fake-signature-0001"
+    }
+   }
+  },
+  {
+   "id": "evt_1d112e855001u1BoaUfcLKFv4R",
+   "created": 1794509039701,
+   "type": "session.reasoning.ended",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e847001Zs3yvu8bxHrHlA",
+    "ordinal": 0,
+    "text": "think-1",
+    "native": {
+     "itemId": "rs_fake_0",
+     "reasoningEncryptedContent": "fake-signature-0001"
+    }
+   }
+  },
+  {
+   "id": "evt_1d112e8560018FHtE5XfRL7mLs",
+   "created": 1794509039702,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e847001Zs3yvu8bxHrHlA",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d112e857001FyyZbeyb6rUTR4",
+   "created": 1794509039703,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e847001Zs3yvu8bxHrHlA",
+    "ordinal": 0,
+    "delta": "Looking."
+   }
+  },
+  {
+   "id": "evt_1d112e857002hVPirH0O1iR7dn",
+   "created": 1794509039703,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e847001Zs3yvu8bxHrHlA",
+    "ordinal": 0,
+    "text": "Looking.",
+    "native": {
+     "itemId": "msg_fake_0"
+    }
+   }
+  },
+  {
+   "id": "evt_1d112e858001fjvKPF2nUw5Q1J",
+   "created": 1794509039704,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e847001Zs3yvu8bxHrHlA",
+    "id": "call_fake_0_0",
+    "name": "ni_rua_observe"
+   }
+  },
+  {
+   "id": "evt_1d112e8590018HtMWE93UvDQqn",
+   "created": 1794509039705,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e847001Zs3yvu8bxHrHlA",
+    "id": "call_fake_0_0",
+    "text": "{\"camera\": \"front\"}"
+   }
+  },
+  {
+   "id": "evt_1d112e859002217ythiPt8UW76",
+   "created": 1794509039705,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e847001Zs3yvu8bxHrHlA",
+    "id": "call_fake_0_0",
+    "input": {
+     "camera": "front"
+    },
+    "executed": false,
+    "native": {
+     "itemId": "fc_fake_0_0"
+    }
+   }
+  },
+  {
+   "id": "evt_1d112e85a001zwWl7ZKIAgN0tm",
+   "created": 1794509039706,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e847001Zs3yvu8bxHrHlA"
+   }
+  },
+  {
+   "id": "evt_1d112e86b001glXBMgGp70yCaQ",
+   "created": 1794509039723,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e847001Zs3yvu8bxHrHlA",
+    "id": "call_fake_0_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "observation ok MARKER-TOOL-TEXT"
+     },
+     {
+      "type": "file",
+      "uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAwCAIAAAAuKetIAAAAY0lEQVR4nO3PQQkAMAzAwCqpfymTNRF7HINABFzm7H7dcEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAUNaEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAWPXYknMLX+nGo+AAAAAElFTkSuQmCC",
+      "mime": "image/png"
+     }
+    ],
+    "metadata": {
+     "truncated": false
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d112e86c001sPslAkM2V8Bugj",
+   "created": 1794509039724,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e847001Zs3yvu8bxHrHlA",
+    "finish": "tool-calls",
+    "native": {
+     "responseId": "resp_fake_0"
+    },
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d112e874001j9TB9RMzEgPJ5W",
+   "created": 1794509039732,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d112e86f001nVWMHbzdEg26rs",
+    "started": 1794509039729
+   }
+  },
+  {
+   "id": "evt_1d112e8750018Xm2AWx4HTM8sG",
+   "created": 1794509039733,
+   "type": "session.text.started",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e86f001nVWMHbzdEg26rs",
+    "ordinal": 0
+   }
+  },
+  {
+   "id": "evt_1d112e875002Mj4Gt0dPaI4Ltt",
+   "created": 1794509039733,
+   "type": "session.text.delta",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e86f001nVWMHbzdEg26rs",
+    "ordinal": 0,
+    "delta": "FINAL-ANSWER-1"
+   }
+  },
+  {
+   "id": "evt_1d112e875003DNJ5sNLYPUAoDH",
+   "created": 1794509039733,
+   "type": "session.text.ended",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e86f001nVWMHbzdEg26rs",
+    "ordinal": 0,
+    "text": "FINAL-ANSWER-1",
+    "native": {
+     "itemId": "msg_fake_1"
+    }
+   }
+  },
+  {
+   "id": "evt_1d112e877001th0RchwyOndP7I",
+   "created": 1794509039735,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e86f001nVWMHbzdEg26rs"
+   }
+  },
+  {
+   "id": "evt_1d112e877002zdfsAeZik8zz6J",
+   "created": 1794509039735,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz",
+    "assistantMessageID": "msg_1d112e86f001nVWMHbzdEg26rs",
+    "finish": "stop",
+    "native": {
+     "responseId": "resp_fake_1"
+    },
+    "tokens": {
+     "input": 10,
+     "output": 5,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d112e8780021JcdKVOBAT1PZn",
+   "created": 1794509039736,
+   "type": "session.execution.succeeded",
+   "data": {
+    "sessionID": "ses_e2eed17cdffet2PklSFRDBp4Wz"
+   }
+  }
+ ]
+}

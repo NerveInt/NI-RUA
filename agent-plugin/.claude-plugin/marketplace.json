@@ -1,0 +1,11 @@
+{
+  "name": "ni_rua",
+  "owner": {"name": "Nerve Intelligence"},
+  "plugins": [
+    {
+      "name": "ni_rua",
+      "source": "./",
+      "description": "NI-RUA robot tools (MCP over loopback HTTP) and skills."
+    }
+  ]
+}

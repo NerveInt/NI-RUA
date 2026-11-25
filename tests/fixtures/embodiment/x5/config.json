@@ -1,0 +1,127 @@
+{
+ "schema": "ni_rua.embodiment_golden.v1",
+ "embodiment": "x5",
+ "family": "config",
+ "label": "ARX-X5 / RoboDojo behaviour frozen at 5fd93c6 before the embodiment-decoupling refactor; asserted byte-identical by tests/test_embodiment_x5_golden.py except APPROVED_CORRECTION (design 13 section 6)",
+ "captured_from": {"revision":"5fd93c61a32933bd13c8191f6093ffad5e573aec","production_tree_clean":true},
+ "regenerate": "PYTHONPATH=tests mamba run -n ni-rua python -m support.embodiment_golden --write --force --embodiment x5 --family config",
+ "items": {
+  "Config()": {"version":1,"run":{"run_dir":null,"experiment_root":"~/exp/ni-rua","category":"main","title":null,"tag":[],"replay":false,"resume":false,"task":"stack_bowls","seed":0,"layout_id":0,"gpu":4,"port":0,"max_actions":null,"wall_budget_s":null,"prompt":null,"exit_after_turn":false,"benchmark":false,"task_notes":null,"task_notes_source":null},"features":{"sandbox_enabled":false,"observation_profile":"rgb_proprio_calibrated_v1","depth_skills":false,"depth_auto_feedback":false,"depth_event_payload":false,"actor_payload_profile":"lean_v1","tool_catalog_profile":"full_v1","default_task_notes":true,"task_instruction_overrides":true,"self_briefing":true,"vision_compare":true,"robotic_view":false,"stereo_guide":false,"enable_wait":true,"motion_review":true,"tracking_guard":false,"joint_replan":true,"motion_execution_mode":"resampled","default_motion_speed_scale":1.0,"tight_position_tolerance_m":0.003,"default_position_tolerance_m":0.01,"soft_position_tolerance_m":0.01,"relaxed_position_tolerance_m":0.015,"compliant_position_tolerance_m":0.015,"coarse_position_tolerance_m":0.025,"max_position_tolerance_m":0.1,"tight_orientation_tolerance_rad":0.05,"orientation_tolerance_rad":0.15,"relaxed_orientation_tolerance_rad":0.2,"coarse_orientation_tolerance_rad":0.35,"max_orientation_tolerance_rad":3.14159265,"contact_divergence_threshold_m":0.004,"stall_guard_strict_divergence_m":0.01,"stall_guard_contact_stop_divergence_m":0.02,"stall_guard_compliant_divergence_m":0.02,"stall_guard_min_divergence_m":0.005,"stall_guard_max_divergence_m":0.15,"stall_guard_step_velocity_threshold_m":0.0015,"stall_guard_consecutive_steps":2,"max_gripper_aperture_m":0.088,"grip_empty_threshold_mm":0.5,"grip_thin_threshold_mm":1.5,"grip_holding_threshold_mm":3.0,"grip_solid_threshold_mm":3.5,"grip_non_empty_min_aperture_m":0.0015,"grip_thin_min_aperture_m":0.0005,"grip_thin_max_aperture_m":0.065,"grip_rigid_min_aperture_m":0.002,"grip_rigid_max_aperture_m":0.087,"grip_wide_min_aperture_m":0.003,"grip_wide_max_aperture_m":0.0875,"max_min_grip_m":0.088,"closed_jaw_goal_max":0.05,"checkpoint_empty_jaw_measured_max":0.03,"joint_travel_standard_max_rad":3.141592653589793,"joint_travel_standard_backtracking_rad":1.5707963267948966,"joint_travel_extended_max_rad":4.71238898038469,"joint_travel_extended_backtracking_rad":3.141592653589793,"segment_start_joint_drift_rad":0.1,"resume_max_joint_drift_rad":0.1,"resume_max_ee_drift_m":0.015,"resume_max_orientation_drift_rad":0.1,"resume_max_jaw_drift_normalized":0.1,"batch_plan_cache_size":16,"hotspot_xy_radius_m":0.025,"hotspot_z_radius_m":0.045,"ledger_max_recent_outcomes":3,"ledger_max_hotspots":6,"target_exemption_radius_m":0.055,"clearance_height_m":0.13,"arm_queue":true,"motion_cost_preview":true,"airborne_handoff":true,"handoff_preference":"surface","bounded_continuation":true,"motion_safety_guard":true,"trajectory_preview":true,"manipulation_protocol":true,"task_scheduling":true,"operation_candidates":false,"preview_intent":false,"recovery_evidence":true,"action_trajectory_delivery":"automatic","pi05":false,"visual_review_model":null,"completion_guidance":"hook","disabled_tools":[],"lean_projection":false,"lean_projection_k":1,"lean_projection_block":8,"lean_compact":false,"lean_request_dump":0,"external_perception":true,"vggt_height":true,"vggt_height_mode":"optional","vggt_endpoint":"http://127.0.0.1:8331","vggt_support_z_m":0.765,"vggt_camera_id":"cam_head","vggt_timeout_s":60.0,"object_table":true,"object_table_max_objects":20,"object_table_max_height_m":0.3,"object_table_head_exclude_px":"200,405,440,480","scene3d":true,"scene3d_voxel_m":0.01,"scene3d_z_above_m":0.6,"scene3d_z_below_m":0.05,"object_table_observe":true,"scene3d_observe":true,"obs3d_timeout_s":60.0,"obs3d_max_objects":10,"obs3d_action_overlay":false,"pose_skill":false,"held_perception":true,"grasp_memory_dir":"~/.local/share/ni-rua/grasp-memory","record_video":true,"export_video":true,"terminal":true},"model":{"name":"gpt-6-astra","effort":"high","codex_home":"~/.codex","price_card":null,"native_memories":true,"transport_recovery":{"max_rounds":10,"initial_delay_s":60,"backoff_multiplier":2,"max_delay_s":600,"max_episode_delay_s":3600,"transport_incomplete":true}},"backend":{"environment":"robodojo","robot_model_id":"arx-x5","root":"~/code/robodojo","python":"~/miniforge3/envs/RoboDojo/bin/python","deployment":null},"policy":{"python":"~/.local/share/ni-rua-openpi-arx/bin/python","checkpoint":"/home/ckpt/robodojo_pi05_official/ckpt/RoboDojo/Pi_05/RoboDojo-sim-arx_x5-joint-0/59999","server_url":null},"images":{"feedback_policy":"all","transport_format":"webp","webp_quality":85,"webp_method":4,"jpeg_quality":95,"storage_jpeg_quality":95,"reuse_exact_images":true,"trim_oversized_requests":true,"trim_max_inline_images":60},"library":{"root":"~/exp/ni-rua","port":8780,"scan_interval":1,"public_origin":null,"task_source_root":null},"scene":{"root":"runs/local_scene","port":8770,"max_workers":2,"max_queue":4,"max_blob_store_bytes":536870912},"queue":{"max_parallel":60,"memory_per_case_mib":11264,"gpu_headroom_mib":0,"wait_timeout_s":1800,"oom_retry":{"max_retries":2,"initial_delay_s":60,"backoff_multiplier":2,"max_delay_s":300},"wake_enabled":true,"wake_thread":null,"wake_codex":"codex","wake_remote":null},"analysis":{"scene_truth_log":false}},
+  "motion_thresholds()": {"tight_position_tolerance_m":0.003,"default_position_tolerance_m":0.01,"soft_position_tolerance_m":0.01,"relaxed_position_tolerance_m":0.015,"compliant_position_tolerance_m":0.015,"coarse_position_tolerance_m":0.025,"max_position_tolerance_m":0.1,"tight_orientation_tolerance_rad":0.05,"orientation_tolerance_rad":0.15,"relaxed_orientation_tolerance_rad":0.2,"coarse_orientation_tolerance_rad":0.35,"max_orientation_tolerance_rad":3.14159265,"contact_divergence_threshold_m":0.004,"stall_guard_strict_divergence_m":0.01,"stall_guard_contact_stop_divergence_m":0.02,"stall_guard_compliant_divergence_m":0.02,"stall_guard_min_divergence_m":0.005,"stall_guard_max_divergence_m":0.15,"stall_guard_step_velocity_threshold_m":0.0015,"stall_guard_consecutive_steps":2,"max_gripper_aperture_m":0.088,"grip_empty_threshold_mm":0.5,"grip_thin_threshold_mm":1.5,"grip_holding_threshold_mm":3.0,"grip_solid_threshold_mm":3.5,"grip_non_empty_min_aperture_m":0.0015,"grip_thin_min_aperture_m":0.0005,"grip_thin_max_aperture_m":0.065,"grip_rigid_min_aperture_m":0.002,"grip_rigid_max_aperture_m":0.087,"grip_wide_min_aperture_m":0.003,"grip_wide_max_aperture_m":0.0875,"max_min_grip_m":0.088,"closed_jaw_goal_max":0.05,"checkpoint_empty_jaw_measured_max":0.03,"joint_travel_standard_max_rad":3.141592653589793,"joint_travel_standard_backtracking_rad":1.5707963267948966,"joint_travel_extended_max_rad":4.71238898038469,"joint_travel_extended_backtracking_rad":3.141592653589793,"segment_start_joint_drift_rad":0.1,"resume_max_joint_drift_rad":0.1,"resume_max_ee_drift_m":0.015,"resume_max_orientation_drift_rad":0.1,"resume_max_jaw_drift_normalized":0.1,"batch_plan_cache_size":16,"hotspot_xy_radius_m":0.025,"hotspot_z_radius_m":0.045,"ledger_max_recent_outcomes":3,"ledger_max_hotspots":6,"target_exemption_radius_m":0.055,"clearance_height_m":0.13},
+  "load/ni_rua": {"$derive": "Config()", "$edits": [
+   [138,139,[".\"model\".\"name\" = \"gpt-6.1-sol\""]],
+   [155,156,[".\"policy\".\"checkpoint\" = \"/System/Volumes/Data/home/ckpt/robodojo_pi05_official/ckpt/RoboDojo/Pi_05/RoboDojo-sim-arx_x5-joint-0/59999\""]],
+   [171,172,[".\"scene\".\"root\" = \"<repo>/runs/local_scene\""]]
+  ]},
+  "motion_thresholds/ni_rua": {"$derive": "motion_thresholds()", "$edits": [
+  ]},
+  "load/rgbd_feedback_v2": {"$derive": "Config()", "$edits": [
+   [21,22,[".\"features\".\"observation_profile\" = \"rgbd_proprio_calibrated_v1\""]],
+   [23,24,[".\"features\".\"depth_auto_feedback\" = true"]],
+   [138,139,[".\"model\".\"name\" = \"gpt-6.1-sol\""]],
+   [155,156,[".\"policy\".\"checkpoint\" = \"/System/Volumes/Data/home/ckpt/robodojo_pi05_official/ckpt/RoboDojo/Pi_05/RoboDojo-sim-arx_x5-joint-0/59999\""]],
+   [171,172,[".\"scene\".\"root\" = \"<repo>/runs/local_scene\""]]
+  ]},
+  "motion_thresholds/rgbd_feedback_v2": {"$derive": "motion_thresholds()", "$edits": [
+  ]},
+  "load/rgbd_numeric_v1": {"$derive": "Config()", "$edits": [
+   [21,22,[".\"features\".\"observation_profile\" = \"rgbd_proprio_calibrated_v1\""]],
+   [138,139,[".\"model\".\"name\" = \"gpt-6.1-sol\""]],
+   [155,156,[".\"policy\".\"checkpoint\" = \"/System/Volumes/Data/home/ckpt/robodojo_pi05_official/ckpt/RoboDojo/Pi_05/RoboDojo-sim-arx_x5-joint-0/59999\""]],
+   [171,172,[".\"scene\".\"root\" = \"<repo>/runs/local_scene\""]]
+  ]},
+  "motion_thresholds/rgbd_numeric_v1": {"$derive": "motion_thresholds()", "$edits": [
+  ]},
+  "load/rgbd_skills_v3": {"$derive": "Config()", "$edits": [
+   [21,25,[".\"features\".\"observation_profile\" = \"rgbd_proprio_calibrated_v1\"",".\"features\".\"depth_skills\" = true",".\"features\".\"depth_auto_feedback\" = true",".\"features\".\"depth_event_payload\" = true"]],
+   [138,139,[".\"model\".\"name\" = \"gpt-6.1-sol\""]],
+   [155,156,[".\"policy\".\"checkpoint\" = \"/System/Volumes/Data/home/ckpt/robodojo_pi05_official/ckpt/RoboDojo/Pi_05/RoboDojo-sim-arx_x5-joint-0/59999\""]],
+   [171,172,[".\"scene\".\"root\" = \"<repo>/runs/local_scene\""]]
+  ]},
+  "motion_thresholds/rgbd_skills_v3": {"$derive": "motion_thresholds()", "$edits": [
+  ]},
+  "load/benchmark_shared_memory": {"$derive": "Config()", "$edits": [
+   [138,139,[".\"model\".\"name\" = \"gpt-6.1-sol\""]],
+   [155,156,[".\"policy\".\"checkpoint\" = \"/System/Volumes/Data/home/ckpt/robodojo_pi05_official/ckpt/RoboDojo/Pi_05/RoboDojo-sim-arx_x5-joint-0/59999\""]],
+   [171,172,[".\"scene\".\"root\" = \"<repo>/runs/local_scene\""]]
+  ]},
+  "motion_thresholds/benchmark_shared_memory": {"$derive": "motion_thresholds()", "$edits": [
+  ]},
+  "load/ni_rua_example": {"$derive": "Config()", "$edits": [
+   [138,139,[".\"model\".\"name\" = \"gpt-6.1-sol\""]],
+   [155,156,[".\"policy\".\"checkpoint\" = \"/System/Volumes/Data/home/ckpt/robodojo_pi05_official/ckpt/RoboDojo/Pi_05/RoboDojo-sim-arx_x5-joint-0/59999\""]],
+   [171,172,[".\"scene\".\"root\" = \"<repo>/runs/local_scene\""]]
+  ]},
+  "motion_thresholds/ni_rua_example": {"$derive": "motion_thresholds()", "$edits": [
+  ]},
+  "effective_config/ni_rua_benchmark": {"$derive": "Config()", "$edits": [
+   [1,2,[".\"run\".\"run_dir\" = \"<run>\""]],
+   [17,18,[".\"run\".\"benchmark\" = true"]],
+   [29,30,[".\"features\".\"self_briefing\" = false"]],
+   [134,135,[".\"features\".\"grasp_memory_dir\" = \"<tmp>/grasp-memory\""]],
+   [137,139,[".\"features\".\"terminal\" = false",".\"model\".\"name\" = \"gpt-6.1-sol\""]],
+   [155,156,[".\"policy\".\"checkpoint\" = \"/System/Volumes/Data/home/ckpt/robodojo_pi05_official/ckpt/RoboDojo/Pi_05/RoboDojo-sim-arx_x5-joint-0/59999\""]],
+   [171,172,[".\"scene\".\"root\" = \"<repo>/runs/local_scene\""]]
+  ]},
+  "effective_config/ni_rua_interactive": {"$derive": "Config()", "$edits": [
+   [1,2,[".\"run\".\"run_dir\" = \"<run>\""]],
+   [15,16,[".\"run\".\"prompt\" = \"Development acceptance: inspect robot_capabilities and robot_observe. \"",".\"run\".\"prompt\" += \"Using only those RGB images and measured robot state, choose one arm and move its EE a small safe distance of at most 10 mm in free space, preserving orientation and gripper. \"",".\"run\".\"prompt\" += \"Set timeout_s=60 for this one movement. \"",".\"run\".\"prompt\" += \"Execute at most one movement. \"",".\"run\".\"prompt\" += \"Inspect the actual final feedback and RGB. \"",".\"run\".\"prompt\" += \"Report request versus measurement, errors, and any uncertainty. \"",".\"run\".\"prompt\" += \"This is an interface smoke test, not completion of the RoboDojo task. \"",".\"run\".\"prompt\" += \"Do not inspect simulator task files or evaluation state.\""]],
+   [29,30,[".\"features\".\"self_briefing\" = false"]],
+   [134,135,[".\"features\".\"grasp_memory_dir\" = \"<tmp>/grasp-memory\""]],
+   [137,139,[".\"features\".\"terminal\" = false",".\"model\".\"name\" = \"gpt-6.1-sol\""]],
+   [155,156,[".\"policy\".\"checkpoint\" = \"/System/Volumes/Data/home/ckpt/robodojo_pi05_official/ckpt/RoboDojo/Pi_05/RoboDojo-sim-arx_x5-joint-0/59999\""]],
+   [171,172,[".\"scene\".\"root\" = \"<repo>/runs/local_scene\""]]
+  ]},
+  "effective_config/rgbd_feedback_v2": {"$derive": "Config()", "$edits": [
+   [1,2,[".\"run\".\"run_dir\" = \"<run>\""]],
+   [17,18,[".\"run\".\"benchmark\" = true"]],
+   [21,22,[".\"features\".\"observation_profile\" = \"rgbd_proprio_calibrated_v1\""]],
+   [23,24,[".\"features\".\"depth_auto_feedback\" = true"]],
+   [29,30,[".\"features\".\"self_briefing\" = false"]],
+   [134,135,[".\"features\".\"grasp_memory_dir\" = \"<tmp>/grasp-memory\""]],
+   [137,139,[".\"features\".\"terminal\" = false",".\"model\".\"name\" = \"gpt-6.1-sol\""]],
+   [155,156,[".\"policy\".\"checkpoint\" = \"/System/Volumes/Data/home/ckpt/robodojo_pi05_official/ckpt/RoboDojo/Pi_05/RoboDojo-sim-arx_x5-joint-0/59999\""]],
+   [171,172,[".\"scene\".\"root\" = \"<repo>/runs/local_scene\""]]
+  ]},
+  "effective_config/rgbd_numeric_v1": {"$derive": "Config()", "$edits": [
+   [1,2,[".\"run\".\"run_dir\" = \"<run>\""]],
+   [17,18,[".\"run\".\"benchmark\" = true"]],
+   [21,22,[".\"features\".\"observation_profile\" = \"rgbd_proprio_calibrated_v1\""]],
+   [29,30,[".\"features\".\"self_briefing\" = false"]],
+   [134,135,[".\"features\".\"grasp_memory_dir\" = \"<tmp>/grasp-memory\""]],
+   [137,139,[".\"features\".\"terminal\" = false",".\"model\".\"name\" = \"gpt-6.1-sol\""]],
+   [155,156,[".\"policy\".\"checkpoint\" = \"/System/Volumes/Data/home/ckpt/robodojo_pi05_official/ckpt/RoboDojo/Pi_05/RoboDojo-sim-arx_x5-joint-0/59999\""]],
+   [171,172,[".\"scene\".\"root\" = \"<repo>/runs/local_scene\""]]
+  ]},
+  "effective_config/rgbd_skills_v3": {"$derive": "Config()", "$edits": [
+   [1,2,[".\"run\".\"run_dir\" = \"<run>\""]],
+   [17,18,[".\"run\".\"benchmark\" = true"]],
+   [21,25,[".\"features\".\"observation_profile\" = \"rgbd_proprio_calibrated_v1\"",".\"features\".\"depth_skills\" = true",".\"features\".\"depth_auto_feedback\" = true",".\"features\".\"depth_event_payload\" = true"]],
+   [29,30,[".\"features\".\"self_briefing\" = false"]],
+   [134,135,[".\"features\".\"grasp_memory_dir\" = \"<tmp>/grasp-memory\""]],
+   [137,139,[".\"features\".\"terminal\" = false",".\"model\".\"name\" = \"gpt-6.1-sol\""]],
+   [155,156,[".\"policy\".\"checkpoint\" = \"/System/Volumes/Data/home/ckpt/robodojo_pi05_official/ckpt/RoboDojo/Pi_05/RoboDojo-sim-arx_x5-joint-0/59999\""]],
+   [171,172,[".\"scene\".\"root\" = \"<repo>/runs/local_scene\""]]
+  ]},
+  "effective_config/legacy_rgb_proprio_v1": {"$derive": "Config()", "$edits": [
+   [1,2,[".\"run\".\"run_dir\" = \"<run>\""]],
+   [17,18,[".\"run\".\"benchmark\" = true"]],
+   [21,22,[".\"features\".\"observation_profile\" = \"rgb_proprio_v1\""]],
+   [29,30,[".\"features\".\"self_briefing\" = false"]],
+   [34,35,[".\"features\".\"motion_review\" = false"]],
+   [134,135,[".\"features\".\"grasp_memory_dir\" = \"<tmp>/grasp-memory\""]],
+   [137,139,[".\"features\".\"terminal\" = false",".\"model\".\"name\" = \"gpt-6.1-sol\""]],
+   [155,156,[".\"policy\".\"checkpoint\" = \"/System/Volumes/Data/home/ckpt/robodojo_pi05_official/ckpt/RoboDojo/Pi_05/RoboDojo-sim-arx_x5-joint-0/59999\""]],
+   [171,172,[".\"scene\".\"root\" = \"<repo>/runs/local_scene\""]]
+  ]},
+  "effective_config/prompt_capture_fixture": {"$derive": "Config()", "$edits": [
+   [1,2,[".\"run\".\"run_dir\" = \"<run>\""]],
+   [17,18,[".\"run\".\"benchmark\" = true"]],
+   [29,30,[".\"features\".\"self_briefing\" = false"]],
+   [134,135,[".\"features\".\"grasp_memory_dir\" = \"<tmp>/grasp-memory\""]],
+   [137,138,[".\"features\".\"terminal\" = false"]],
+   [155,156,[".\"policy\".\"checkpoint\" = \"/System/Volumes/Data/home/ckpt/robodojo_pi05_official/ckpt/RoboDojo/Pi_05/RoboDojo-sim-arx_x5-joint-0/59999\""]],
+   [171,172,[".\"scene\".\"root\" = \"<repo>/runs/local_scene\""]]
+  ]}
+ }
+}

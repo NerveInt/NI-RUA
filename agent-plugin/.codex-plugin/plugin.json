@@ -1,0 +1,11 @@
+{
+  "name": "ni_rua",
+  "version": "0.1.0",
+  "description": "Drive a robot through a local NI-RUA gateway: robot tools over MCP plus a robot-operator skill and an experiment-operator skill.",
+  "skills": "./skills/",
+  "mcpServers": "./.codex-mcp.json",
+  "interface": {
+    "displayName": "NI-RUA",
+    "shortDescription": "Robot tools and skills served by a local NI-RUA gateway."
+  }
+}

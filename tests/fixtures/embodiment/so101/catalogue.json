@@ -1,0 +1,14 @@
+{
+ "schema": "ni_rua.embodiment_golden.v1",
+ "embodiment": "so101",
+ "family": "catalogue",
+ "label": "current SO-101 behaviour at 5fd93c6, expected to change: reference for the SO-101 diff of later work packages, never asserted",
+ "captured_from": {"revision":"5fd93c61a32933bd13c8191f6093ffad5e573aec","production_tree_clean":true},
+ "regenerate": "PYTHONPATH=tests mamba run -n ni-rua python -m support.embodiment_golden --write --force --embodiment so101 --family catalogue",
+ "items": {
+  "actor/so101_gateway": ["x5:task_plan#1","x5:robot_observe#2","x5:robot_capabilities#1","x5:robot_information#1","x5:robot_contact_overlay#1","x5:robot_action_status#1","x5:robot_wait#1","x5:history_list_actions#1","x5:history_view_observation#1","x5:history_read_trace#1","x5:history_annotate_action#1","x5:geometry_query#2","x5:program_run#1","x5:program_status#1","x5:vision_compare#1","x5:robot_action#1","x5:operation_memory#1"],
+  "program/so101_gateway": ["x5:task_plan#1","x5:robot_observe#2","x5:robot_capabilities#1","x5:robot_information#1","x5:robot_contact_overlay#1","x5:robot_action_status#1","x5:robot_wait#1","x5:history_list_actions#1","x5:history_view_observation#1","x5:history_read_trace#1","x5:history_annotate_action#1","x5:geometry_query#2","x5:vision_compare#1","x5:robot_action#1","x5:operation_memory#1"]
+ },
+ "pool": {
+ }
+}

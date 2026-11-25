@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>NI-RUA · 真机工作台</title>
+    <link rel="stylesheet" href="/console.css">
+    <link rel="stylesheet" href="/console-bundle.css">
+    <script type="module" src="/console.js"></script>
+  </head>
+  <body data-boot="true">
+    <header class="bar">
+      <div class="brand"><strong>NI-RUA</strong><span>SO-101 真机工作台</span><nav class="workspace-nav" aria-label="工作区导航"><a href="/console" aria-current="page">真机工作台</a><a href="/calibration">标定</a><a href="/index.html">轨迹与记录</a></nav></div>
+      <div class="head-state"><span id="perception-service-host"></span><span id="run-id" class="mono">run —</span><a id="calib-badge" class="pill" href="/calibration" title="打开标定向导">标定状态 —</a><span id="lease-state" role="status">监看模式</span>
+        <button id="claim">取得控制 (claim_input)</button><button id="release" hidden>释放控制</button></div>
+      <button id="estop" class="estop" title="stop + hold：中断 Codex 轮次、关闭动作准入并保持当前位置。无需控制租约。">紧急停止<small>E-STOP · stop + hold</small></button>
+    </header>
+    <div id="banners" aria-live="assertive"></div>
+    <main>
+      <section class="panel live" aria-label="实时预览">
+        <div class="panel-head"><h2>实时预览 · 仅操作员可见</h2><span class="tag operator">operator-only · 不进入模型上下文</span></div>
+        <div class="cameras">
+          <figure data-camera="wrist"><div class="frame"><img alt="wrist 相机实时预览"><span class="stale-mark">STALE</span></div><figcaption><b>wrist</b> <span class="cam-meta">—</span></figcaption></figure>
+          <figure data-camera="fixed"><div class="frame"><img alt="fixed 相机实时预览"><span class="stale-mark">STALE</span></div><figcaption><b>fixed</b> <span class="cam-meta">—</span></figcaption></figure>
+        </div>
+        <p id="telemetry-meta" class="meta mono">telemetry —</p>
+      </section>
+      <section class="panel arm" aria-label="机械臂状态">
+        <div class="panel-head"><h2>机械臂状态</h2><span id="phase" class="pill">phase —</span><span id="torque" class="pill">torque —</span></div>
+        <div id="joints" class="joints" aria-busy="true"><div class="joint is-skeleton" aria-hidden="true"><span></span><span class="track"></span><span></span></div><div class="joint is-skeleton" aria-hidden="true"><span></span><span class="track"></span><span></span></div><div class="joint is-skeleton" aria-hidden="true"><span></span><span class="track"></span><span></span></div><div class="joint is-skeleton" aria-hidden="true"><span></span><span class="track"></span><span></span></div><div class="joint is-skeleton" aria-hidden="true"><span></span><span class="track"></span><span></span></div><div class="joint is-skeleton" aria-hidden="true"><span></span><span class="track"></span><span></span></div></div>
+        <dl class="kv">
+          <dt>TCP position_m</dt><dd id="tcp-pos" class="mono">—</dd>
+          <dt>TCP quaternion_xyzw</dt><dd id="tcp-quat" class="mono">—</dd>
+          <dt>gripper_normalized</dt><dd id="gripper" class="mono">—</dd>
+          <dt>active_action_id</dt><dd id="active-action" class="mono">—</dd>
+          <dt>tracking_error_rad</dt><dd id="tracking" class="mono">—</dd>
+        </dl>
+        <details open><summary>电机 motor（温度 / 负载 / 电压）</summary><div class="table-wrap"><table id="motors"><thead><tr><th>joint</th><th>temperature_c</th><th>load</th><th>voltage_v</th></tr></thead><tbody><tr class="is-skeleton" aria-hidden="true"><td></td><td></td><td></td><td></td></tr><tr class="is-skeleton" aria-hidden="true"><td></td><td></td><td></td><td></td></tr><tr class="is-skeleton" aria-hidden="true"><td></td><td></td><td></td><td></td></tr></tbody></table></div></details>
+        <div id="faults" class="faults"></div>
+      </section>
+      <section class="panel control" aria-label="运行控制">
+        <div class="panel-head"><h2>运行控制</h2></div>
+        <div class="buttons">
+          <button id="stop" title="中断 Codex 轮次并关闭动作准入。不需要租约。">中断轮次 <small>stop</small></button>
+          <button id="hold" class="warn" title="立刻以当前测量位置为目标保持机械臂，关闭动作准入。不需要租约。">保持 <small>hold</small></button>
+          <button id="torque-on" data-lease>上力矩 <small>torque_on</small></button>
+          <button id="relax" class="danger" data-lease>松力矩 <small>relax</small></button>
+          <button id="go-home" data-lease title="仅在 Codex 空闲、无动作时可用">回到 home <small>go_home</small></button>
+          <button id="resume" class="primary" data-lease title="发布新观察后重新开放动作准入">恢复准入 <small>resume</small></button>
+          <button id="save-video" data-lease title="封存上次保存以来所有动作的录像，并把各摄像头画面按采集时间对齐、左右拼成一个 MP4。仅在 Codex 空闲且没有动作执行时可用；不移动机械臂，之后的任务会继续录像。">保存任务视频 <small>save_video</small></button>
+        </div>
+        <p id="video-status" class="meta" role="status" aria-live="polite">保存任务视频：只录动作执行的时间段，模型思考时间不录；每次保存后重新开始录下一段。</p>
+        <div id="relax-confirm" class="confirm" hidden>
+          <p><b>机械臂会在重力作用下掉落。</b>请先用手托住机械臂或确认下方无物体与人手。松力矩后需 torque_on + resume（含新观察）才能再次运动。</p>
+          <button id="relax-yes" class="danger">确认松力矩 (confirm: relax)</button><button id="relax-no">取消</button>
+        </div>
+        <div id="ack" class="confirm" hidden>
+          <p><b>存在 unknown 状态</b>：机械臂实际是否停止 / 动作是否执行无法确认。请到现场确认机械臂静止、无碰撞后再勾选确认；恢复准入时会先获取一次新观察。</p>
+          <ul id="ack-list"></ul>
+          <label><input id="ack-check" type="checkbox"> 我已在现场检查机械臂，确认以上 unknown 项</label>
+        </div>
+        <p id="control-status" class="meta" role="status">—</p>
+        <p class="meta">go_home 只移动机械臂到记录的 home 关节角，<b>不会复位桌面物体</b>（reset_strategy=arm_home_only_world_unchanged）。stop 会关闭动作准入；之后需 resume 再发送继续指令。</p>
+        <p class="help">安全提示：软件急停依赖串口与工作进程正常。请务必在伸手可及处为舵机电源准备<b>物理电源开关</b>，任何异常（失控、冒烟、通信中断）直接断电。</p>
+      </section>
+      <section class="panel agent" aria-label="Codex 运行状态">
+        <div class="panel-head"><h2>Agent · <span data-agent-name>Codex</span></h2><span id="turn" class="pill">turn —</span><span id="admission" class="pill">admission —</span></div>
+        <div id="agent-bar"></div>
+        <dl class="kv">
+          <dt>run status</dt><dd id="run-status" class="mono">—</dd>
+          <dt>thread / turn</dt><dd id="thread" class="mono">—</dd>
+          <dt>tokens</dt><dd id="tokens" class="mono">—</dd>
+        </dl>
+        <details open><summary>当前 task_plan</summary><pre id="plan" class="mono">尚无 task_plan</pre></details>
+        <div id="pending"></div>
+        <p id="external-task-note" class="meta" hidden>任务在你自己的 Agent（Claude Code / Codex / OpenCode）里下达；这里不发送指令。</p>
+        <form id="prompt-form">
+          <label for="prompt">给 <span data-agent-name>Codex</span> 的指令：空闲时开始新任务，运行中可随时插话</label>
+          <textarea id="prompt" rows="3" maxlength="16000" placeholder="直接输入，回车发送（Shift+回车换行）。运行中发送 = 插话" required></textarea>
+          <div class="row"><button id="send" type="submit" class="primary">发送到当前 thread</button><span id="prompt-status" class="meta" role="status">需要控制租约；<span data-agent-name>Codex</span> 空闲且动作准入开启时可发送</span></div>
+        </form>
+        <div class="native-tui"><div class="row"><strong><span data-agent-name>Codex</span> 原生终端</strong><span id="tui-status" class="meta">连接中</span><div class="tui-scroll" role="group" aria-label="终端滚动"><button type="button" id="tui-page-up" title="向上翻页 (PageUp)">↑ 上翻</button><button type="button" id="tui-page-down" title="向下翻页 (PageDown)">↓ 下翻</button><button type="button" id="tui-bottom" title="回到最新输出 (End)">回到底部</button></div></div><div id="tui" tabindex="0" aria-label="原生终端视图"></div></div>
+        <details><summary>模型消息与工具调用（文本摘要）</summary><ol id="items" class="items"></ol></details>
+      </section>
+      <section class="panel receipts" aria-label="动作回执">
+        <div class="panel-head"><h2>最近动作回执</h2></div>
+        <div class="table-wrap"><table id="receipts"><thead><tr><th>action_id</th><th>type</th><th>status</th><th>reason</th><th>residuals</th></tr></thead><tbody><tr class="is-skeleton" aria-hidden="true"><td></td><td></td><td></td><td></td><td></td></tr><tr class="is-skeleton" aria-hidden="true"><td></td><td></td><td></td><td></td><td></td></tr><tr class="is-skeleton" aria-hidden="true"><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div>
+      </section>
+      <section class="panel observation" aria-label="模型可见观察">
+        <div class="panel-head"><h2>模型可见观察（最近一次 robot_observe）</h2><span class="tag model">model-visible · 非实时</span></div>
+        <div id="obs-images" class="obs-images"></div>
+        <p id="obs-meta" class="meta mono">—</p>
+      <details id="console-perception" open><summary>VGGT / SAM 感知结果 · 最近一次正式观察</summary>
+          <div id="perception-viewer-host" class="perception-view"></div>
+          <div id="perception-details-host"></div>
+        </details>
+      </section>
+      <section class="panel settings" aria-label="设置">
+        <div class="panel-head"><h2>设置</h2></div>
+        <h3>(a) 运行中可调</h3>
+        <form id="speed-form" class="row">
+          <label for="speed">速度上限 speed_scale_cap（0.1–1.0，默认 0.9，只能降低部署速度）</label>
+          <input id="speed" type="number" min="0.1" max="1" step="0.05" value="0.9"><button data-lease type="submit">应用 set_runtime_limits</button>
+        </form>
+        <p class="meta">后端、供应商 profile、模型、推理强度和速度在「Agent」面板顶部的 Agent 栏设置。</p>
+        <div class="row" id="model-transport-row" hidden><span id="model-transport-status" class="meta" role="status">—</span>
+          <button type="button" id="retry-model" data-lease>重试模型请求</button></div>
+        <h3>(b) 需新建 run</h3>
+        <dl id="new-run" class="kv"></dl>
+        <p class="meta">observation_profile / 相机 / 部署文件在一个 run 内固定。新建 run = 新 run 目录 + 新 <span data-agent-name>Codex</span> thread：先停止并退出当前网关（Ctrl-C），再用下面的命令启动。</p>
+        <pre id="new-run-cmd" class="mono"></pre>
+        <details><summary>生效配置（只读，密钥已脱敏）</summary><pre id="config" class="mono"></pre></details>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "applicability": "Comparative hardware knowledge for the SO-101 follower. The exact servo variant, printed parts and camera module of the installed unit are not verified. Measured state and live calibration take precedence.",
+  "model_lineage": "Open-hardware model published by TheRobotStudio (SO-ARM100 project, Apache-2.0). Geometry is the new-calibration follower model with the added wrist camera mount; joint zero is the middle of each joint's range.",
+  "servo": {
+    "model": "Feetech STS3215",
+    "count": 6,
+    "bus": "one half-duplex serial bus through a USB serial adapter board",
+    "encoder": "12-bit magnetic, 4096 ticks per revolution",
+    "feedback": ["position", "speed", "load", "voltage", "temperature"],
+    "gear_ratio_variants": "Kits ship STS3215 variants with different gear ratios and supply voltages; which variant is installed per joint is not recorded here."
+  },
+  "lerobot_driver": {
+    "driver": "LeRobot SOFollower (so_follower)",
+    "motor_ids": {"shoulder_pan": 1, "shoulder_lift": 2, "elbow_flex": 3, "wrist_flex": 4, "wrist_roll": 5, "gripper": 6},
+    "arm_norm_mode": "degrees centred on the calibration midpoint when use_degrees is true, otherwise -100..100",
+    "gripper_norm_mode": "0..100 percent of the recorded calibration range",
+    "max_relative_target": "Optional per-command goal clamp relative to the present position; disabled by default in the driver."
+  },
+  "not_established": [
+    "stall torque and continuous torque of the installed servos",
+    "payload rating and grasp force",
+    "gear backlash (simulation models assume about 0.5 degree)",
+    "repeatability and stopping latency",
+    "sign and zero agreement between driver calibration and the URDF"
+  ]
+}

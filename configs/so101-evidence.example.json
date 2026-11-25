@@ -1,0 +1,47 @@
+{
+  "_comment": "Offline evidence tuning only; no physical actions or automatic calibration apply. Explicit CLI/review settings override this file; omitted fields use packaged defaults. See docs/development/so101-configuration.md for units, bounds and examples.",
+  "sam31_video": {
+    "max_num_objects": 16,
+    "use_fa3": false,
+    "output_prob_threshold": 0.5
+  },
+  "video_evidence": {
+    "max_frame_gap_s": 0.25,
+    "max_joint_gap_s": 0.25,
+    "max_forward_backward_error_px": 1.0,
+    "window_size_px": 21,
+    "pyramid_levels": 3,
+    "min_eigenvalue": 0.0001
+  },
+  "vggt_evidence": {
+    "min_confidence_rank": 0.1,
+    "max_landmark_pixel_distance_px": 3.0,
+    "rank_rtol": 1e-06
+  },
+  "contact_fit": {
+    "initial_plane": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "estimated_joints": [],
+    "estimated_plane": [
+      "height",
+      "slope_x",
+      "slope_y"
+    ],
+    "estimated_contact_axes": [],
+    "max_joint_delta_rad": 0.1,
+    "max_plane_height_delta_m": 0.03,
+    "max_slope_delta": 0.1,
+    "max_contact_delta_m": 0.005,
+    "sample_sigma_m": 0.001,
+    "robust_scale_sigma": 2.0,
+    "rank_rtol": 1e-06,
+    "solver_ftol": 1e-11,
+    "solver_xtol": 1e-11,
+    "solver_gtol": 1e-11,
+    "rank_difference_step": 1e-05,
+    "bound_tolerance_ratio": 1e-06
+  }
+}

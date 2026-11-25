@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ni-rua-harness"
+version = "0.1.0"
+description = "Agent harness for embodied manipulation: a model-led Codex session with one robot execution gateway"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Nerve Intelligence"}]
+requires-python = ">=3.11"
+dependencies = [
+  "aiohttp==3.13.2",
+  "openai-codex==0.160.0",
+  "numpy>=2.2.6,<2.6",
+  "scipy==1.18.1",
+  "opencv-python-headless==4.13.0.92",
+  "jsonschema==4.26.0",
+  "Pillow==12.1.1",
+  "pin==4.1.0",
+  "coal==3.0.3",
+  "pin-pink==4.4.0",
+  "qpsolvers==4.13.0",
+  "daqp==0.11.2",
+  "ruckig==0.19.4",
+]
+
+[project.optional-dependencies]
+claude = ["claude-agent-sdk==0.2.180"]
+
+[project.urls]
+Homepage = "https://github.com/NerveInt/NI-RUA"
+Repository = "https://github.com/NerveInt/NI-RUA.git"
+
+[project.scripts]
+ni-rua = "ni_rua.apps.gateway.cli:main"
+ni-rua-queue = "ni_rua.apps.evaluation.queue:main"
+ni-rua-report = "ni_rua.apps.evaluation.report:main"
+ni-rua-audit = "ni_rua.apps.evaluation.audit:main"
+
+[tool.setuptools.packages.find]
+include = ["ni_rua", "ni_rua.*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+ni_rua = ["web_assets/*", "reference_sources/**/*"]
+"ni_rua.core" = ["default_config.json"]
+"ni_rua.cortex.session" = ["codex_responses.json", "codex_models.json"]
+"ni_rua.cortex.context" = ["robodojo_task_rules.json", "task_instruction_overrides.json"]
+"ni_rua.apps.library" = ["experiment_group_relations.json"]
+"ni_rua.robot.model" = ["robot_information_data/*/*.json", "robot_information_data/*/*.txt", "robot_information_data/*/*.png", "robot_information_data/*/*.zip", "robot_information_data/*/cad/*.STEP"]
+"ni_rua.robot.calibration.evidence" = ["defaults.json"]
+"ni_rua.robot.embodiments.arx_x5" = ["defaults.json"]
+"ni_rua.robot.embodiments.libero_franka_panda" = ["defaults.json"]
+"ni_rua.robot.backends.so101" = ["calibration_defaults.json"]
+"ni_rua.runtime.policy.policy_workers" = ["*.json"]
+"ni_rua.cortex.agents.opencode" = ["opencode_routes.json"]

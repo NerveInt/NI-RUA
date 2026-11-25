@@ -1,0 +1,24 @@
+{
+  "remote": {
+    "enabled": true,
+    "host": "your-gpu-host",
+    "required": false,
+    "stop_on_exit": false,
+    "remote_repo": "~/code/NI-RUA",
+    "services": [
+      {
+        "name": "vggt",
+        "remote_port": 8331,
+        "health_path": "/health",
+        "workdir": "~/code/NI-RUA/services/vggt_height",
+        "env": ["VGGT_HOME=~/models/vggt", "VGGT_RUN_DIR=~/ni-rua-perception/run"],
+        "command": "bash start.sh",
+        "stop": "bash stop.sh",
+        "gpu": "auto",
+        "gpu_min_free_mib": 15360,
+        "startup_timeout_s": 300,
+        "reuse_if_healthy": true
+      }
+    ]
+  }
+}

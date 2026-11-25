@@ -1,0 +1,433 @@
+{
+ "capture": {
+  "binary": "opencode serve 2.2.7 (darwin-arm64)",
+  "probe": "/tmp/ni-rua-agent-harness/oc2/bin/s05_*.py:s05-compaction",
+  "scenario": "auto compaction whose summary misses the template twice; the turn fails compaction.failed",
+  "written": "2026-11-13",
+  "sanitised": "run directories -> /runs/<scenario>; location/durable/projectID/slug and instruction digests dropped; fake model, fake signatures, no credential"
+ },
+ "session_id": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+ "prompts": [
+  "msg_1d10ca756001tPMwu1xT0BzM2P"
+ ],
+ "snapshots": [
+  {
+   "label": "final",
+   "messages": [
+    {
+     "id": "msg_1d10ca756001tPMwu1xT0BzM2P",
+     "time": {
+      "created": 1794508630076
+     },
+     "text": "T1 big",
+     "type": "user"
+    },
+    {
+     "id": "msg_1d10ca83f00143KiTQ58bPTD6L",
+     "time": {
+      "created": 1794508630080,
+      "streamed": 1794508630088,
+      "completed": 1794508630099
+     },
+     "type": "assistant",
+     "agent": "build",
+     "model": {
+      "id": "probe-model",
+      "providerID": "relay"
+     },
+     "content": [
+      {
+       "type": "tool",
+       "id": "call_fake_0_0",
+       "name": "ni_rua_observe",
+       "executed": false,
+       "state": {
+        "status": "completed",
+        "input": {},
+        "content": [
+         {
+          "type": "text",
+          "text": "observation ok MARKER-TOOL-TEXT"
+         },
+         {
+          "type": "file",
+          "uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAwCAIAAAAuKetIAAAAY0lEQVR4nO3PQQkAMAzAwCqpfymTNRF7HINABFzm7H7dcEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAUNaEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAWPXYknMLX+nGo+AAAAAElFTkSuQmCC",
+          "mime": "image/png"
+         }
+        ],
+        "metadata": {
+         "truncated": false
+        }
+       },
+       "time": {
+        "created": 1794508630084,
+        "ran": 1794508630086,
+        "completed": 1794508630098
+       }
+      }
+     ],
+     "finish": "tool-calls",
+     "rawFinish": "tool_use",
+     "cost": 0,
+     "tokens": {
+      "input": 30000,
+      "output": 50,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "type": "compaction",
+     "id": "msg_1d10ca856002F5wTUz5JSAeodu",
+     "time": {
+      "created": 1794508630102
+     },
+     "status": "failed",
+     "reason": "auto",
+     "error": {
+      "type": "compaction.failed",
+      "message": "Compaction summary did not match the required template"
+     },
+     "cost": 0,
+     "tokens": {
+      "input": 20,
+      "output": 10,
+      "reasoning": 0,
+      "cache": {
+       "read": 0,
+       "write": 0
+      }
+     }
+    },
+    {
+     "id": "msg_1d10ca864001Sn2psRRzlt7FPd",
+     "time": {
+      "created": 1794508630116
+     },
+     "type": "idle",
+     "outcome": "failed",
+     "error": {
+      "type": "compaction.failed",
+      "message": "Compaction summary did not match the required template"
+     }
+    }
+   ],
+   "active": null,
+   "inbox": null
+  }
+ ],
+ "children": {},
+ "events": [
+  {
+   "id": "evt_1d10ca578001TixkMO7nr13c1H",
+   "created": 1794508629368,
+   "type": "session.created",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "title": "ni-rua-actor"
+   }
+  },
+  {
+   "id": "evt_1d10ca81b002YI3HOM85hZ6jvr",
+   "created": 1794508630043,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d10ca756001tPMwu1xT0BzM2P",
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "item": {
+     "type": "user",
+     "payload": {
+      "text": "T1 big"
+     },
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d10ca82b0014mjptf9R06d49x",
+   "created": 1794508630059,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8"
+   }
+  },
+  {
+   "id": "evt_1d10ca83c0014UD1lnG8PTVZR8",
+   "created": 1794508630076,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "inboxID": "msg_1d10ca756001tPMwu1xT0BzM2P"
+   }
+  },
+  {
+   "id": "evt_1d10ca843001Pmj7tBlmu5UGx2",
+   "created": 1794508630083,
+   "type": "session.step.started",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "agent": "build",
+    "model": {
+     "id": "probe-model",
+     "providerID": "relay"
+    },
+    "assistantMessageID": "msg_1d10ca83f00143KiTQ58bPTD6L",
+    "started": 1794508630080
+   }
+  },
+  {
+   "id": "evt_1d10ca844001Wf3KGHHgh8Ve7t",
+   "created": 1794508630084,
+   "type": "session.tool.input.started",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "assistantMessageID": "msg_1d10ca83f00143KiTQ58bPTD6L",
+    "id": "call_fake_0_0",
+    "name": "ni_rua_observe"
+   }
+  },
+  {
+   "id": "evt_1d10ca845001H4aSUGvdWApTuY",
+   "created": 1794508630085,
+   "type": "session.tool.input.ended",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "assistantMessageID": "msg_1d10ca83f00143KiTQ58bPTD6L",
+    "id": "call_fake_0_0",
+    "text": "{}"
+   }
+  },
+  {
+   "id": "evt_1d10ca846001tt9yYNlmtJx177",
+   "created": 1794508630086,
+   "type": "session.tool.called",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "assistantMessageID": "msg_1d10ca83f00143KiTQ58bPTD6L",
+    "id": "call_fake_0_0",
+    "input": {},
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d10ca848001HadjhIS8w9FRBc",
+   "created": 1794508630088,
+   "type": "session.step.streamed",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "assistantMessageID": "msg_1d10ca83f00143KiTQ58bPTD6L"
+   }
+  },
+  {
+   "id": "evt_1d10ca852001vlwlKxWkRgOIpC",
+   "created": 1794508630098,
+   "type": "session.tool.success",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "assistantMessageID": "msg_1d10ca83f00143KiTQ58bPTD6L",
+    "id": "call_fake_0_0",
+    "content": [
+     {
+      "type": "text",
+      "text": "observation ok MARKER-TOOL-TEXT"
+     },
+     {
+      "type": "file",
+      "uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAwCAIAAAAuKetIAAAAY0lEQVR4nO3PQQkAMAzAwCqpfymTNRF7HINABFzm7H7dcEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAUNaEEDWtCAFjSgBQ1oQQNa0IAWNKAFDWhBA1rQgBY0oAWPXYknMLX+nGo+AAAAAElFTkSuQmCC",
+      "mime": "image/png"
+     }
+    ],
+    "metadata": {
+     "truncated": false
+    },
+    "executed": false
+   }
+  },
+  {
+   "id": "evt_1d10ca853001Zj9Oazz5rsY0xD",
+   "created": 1794508630099,
+   "type": "session.step.ended",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "assistantMessageID": "msg_1d10ca83f00143KiTQ58bPTD6L",
+    "finish": "tool-calls",
+    "rawFinish": "tool_use",
+    "tokens": {
+     "input": 30000,
+     "output": 50,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    },
+    "cost": 0
+   }
+  },
+  {
+   "id": "evt_1d10ca856002F5wTUz5JSAeodu",
+   "created": 1794508630102,
+   "type": "session.compaction.started",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "reason": "auto"
+   }
+  },
+  {
+   "id": "evt_1d10ca85f001TTgk9hSbW3Yuc7",
+   "created": 1794508630111,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "text": "SUMMARY-OR-ANSWE"
+   }
+  },
+  {
+   "id": "evt_1d10ca85f002mFd1PnJEkexPXh",
+   "created": 1794508630111,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "text": "R-1"
+   }
+  },
+  {
+   "id": "evt_1d10ca862001aKxhb956HZcZc5",
+   "created": 1794508630114,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "text": "ANSWER-2"
+   }
+  },
+  {
+   "id": "evt_1d10ca863002ry8JfbuUktHDGV",
+   "created": 1794508630115,
+   "type": "session.compaction.failed",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "reason": "auto",
+    "error": {
+     "type": "compaction.failed",
+     "message": "Compaction summary did not match the required template"
+    },
+    "cost": 0,
+    "tokens": {
+     "input": 20,
+     "output": 10,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d10ca864001Sn2psRRzlt7FPd",
+   "created": 1794508630116,
+   "type": "session.execution.failed",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "error": {
+     "type": "compaction.failed",
+     "message": "Compaction summary did not match the required template"
+    }
+   }
+  },
+  {
+   "id": "evt_1d10ca904001Mur7XoPN1uoqIZ",
+   "created": 1794508630276,
+   "type": "session.inbox.enqueued",
+   "data": {
+    "inboxID": "msg_1d10ca903001IkOg0mC5mtNobn",
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "item": {
+     "type": "compaction",
+     "payload": {},
+     "delivery": "steer"
+    }
+   }
+  },
+  {
+   "id": "evt_1d10ca905001U4cxV59I1NbNR3",
+   "created": 1794508630277,
+   "type": "session.execution.started",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8"
+   }
+  },
+  {
+   "id": "evt_1d10ca9060014ha4JifMN1q6Xt",
+   "created": 1794508630278,
+   "type": "session.inbox.delivered",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "inboxID": "msg_1d10ca903001IkOg0mC5mtNobn"
+   }
+  },
+  {
+   "id": "evt_1d10ca906002YaS1OBWX9SST2M",
+   "created": 1794508630278,
+   "type": "session.compaction.started",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "reason": "manual",
+    "inputID": "msg_1d10ca903001IkOg0mC5mtNobn"
+   }
+  },
+  {
+   "id": "evt_1d10ca911001a4ZkyyPYNRCe2j",
+   "created": 1794508630289,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "text": "ANSWER-3"
+   }
+  },
+  {
+   "id": "evt_1d10ca914001bfGdX6XlXDnFCX",
+   "created": 1794508630292,
+   "type": "session.compaction.delta",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "text": "ANSWER-4"
+   }
+  },
+  {
+   "id": "evt_1d10ca915002vKxW2VM57hkX5c",
+   "created": 1794508630293,
+   "type": "session.compaction.failed",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8",
+    "reason": "manual",
+    "inputID": "msg_1d10ca903001IkOg0mC5mtNobn",
+    "error": {
+     "type": "compaction.failed",
+     "message": "Compaction summary did not match the required template"
+    },
+    "cost": 0,
+    "tokens": {
+     "input": 20,
+     "output": 10,
+     "reasoning": 0,
+     "cache": {
+      "read": 0,
+      "write": 0
+     }
+    }
+   }
+  },
+  {
+   "id": "evt_1d10ca916001yl7AHH1l7v4VA8",
+   "created": 1794508630294,
+   "type": "session.execution.succeeded",
+   "data": {
+    "sessionID": "ses_e2ef35a92ffe77qVmtrOIFjOz8"
+   }
+  }
+ ]
+}

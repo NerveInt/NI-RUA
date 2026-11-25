@@ -1,0 +1,4994 @@
+{
+ "capture": {
+  "purpose": "design 11 section 4: the archive read path of 1.19.5 runs after the 2.x port. 1.19.5 is no longer a runnable backend (OpenCode 2.x replaces it); these archives freeze what 1.19.5 runs left in the run Store, so the neutral readers (transcript rows, runtime/agent, manifest.agent_backend, agent-raw.jsonl) keep opening them. `finals` and `statuses` are what the 1.19.5 code decided.",
+  "written": "2026-11-13",
+  "generator": "scratch scripts legacy_run.py, legacy_compaction.py, legacy_rows.py, legacy_export.py (OC2-C)"
+ },
+ "archives": {
+  "smoke_run": {
+   "capture": {
+    "source": "real opencode serve 1.19.5 (opencode-ai@1.19.5 darwin-arm64) driven by the 1.19.5 OpenCodeSession of NI-RUA 25fa204 (feat/agent-harness), imported from a `git archive 25fa204` snapshot of ni_rua/, tests/, third_party/ and configs/, with a FakeAnthropicServer upstream on loopback; scenario = tests/test_agent_opencode_session_smoke.py test_tool_turn_steer_interrupt_and_close (tool turn, steer, interrupt, plain turn, close during bash)",
+    "sanitised": "run directory -> /runs/legacy-1.19.5, binary path -> /opt/opencode-1.19.5/opencode, rg path -> /usr/bin/rg; plugin/catalog/diff native frames dropped; no credential was ever written (relay placeholder only)"
+   },
+   "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+   "turns": [
+    "turn-75de09c35ad6450e9d2ae51931f2da27",
+    "turn-9c5159c213de4c258458d3fe6fe2559f",
+    "turn-ebd53d37dfc3418a9a5be5e8853fc444",
+    "turn-f221d0fec5704bf389e32249b75a5e9e",
+    "turn-e321a0e57f8f423b838fcbdf5d167b32"
+   ],
+   "statuses": [
+    "completed",
+    "completed",
+    "interrupted",
+    "completed",
+    null
+   ],
+   "manifest": {
+    "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+    "agent_backend": {
+     "kind": "opencode",
+     "sdk": null,
+     "cli": {
+      "version": "1.19.5",
+      "executable": "/opt/opencode-1.19.5/opencode",
+      "sha256": "feaafead8cd563af0c2dcb386b0757e4355e327ebb6bd1aaad5440fe2f83596c"
+     },
+     "wire_api": "anthropic_messages",
+     "native_model_id": "claude-smoke-model",
+     "provider_alias": "relay",
+     "route_list_sha256": "412a5968fa4553ccf7ce4d08906334eea5acfac49f0f167b00f4aad9cac5a6aa",
+     "native_effort": {
+      "variant": "high",
+      "applied": true,
+      "channel": "prompt_variant",
+      "provider_options": {
+       "thinking": {
+        "type": "adaptive",
+        "display": "summarized"
+       },
+       "effort": "high"
+      },
+      "declared_variants": [
+       "low",
+       "medium",
+       "high",
+       "xhigh",
+       "max"
+      ],
+      "wire_field": "output_config.effort"
+     },
+     "tool_transport": {
+      "kind": "mcp_streamable_http",
+      "tool_name_prefix": "ni_rua_",
+      "read_only_tools": [
+       "look"
+      ]
+     },
+     "prompt_channel": {
+      "instructions_channel": "config_instructions_file",
+      "native_base_prompt": "preserved",
+      "instructions_sha256": "e707190f8862272392cd4a24083263a2a4a7b944501b536786ebb90c003a80cb",
+      "tool_name_prefix": "ni_rua_",
+      "naming_note": "Tool names in these instructions are written without the prefix 'ni_rua_' that your tool list shows; they refer to the same tools."
+     },
+     "native_tools": {
+      "enabled": [
+       "bash",
+       "edit",
+       "glob",
+       "grep",
+       "read",
+       "skill",
+       "task",
+       "todowrite",
+       "write"
+      ],
+      "disabled": [
+       {
+        "name": "webfetch",
+        "reason": "online_access"
+       },
+       {
+        "name": "websearch",
+        "reason": "online_access"
+       },
+       {
+        "name": "codesearch",
+        "reason": "online_access"
+       },
+       {
+        "name": "question",
+        "reason": "waits_for_human"
+       }
+      ]
+     },
+     "native_settings": {
+      "flags": {
+       "OPENCODE_DISABLE_PROJECT_CONFIG": "1",
+       "OPENCODE_PURE": "1",
+       "OPENCODE_DISABLE_DEFAULT_PLUGINS": "1",
+       "OPENCODE_DISABLE_CLAUDE_CODE": "1",
+       "OPENCODE_DISABLE_EXTERNAL_SKILLS": "1",
+       "OPENCODE_DISABLE_AUTOUPDATE": "1",
+       "OPENCODE_DISABLE_MODELS_FETCH": "1",
+       "OPENCODE_DISABLE_LSP_DOWNLOAD": "1",
+       "OPENCODE_DISABLE_EMBEDDED_WEB_UI": "1"
+      },
+      "config_dirs_read_only": true,
+      "rg": "/usr/bin/rg",
+      "compaction_prune": false,
+      "title_agent": "disabled",
+      "provider_timeouts": {
+       "chunkTimeout": false,
+       "headerTimeout": false
+      }
+     },
+     "upstream_provider": "fake",
+     "model_configured": "claude-smoke-model",
+     "effort": "high",
+     "isolation": "disabled",
+     "counting": "delivered_usable_generation_completions_v1",
+     "context_delivery": "full",
+     "capabilities": {
+      "steer": true,
+      "native_requests": false,
+      "terminal_attach": true,
+      "native_terminal_replay": false,
+      "fork": false,
+      "deferred_tools": false,
+      "account_relay": false,
+      "native_evidence_agent": false,
+      "sandbox": true,
+      "service_tier": false,
+      "native_memories": false,
+      "live_effort": true,
+      "native_wakeup": false,
+      "compaction_signal": "native+relay"
+     },
+     "subagents": true,
+     "evidence_client": null,
+     "output_limit_tokens": 32000,
+     "context_limit_tokens": 200000
+    }
+   },
+   "runtime_agent": {
+    "backend": "opencode",
+    "clean_shutdown": false,
+    "cli_executable": "/opt/opencode-1.19.5/opencode",
+    "cli_sha256": "feaafead8cd563af0c2dcb386b0757e4355e327ebb6bd1aaad5440fe2f83596c",
+    "cli_version": "1.19.5",
+    "counting": "delivered_usable_generation_completions_v1",
+    "effort": "high",
+    "instance_id": "agent-8e53dc0cb1f645c884c18a69f90977b5",
+    "instructions_digest": "e707190f8862272392cd4a24083263a2a4a7b944501b536786ebb90c003a80cb",
+    "isolation": "disabled",
+    "model": "claude-smoke-model",
+    "native": {
+     "data_dir": "private/opencode/xdg/data"
+    },
+    "pid": 98445,
+    "provider": "fake",
+    "resumed": false,
+    "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+    "tools_digest": "20131782cc3fd10cf401556ae27b529824f1dbc2f5eb51a1f48c4d3f74ecd22e",
+    "wire_api": "anthropic_messages"
+   },
+   "rows": [
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "Look at the scene, then answer.",
+       "type": "text"
+      }
+     ],
+     "id": "item-d21ca14635ba46a2b2fa8322a87583b5",
+     "native_id": "msg_1d153abf0001TjeOL6LISh24Js",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+     "turn_id": "turn-75de09c35ad6450e9d2ae51931f2da27",
+     "type": "userMessage"
+    },
+    {
+     "arguments": {
+      "x": 1
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "scene: one red cube",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-22b19e802e044969b15f296c0b57d6e0",
+     "message_id": "msg_1d153abf8001XTWzpnUQkRRZ1l",
+     "namespace": null,
+     "native_id": "call_fake_0_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+     "tool": "look",
+     "turn_id": "turn-75de09c35ad6450e9d2ae51931f2da27",
+     "type": "dynamicToolCall"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1d153af1b001CkdNoR57abTFQu",
+     "message_id": "msg_1d153af0a001rgOfQIBYwn73Dx",
+     "native_id": "prt_1d153af1b001CkdNoR57abTFQu",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "FINAL",
+     "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+     "turn_id": "turn-75de09c35ad6450e9d2ae51931f2da27",
+     "type": "agentMessage"
+    },
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "GATE-S: wait for the gate.",
+       "type": "text"
+      }
+     ],
+     "id": "item-b5529212cda749638620e6f47f269e6b",
+     "native_id": "msg_1d153af27001SJVZrDoTisfUf5",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+     "turn_id": "turn-9c5159c213de4c258458d3fe6fe2559f",
+     "type": "userMessage"
+    },
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "STEER-NOW: answer the steer.",
+       "type": "text"
+      }
+     ],
+     "id": "item-7b8d0388b8dd4d9c8e924f4b03c8e75e",
+     "native_id": "msg_1d153af390011GWjxz2FxQI53j",
+     "raw_refs": [],
+     "status": "completed",
+     "steer": true,
+     "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+     "turn_id": "turn-9c5159c213de4c258458d3fe6fe2559f",
+     "type": "userMessage"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1d153af3e001Uk2MtA4qSOyomD",
+     "message_id": "msg_1d153af2a001TTSCge84Pjtgfq",
+     "native_id": "prt_1d153af3e001Uk2MtA4qSOyomD",
+     "phase": "commentary",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "late answer",
+     "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+     "turn_id": "turn-9c5159c213de4c258458d3fe6fe2559f",
+     "type": "agentMessage"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1d153af50001fnQ5d6iADR12X4",
+     "message_id": "msg_1d153af41001i0nk6o195RRCKN",
+     "native_id": "prt_1d153af50001fnQ5d6iADR12X4",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "FINAL-STEER",
+     "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+     "turn_id": "turn-9c5159c213de4c258458d3fe6fe2559f",
+     "type": "agentMessage"
+    },
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "GATE-A: wait for the gate.",
+       "type": "text"
+      }
+     ],
+     "id": "item-0641088a66ac46a99ce876b096834871",
+     "native_id": "msg_1d153af5a001l6LGZ3DCP99H4V",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+     "turn_id": "turn-ebd53d37dfc3418a9a5be5e8853fc444",
+     "type": "userMessage"
+    },
+    {
+     "backend": "opencode",
+     "error": {
+      "message": "opencode_turn_failed:APIError:400"
+     },
+     "id": "msg_1d153af5c001lpiJeSnbDzy9qI:error",
+     "native_id": "msg_1d153af5c001lpiJeSnbDzy9qI",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+     "turn_id": "turn-ebd53d37dfc3418a9a5be5e8853fc444",
+     "type": "error"
+    },
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "PLAIN: answer directly.",
+       "type": "text"
+      }
+     ],
+     "id": "item-893b50609f91411e9fa7597633f2ae4c",
+     "native_id": "msg_1d153af750017ZfbOkf2rTpxmu",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+     "turn_id": "turn-f221d0fec5704bf389e32249b75a5e9e",
+     "type": "userMessage"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1d153af86001bKxSGapi36bW7R",
+     "message_id": "msg_1d153af77001HIRlHPZR20c8tV",
+     "native_id": "prt_1d153af86001bKxSGapi36bW7R",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "FINAL-2",
+     "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+     "turn_id": "turn-f221d0fec5704bf389e32249b75a5e9e",
+     "type": "agentMessage"
+    },
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "BASH: wait in the shell.",
+       "type": "text"
+      }
+     ],
+     "id": "item-1a5d10cde79e46809f40d1ce43fbb39a",
+     "native_id": "msg_1d153af8f0012xjV7zTW2Zoy59",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+     "turn_id": "turn-e321a0e57f8f423b838fcbdf5d167b32",
+     "type": "userMessage"
+    },
+    {
+     "aggregatedOutput": "",
+     "backend": "opencode",
+     "command": "sleep 600",
+     "cwd": null,
+     "error": {
+      "message": "opencode_tool_interrupted"
+     },
+     "exitCode": null,
+     "id": "prt_1d153afa3001hyi9ntG07Ov9mi",
+     "interrupted": true,
+     "message_id": "msg_1d153af91001YiUFa86MoRar7R",
+     "native_id": "call_fake_6_0",
+     "raw_refs": [],
+     "status": "failed",
+     "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+     "turn_id": "turn-e321a0e57f8f423b838fcbdf5d167b32",
+     "type": "commandExecution"
+    }
+   ],
+   "events": [
+    {
+     "type": "agent.turn_started",
+     "payload": {
+      "origin": "host"
+     },
+     "correlation": {
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-75de09c35ad6450e9d2ae51931f2da27"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-75de09c35ad6450e9d2ae51931f2da27"
+     }
+    },
+    {
+     "type": "agent.turn_verdict",
+     "payload": {
+      "message_id": "msg_1d153af0a001rgOfQIBYwn73Dx",
+      "reason": "answered",
+      "signals": [
+       "idle"
+      ],
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-75de09c35ad6450e9d2ae51931f2da27"
+     }
+    },
+    {
+     "type": "agent.turn_started",
+     "payload": {
+      "origin": "host"
+     },
+     "correlation": {
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-9c5159c213de4c258458d3fe6fe2559f"
+     }
+    },
+    {
+     "type": "agent.turn_steered",
+     "payload": {},
+     "correlation": {
+      "item_id": "item-7b8d0388b8dd4d9c8e924f4b03c8e75e",
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-9c5159c213de4c258458d3fe6fe2559f"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-9c5159c213de4c258458d3fe6fe2559f"
+     }
+    },
+    {
+     "type": "agent.turn_verdict",
+     "payload": {
+      "message_id": "msg_1d153af41001i0nk6o195RRCKN",
+      "reason": "answered",
+      "signals": [
+       "idle"
+      ],
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-9c5159c213de4c258458d3fe6fe2559f"
+     }
+    },
+    {
+     "type": "agent.turn_started",
+     "payload": {
+      "origin": "host"
+     },
+     "correlation": {
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-ebd53d37dfc3418a9a5be5e8853fc444"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "interrupted"
+     },
+     "correlation": {
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-ebd53d37dfc3418a9a5be5e8853fc444"
+     }
+    },
+    {
+     "type": "agent.turn_verdict",
+     "payload": {
+      "message_id": "msg_1d153af5c001lpiJeSnbDzy9qI",
+      "reason": "interrupt_requested",
+      "signals": [
+       "error"
+      ],
+      "status": "interrupted"
+     },
+     "correlation": {
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-ebd53d37dfc3418a9a5be5e8853fc444"
+     }
+    },
+    {
+     "type": "agent.turn_started",
+     "payload": {
+      "origin": "host"
+     },
+     "correlation": {
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-f221d0fec5704bf389e32249b75a5e9e"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-f221d0fec5704bf389e32249b75a5e9e"
+     }
+    },
+    {
+     "type": "agent.turn_verdict",
+     "payload": {
+      "message_id": "msg_1d153af77001HIRlHPZR20c8tV",
+      "reason": "answered",
+      "signals": [
+       "idle"
+      ],
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-f221d0fec5704bf389e32249b75a5e9e"
+     }
+    },
+    {
+     "type": "agent.turn_started",
+     "payload": {
+      "origin": "host"
+     },
+     "correlation": {
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-e321a0e57f8f423b838fcbdf5d167b32"
+     }
+    },
+    {
+     "type": "agent.session_closed",
+     "payload": {
+      "clean_shutdown": false,
+      "errors": 0,
+      "state_at_close": "running",
+      "steps": {
+       "backend": "completed",
+       "identity": "completed",
+       "mcp": "completed",
+       "relay": "completed",
+       "relay_cancel": "completed",
+       "tool_workers": "completed"
+      }
+     },
+     "correlation": {
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-e321a0e57f8f423b838fcbdf5d167b32"
+     }
+    }
+   ],
+   "agent_raw": [
+    {
+     "direction": "sent",
+     "channel": "control",
+     "message": {
+      "command": "submit_prompt",
+      "input": [
+       {
+        "text": "Look at the scene, then answer.",
+        "type": "text"
+       }
+      ],
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-75de09c35ad6450e9d2ae51931f2da27"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153abf2001fhyjcIlpvgjyyo",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "id": "msg_1d153abf0001TjeOL6LISh24Js",
+        "model": {
+         "modelID": "claude-smoke-model",
+         "providerID": "relay",
+         "variant": "high"
+        },
+        "role": "user",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "created": 1794513284080
+        }
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153abf3001SeYZIFadOP9pQK",
+      "properties": {
+       "part": {
+        "id": "prt_1d153abf2001Pwli6BNVBU2tXd",
+        "messageID": "msg_1d153abf0001TjeOL6LISh24Js",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "text": "Look at the scene, then answer.",
+        "type": "text"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284083
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "mcp",
+     "message": {
+      "id": 0,
+      "jsonrpc": "2.0",
+      "method": "initialize",
+      "params": {
+       "capabilities": {
+        "roots": {}
+       },
+       "clientInfo": {
+        "name": "opencode",
+        "version": "1.19.5"
+       },
+       "protocolVersion": "2025-11-25"
+      }
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153abf6001FkL0j1t1igmZjY",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153abf8001Z4shZbiEK3p36f",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "id": "msg_1d153abf8001XTWzpnUQkRRZ1l",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153abf0001TjeOL6LISh24Js",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "created": 1794513284088
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 0,
+         "output": 0,
+         "reasoning": 0
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "sent",
+     "channel": "mcp",
+     "message": {
+      "id": 0,
+      "jsonrpc": "2.0",
+      "result": {
+       "capabilities": {
+        "tools": {
+         "listChanged": false
+        }
+       },
+       "protocolVersion": "2025-11-25",
+       "serverInfo": {
+        "name": "ni_rua",
+        "version": "0.2.0"
+       }
+      }
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "mcp",
+     "message": {
+      "jsonrpc": "2.0",
+      "method": "notifications/initialized"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "mcp",
+     "message": {
+      "id": 1,
+      "jsonrpc": "2.0",
+      "method": "tools/list"
+     }
+    },
+    {
+     "direction": "sent",
+     "channel": "mcp",
+     "message": {
+      "id": 1,
+      "jsonrpc": "2.0",
+      "result": {
+       "tools": [
+        {
+         "_meta": {
+          "anthropic/maxResultSizeChars": 10000000
+         },
+         "annotations": {
+          "readOnlyHint": true
+         },
+         "description": "Read-only view of the scene.",
+         "inputSchema": {
+          "additionalProperties": false,
+          "properties": {
+           "x": {
+            "description": "x position in m, default 0",
+            "type": "number"
+           }
+          },
+          "type": "object"
+         },
+         "name": "look"
+        }
+       ]
+      }
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153aead001k9Ba79qkBumHAc",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "mcp",
+     "message": {
+      "id": 2,
+      "jsonrpc": "2.0",
+      "method": "tools/call",
+      "params": {
+       "_meta": {
+        "item_id": "call-22b19e802e044969b15f296c0b57d6e0",
+        "progressToken": 2
+       },
+       "arguments": {
+        "x": 1
+       },
+       "name": "look"
+      }
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153aef6001r49J4WnLpEvzyt",
+      "properties": {
+       "part": {
+        "id": "prt_1d153aef6001fw86cBDqa958Pi",
+        "messageID": "msg_1d153abf8001XTWzpnUQkRRZ1l",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "type": "step-start"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284854
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153aef7001bip2fwuQzTzWLc",
+      "properties": {
+       "part": {
+        "callID": "call_fake_0_0",
+        "id": "prt_1d153aef7001TCs9mMaKuSJIPE",
+        "messageID": "msg_1d153abf8001XTWzpnUQkRRZ1l",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "state": {
+         "input": {},
+         "raw": "",
+         "status": "pending"
+        },
+        "tool": "ni_rua_look",
+        "type": "tool"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284855
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153aefa001HlyZz0cMhHE8Ph",
+      "properties": {
+       "part": {
+        "callID": "call_fake_0_0",
+        "id": "prt_1d153aef7001TCs9mMaKuSJIPE",
+        "messageID": "msg_1d153abf8001XTWzpnUQkRRZ1l",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "state": {
+         "input": {
+          "x": 1
+         },
+         "status": "running",
+         "time": {
+          "start": 1794513284858
+         }
+        },
+        "tool": "ni_rua_look",
+        "type": "tool"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284858
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "sent",
+     "channel": "mcp",
+     "message": {
+      "id": 2,
+      "jsonrpc": "2.0",
+      "result": {
+       "content": [
+        {
+         "text": "scene: one red cube",
+         "type": "text"
+        }
+       ],
+       "isError": false
+      }
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "mcp",
+     "message": {
+      "jsonrpc": "2.0",
+      "method": "notifications/cancelled",
+      "params": {
+       "reason": "AbortError: The operation was aborted.",
+       "requestId": 2
+      }
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af05001qtzYFQ2ttU0pVI",
+      "properties": {
+       "part": {
+        "callID": "call_fake_0_0",
+        "id": "prt_1d153aef7001TCs9mMaKuSJIPE",
+        "messageID": "msg_1d153abf8001XTWzpnUQkRRZ1l",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "state": {
+         "input": {
+          "x": 1
+         },
+         "metadata": {
+          "truncated": false
+         },
+         "output": "scene: one red cube",
+         "status": "completed",
+         "time": {
+          "end": 1794513284869,
+          "start": 1794513284858
+         },
+         "title": ""
+        },
+        "tool": "ni_rua_look",
+        "type": "tool"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284869
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af070015fg6NpiDUttNbu",
+      "properties": {
+       "part": {
+        "cost": 0,
+        "id": "prt_1d153af07001958qz7F02gArft",
+        "messageID": "msg_1d153abf8001XTWzpnUQkRRZ1l",
+        "reason": "tool-calls",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "type": "step-finish"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284871
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af08001ZyWbGX53g60b7A",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "finish": "tool-calls",
+        "id": "msg_1d153abf8001XTWzpnUQkRRZ1l",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153abf0001TjeOL6LISh24Js",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "completed": 1794513284873,
+         "created": 1794513284088
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af09001zEFr9WIlkNGpht",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "finish": "tool-calls",
+        "id": "msg_1d153abf8001XTWzpnUQkRRZ1l",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153abf0001TjeOL6LISh24Js",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "completed": 1794513284873,
+         "created": 1794513284088
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af0a00128cVbpUjrLIzgC",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af0a0020PR9rVyLGsJ4GI",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "id": "msg_1d153af0a001rgOfQIBYwn73Dx",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153abf0001TjeOL6LISh24Js",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "created": 1794513284874
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 0,
+         "output": 0,
+         "reasoning": 0
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af0e001Uxs3IQuE4TMViP",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af1a001Hr4GKYEH2vOitN",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af1a001m2vyMLvQrOHOse",
+        "messageID": "msg_1d153af0a001rgOfQIBYwn73Dx",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "type": "step-start"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284890
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af1b001q4DbF7MOLQZ0WG",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af1b001CkdNoR57abTFQu",
+        "messageID": "msg_1d153af0a001rgOfQIBYwn73Dx",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "text": "",
+        "time": {
+         "start": 1794513284891
+        },
+        "type": "text"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284891
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af1c001Y0qSe3gfa77kUe",
+      "properties": {
+       "delta": "FINAL",
+       "field": "text",
+       "messageID": "msg_1d153af0a001rgOfQIBYwn73Dx",
+       "partID": "prt_1d153af1b001CkdNoR57abTFQu",
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.part.delta"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af1c002ccVOdvwNJXHaXh",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af1b001CkdNoR57abTFQu",
+        "messageID": "msg_1d153af0a001rgOfQIBYwn73Dx",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "text": "FINAL",
+        "time": {
+         "end": 1794513284892,
+         "start": 1794513284891
+        },
+        "type": "text"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284892
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af1c003qUTRopX6mQPy9o",
+      "properties": {
+       "part": {
+        "cost": 0,
+        "id": "prt_1d153af1c001fl4HOQwCQxoKAI",
+        "messageID": "msg_1d153af0a001rgOfQIBYwn73Dx",
+        "reason": "stop",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "type": "step-finish"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284892
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af1d0010Pb3Fx9BxfTXod",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "finish": "stop",
+        "id": "msg_1d153af0a001rgOfQIBYwn73Dx",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153abf0001TjeOL6LISh24Js",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "completed": 1794513284893,
+         "created": 1794513284874
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af1d002GAmsZVGnWxqfmk",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "finish": "stop",
+        "id": "msg_1d153af0a001rgOfQIBYwn73Dx",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153abf0001TjeOL6LISh24Js",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "completed": 1794513284893,
+         "created": 1794513284874
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af1e001AkZVKk0hrbfBMl",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af1e002P7glsrFl6eFnOr",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "idle"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af1e003pW25mzCX0VO8w6",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "session.idle"
+     }
+    },
+    {
+     "direction": "sent",
+     "channel": "control",
+     "message": {
+      "command": "submit_prompt",
+      "input": [
+       {
+        "text": "GATE-S: wait for the gate.",
+        "type": "text"
+       }
+      ],
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-9c5159c213de4c258458d3fe6fe2559f"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af27001SNvksvltKjycJE",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "id": "msg_1d153af27001SJVZrDoTisfUf5",
+        "model": {
+         "modelID": "claude-smoke-model",
+         "providerID": "relay",
+         "variant": "high"
+        },
+        "role": "user",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "created": 1794513284903
+        }
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af28001mq2CAvepqLrE2p",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af270020157OmVJouEtCS",
+        "messageID": "msg_1d153af27001SJVZrDoTisfUf5",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "text": "GATE-S: wait for the gate.",
+        "type": "text"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284904
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af29001w9Iyf9EaB53QAb",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af2a001mYgndwFA6OCUCF",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "id": "msg_1d153af2a001TTSCge84Pjtgfq",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153af27001SJVZrDoTisfUf5",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "created": 1794513284906
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 0,
+         "output": 0,
+         "reasoning": 0
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af2d0013F6oR2eM6u77rt",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "sent",
+     "channel": "control",
+     "message": {
+      "command": "steer",
+      "input": [
+       {
+        "text": "STEER-NOW: answer the steer.",
+        "type": "text"
+       }
+      ],
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-9c5159c213de4c258458d3fe6fe2559f"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af390010Ob8tJOGpakxPd",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "id": "msg_1d153af390011GWjxz2FxQI53j",
+        "model": {
+         "modelID": "claude-smoke-model",
+         "providerID": "relay",
+         "variant": "high"
+        },
+        "role": "user",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "created": 1794513284921
+        }
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af3a001W7pDkCN8ejFThk",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af39002D5W8m3aTzZGW0P",
+        "messageID": "msg_1d153af390011GWjxz2FxQI53j",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "text": "STEER-NOW: answer the steer.",
+        "type": "text"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284922
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af3d001qO36XNYYJiUu1i",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af3d001MOFSflacDdoW66",
+        "messageID": "msg_1d153af2a001TTSCge84Pjtgfq",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "type": "step-start"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284925
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af3e001wYl8LZ4mXUodf0",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af3e001Uk2MtA4qSOyomD",
+        "messageID": "msg_1d153af2a001TTSCge84Pjtgfq",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "text": "",
+        "time": {
+         "start": 1794513284926
+        },
+        "type": "text"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284926
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af3e0026QHd7QuXFbHbkx",
+      "properties": {
+       "delta": "late answer",
+       "field": "text",
+       "messageID": "msg_1d153af2a001TTSCge84Pjtgfq",
+       "partID": "prt_1d153af3e001Uk2MtA4qSOyomD",
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.part.delta"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af3f001ivbnBr7LUfE2Cd",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af3e001Uk2MtA4qSOyomD",
+        "messageID": "msg_1d153af2a001TTSCge84Pjtgfq",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "text": "late answer",
+        "time": {
+         "end": 1794513284927,
+         "start": 1794513284926
+        },
+        "type": "text"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284927
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af3f002NSkeCrgjexECO4",
+      "properties": {
+       "part": {
+        "cost": 0,
+        "id": "prt_1d153af3f001uYwAmJW75pcs3Q",
+        "messageID": "msg_1d153af2a001TTSCge84Pjtgfq",
+        "reason": "stop",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "type": "step-finish"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284927
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af40001kl36MSOMYGSUc4",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "finish": "stop",
+        "id": "msg_1d153af2a001TTSCge84Pjtgfq",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153af27001SJVZrDoTisfUf5",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "completed": 1794513284928,
+         "created": 1794513284906
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af40002tQrqJPIOgTbicA",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "finish": "stop",
+        "id": "msg_1d153af2a001TTSCge84Pjtgfq",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153af27001SJVZrDoTisfUf5",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "completed": 1794513284928,
+         "created": 1794513284906
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af410013pSxwFYseBVIpZ",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af410021RDjON7gv3vFDO",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "id": "msg_1d153af41001i0nk6o195RRCKN",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153af390011GWjxz2FxQI53j",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "created": 1794513284929
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 0,
+         "output": 0,
+         "reasoning": 0
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af44001CIlqhJEVYabJEM",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af4f001poudVY0Mnl0VXB",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af4f001TppE2vYeAxXL8H",
+        "messageID": "msg_1d153af41001i0nk6o195RRCKN",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "type": "step-start"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284943
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af50001b05JNUA7Rd4PR2",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af50001fnQ5d6iADR12X4",
+        "messageID": "msg_1d153af41001i0nk6o195RRCKN",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "text": "",
+        "time": {
+         "start": 1794513284944
+        },
+        "type": "text"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284944
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af51001qTY9aIj47Rfnj2",
+      "properties": {
+       "delta": "FINAL-STEER",
+       "field": "text",
+       "messageID": "msg_1d153af41001i0nk6o195RRCKN",
+       "partID": "prt_1d153af50001fnQ5d6iADR12X4",
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.part.delta"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af51002dLGjAkdckGysci",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af50001fnQ5d6iADR12X4",
+        "messageID": "msg_1d153af41001i0nk6o195RRCKN",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "text": "FINAL-STEER",
+        "time": {
+         "end": 1794513284945,
+         "start": 1794513284944
+        },
+        "type": "text"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284945
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af51003U5ts3ptqekrb73",
+      "properties": {
+       "part": {
+        "cost": 0,
+        "id": "prt_1d153af5100150qhuyQ8Xaoclk",
+        "messageID": "msg_1d153af41001i0nk6o195RRCKN",
+        "reason": "stop",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "type": "step-finish"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284945
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af52001zZ6S15bqH8Rimj",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "finish": "stop",
+        "id": "msg_1d153af41001i0nk6o195RRCKN",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153af390011GWjxz2FxQI53j",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "completed": 1794513284946,
+         "created": 1794513284929
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af52002uaFK0ZNYQ6xOlB",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "finish": "stop",
+        "id": "msg_1d153af41001i0nk6o195RRCKN",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153af390011GWjxz2FxQI53j",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "completed": 1794513284946,
+         "created": 1794513284929
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af52003CKB3syLLbEVDKp",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af53001gDD7RYfQ3GBema",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "idle"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af53002ssV14w2x5Tswbu",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "session.idle"
+     }
+    },
+    {
+     "direction": "sent",
+     "channel": "control",
+     "message": {
+      "command": "submit_prompt",
+      "input": [
+       {
+        "text": "GATE-A: wait for the gate.",
+        "type": "text"
+       }
+      ],
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-ebd53d37dfc3418a9a5be5e8853fc444"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af5a001NzAjHhQ7QTOjb2",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "id": "msg_1d153af5a001l6LGZ3DCP99H4V",
+        "model": {
+         "modelID": "claude-smoke-model",
+         "providerID": "relay",
+         "variant": "high"
+        },
+        "role": "user",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "created": 1794513284954
+        }
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af5a0025h0Mvdf5HVUq1O",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af5a002AWGFyhKzd4hHmU",
+        "messageID": "msg_1d153af5a001l6LGZ3DCP99H4V",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "text": "GATE-A: wait for the gate.",
+        "type": "text"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284954
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af5c001Zi5kswZdrMFzxv",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af5c002Ma8D26JVHTIaA4",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "id": "msg_1d153af5c001lpiJeSnbDzy9qI",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153af5a001l6LGZ3DCP99H4V",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "created": 1794513284956
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 0,
+         "output": 0,
+         "reasoning": 0
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af5f001skz8qfc5A4Z5Fg",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "sent",
+     "channel": "control",
+     "message": {
+      "command": "interrupt",
+      "host_turn": true,
+      "subagent_sessions": [],
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-ebd53d37dfc3418a9a5be5e8853fc444"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af6e001jVrPuGPRsjVHoO",
+      "properties": {
+       "error": {
+        "data": {
+         "isRetryable": false,
+         "message": "ni_rua_model_request_failed",
+         "metadata": {
+          "url": "http://127.0.0.1:61032/v1/messages"
+         },
+         "responseBody": "{\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"ni_rua_model_request_failed\"}}",
+         "responseHeaders": {
+          "connection": "close",
+          "content-length": "97",
+          "content-type": "application/json",
+          "date": "Thu, 12 Nov 2026 19:54:44 GMT",
+          "server": "BaseHTTP/0.6 Python/3.12.14",
+          "x-should-retry": "false"
+         },
+         "statusCode": 400
+        },
+        "name": "APIError"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "session.error"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af6e002PYfH26gHEBYZk2",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "idle"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af6e0035sDZl4CgFty1rL",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "session.idle"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af6e004ZNbmUvZgNWRfyk",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "error": {
+         "data": {
+          "isRetryable": false,
+          "message": "ni_rua_model_request_failed",
+          "metadata": {
+           "url": "http://127.0.0.1:61032/v1/messages"
+          },
+          "responseBody": "{\"type\":\"error\",\"error\":{\"type\":\"invalid_request_error\",\"message\":\"ni_rua_model_request_failed\"}}",
+          "responseHeaders": {
+           "connection": "close",
+           "content-length": "97",
+           "content-type": "application/json",
+           "date": "Thu, 12 Nov 2026 19:54:44 GMT",
+           "server": "BaseHTTP/0.6 Python/3.12.14",
+           "x-should-retry": "false"
+          },
+          "statusCode": 400
+         },
+         "name": "APIError"
+        },
+        "id": "msg_1d153af5c001lpiJeSnbDzy9qI",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153af5a001l6LGZ3DCP99H4V",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "completed": 1794513284974,
+         "created": 1794513284956
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 0,
+         "output": 0,
+         "reasoning": 0
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af6f001FW2ZOhz8q5ylP8",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "idle"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af6f002Rvxpmnj5KByiTi",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "session.idle"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af70001O0WqQdx9mWNKFW",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "idle"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af70002cWofwMMQiYtavh",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "session.idle"
+     }
+    },
+    {
+     "direction": "sent",
+     "channel": "control",
+     "message": {
+      "command": "submit_prompt",
+      "input": [
+       {
+        "text": "PLAIN: answer directly.",
+        "type": "text"
+       }
+      ],
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-f221d0fec5704bf389e32249b75a5e9e"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af75001rDh3YlFiK3y4Or",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "id": "msg_1d153af750017ZfbOkf2rTpxmu",
+        "model": {
+         "modelID": "claude-smoke-model",
+         "providerID": "relay",
+         "variant": "high"
+        },
+        "role": "user",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "created": 1794513284981
+        }
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af75002evMTlHzue5157c",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af75002GreLHxr2wWPC7f",
+        "messageID": "msg_1d153af750017ZfbOkf2rTpxmu",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "text": "PLAIN: answer directly.",
+        "type": "text"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284981
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af77001bakzEdbtF0iu4b",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af770021FQSIlUoiWnc1W",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "id": "msg_1d153af77001HIRlHPZR20c8tV",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153af750017ZfbOkf2rTpxmu",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "created": 1794513284983
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 0,
+         "output": 0,
+         "reasoning": 0
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af7a001B3UavaOFawKH47",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af85001s1OotnP8ip6SGB",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af85001VbeA4UH1sxhPpj",
+        "messageID": "msg_1d153af77001HIRlHPZR20c8tV",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "type": "step-start"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284997
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af86001ngH2kPpZImSgQA",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af86001bKxSGapi36bW7R",
+        "messageID": "msg_1d153af77001HIRlHPZR20c8tV",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "text": "",
+        "time": {
+         "start": 1794513284998
+        },
+        "type": "text"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284998
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af86002Na7g7x3OIh6F1Z",
+      "properties": {
+       "delta": "FINAL-2",
+       "field": "text",
+       "messageID": "msg_1d153af77001HIRlHPZR20c8tV",
+       "partID": "prt_1d153af86001bKxSGapi36bW7R",
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.part.delta"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af86003YTEcm0IolLp87Q",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af86001bKxSGapi36bW7R",
+        "messageID": "msg_1d153af77001HIRlHPZR20c8tV",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "text": "FINAL-2",
+        "time": {
+         "end": 1794513284998,
+         "start": 1794513284998
+        },
+        "type": "text"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284998
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af87001OCOOTwYeyRqGQk",
+      "properties": {
+       "part": {
+        "cost": 0,
+        "id": "prt_1d153af87001XkC78u65De6gcr",
+        "messageID": "msg_1d153af77001HIRlHPZR20c8tV",
+        "reason": "stop",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "type": "step-finish"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513284999
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af870022fI4IRILIss8CU",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "finish": "stop",
+        "id": "msg_1d153af77001HIRlHPZR20c8tV",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153af750017ZfbOkf2rTpxmu",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "completed": 1794513285000,
+         "created": 1794513284983
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af88001YPdiX4DxMdAYvn",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "finish": "stop",
+        "id": "msg_1d153af77001HIRlHPZR20c8tV",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153af750017ZfbOkf2rTpxmu",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "completed": 1794513285000,
+         "created": 1794513284983
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 10,
+         "output": 5,
+         "reasoning": 0,
+         "total": 15
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af88002PrbTVxAf0mOsdg",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af890018fkmoz7Ayfrb1J",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "idle"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af890029Se8s5rXnuKw0v",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "session.idle"
+     }
+    },
+    {
+     "direction": "sent",
+     "channel": "control",
+     "message": {
+      "command": "submit_prompt",
+      "input": [
+       {
+        "text": "BASH: wait in the shell.",
+        "type": "text"
+       }
+      ],
+      "thread_id": "ses_e2eac541dffeY1g6NNqbn58yRi",
+      "turn_id": "turn-e321a0e57f8f423b838fcbdf5d167b32"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af8f001v7YFtXrcqGnT3Y",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "id": "msg_1d153af8f0012xjV7zTW2Zoy59",
+        "model": {
+         "modelID": "claude-smoke-model",
+         "providerID": "relay",
+         "variant": "high"
+        },
+        "role": "user",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "created": 1794513285007
+        }
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af900010UQO5nGZoZ2T6f",
+      "properties": {
+       "part": {
+        "id": "prt_1d153af8f0020HLwPRoGpfLN0t",
+        "messageID": "msg_1d153af8f0012xjV7zTW2Zoy59",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "text": "BASH: wait in the shell.",
+        "type": "text"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513285008
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af91001RcBz7IFVo54zRT",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af91002TeOvoTmI2idBdr",
+      "properties": {
+       "info": {
+        "agent": "build",
+        "cost": 0,
+        "id": "msg_1d153af91001YiUFa86MoRar7R",
+        "mode": "build",
+        "modelID": "claude-smoke-model",
+        "parentID": "msg_1d153af8f0012xjV7zTW2Zoy59",
+        "path": {
+         "cwd": "/runs/legacy-1.19.5/actor",
+         "root": "/"
+        },
+        "providerID": "relay",
+        "role": "assistant",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "time": {
+         "created": 1794513285009
+        },
+        "tokens": {
+         "cache": {
+          "read": 0,
+          "write": 0
+         },
+         "input": 0,
+         "output": 0,
+         "reasoning": 0
+        },
+        "variant": "high"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "message.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153af95001TLua4CEcNv1qlf",
+      "properties": {
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "status": {
+        "type": "busy"
+       }
+      },
+      "type": "session.status"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153afa1001h6NfmnlP7VYegr",
+      "properties": {
+       "part": {
+        "id": "prt_1d153afa1001mLjYz72SBWe8Dl",
+        "messageID": "msg_1d153af91001YiUFa86MoRar7R",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "type": "step-start"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513285025
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153afa3001FET4imP3t1Tc5X",
+      "properties": {
+       "part": {
+        "callID": "call_fake_6_0",
+        "id": "prt_1d153afa3001hyi9ntG07Ov9mi",
+        "messageID": "msg_1d153af91001YiUFa86MoRar7R",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "state": {
+         "input": {},
+         "raw": "",
+         "status": "pending"
+        },
+        "tool": "bash",
+        "type": "tool"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513285027
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153afa5001xtkkneUKaZ6mML",
+      "properties": {
+       "part": {
+        "callID": "call_fake_6_0",
+        "id": "prt_1d153afa3001hyi9ntG07Ov9mi",
+        "messageID": "msg_1d153af91001YiUFa86MoRar7R",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "state": {
+         "input": {
+          "command": "sleep 600",
+          "description": "Wait ten minutes",
+          "timeout": 600000
+         },
+         "status": "running",
+         "time": {
+          "start": 1794513285029
+         }
+        },
+        "tool": "bash",
+        "type": "tool"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513285029
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153afb20013kqJypHW31s14Q",
+      "properties": {
+       "part": {
+        "callID": "call_fake_6_0",
+        "id": "prt_1d153afa3001hyi9ntG07Ov9mi",
+        "messageID": "msg_1d153af91001YiUFa86MoRar7R",
+        "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+        "state": {
+         "input": {
+          "command": "sleep 600",
+          "description": "Wait ten minutes",
+          "timeout": 600000
+         },
+         "metadata": {
+          "output": ""
+         },
+         "status": "running",
+         "time": {
+          "start": 1794513285029
+         }
+        },
+        "tool": "bash",
+        "type": "tool"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi",
+       "time": 1794513285042
+      },
+      "type": "message.part.updated"
+     }
+    },
+    {
+     "direction": "received",
+     "channel": "native",
+     "message": {
+      "id": "evt_1d153b418001HmlISTTuW9tpAn",
+      "properties": {
+       "error": {
+        "data": {
+         "message": "Aborted"
+        },
+        "name": "MessageAbortedError"
+       },
+       "sessionID": "ses_e2eac541dffeY1g6NNqbn58yRi"
+      },
+      "type": "session.error"
+     }
+    }
+   ]
+  },
+  "compaction_rows": {
+   "capture": {
+    "source": "rows and agent.turn_* events written by the 1.19.5 OpenCodeProjector/TranscriptWriter of NI-RUA 25fa204 (feat/agent-harness), imported from a `git archive 25fa204` snapshot of ni_rua/, tests/, third_party/ and configs/ for the captured 1.19.5 auto-compaction session (spike S9, three turns), driven as the 1.19.5 unit test did: host prompt row, MCP transport rows, sync, verdict, turn_completed per turn"
+   },
+   "statuses": [
+    "completed",
+    "completed",
+    "completed"
+   ],
+   "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+   "turns": [
+    "turn-618207c90c5a4b219bc5d791076fa01c",
+    "turn-d17a8a1123254175b569fb67a4160293",
+    "turn-30d313980fb346c99dea71562c4f7239"
+   ],
+   "rows": [
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "USER-TURN-1",
+       "type": "text"
+      }
+     ],
+     "id": "item-dc61dd8eaa9e46808b1fb627028712fa",
+     "native_id": "msg_1c6efa4a3001HNutFNK14O7axI",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "turn_id": "turn-618207c90c5a4b219bc5d791076fa01c",
+     "type": "userMessage"
+    },
+    {
+     "arguments": {
+      "kb": 3
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "filler-line-abcdefghijklmnopqrstuvwxyz-0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ-xyz\nfiller-line-abcdefghijklmnopqrstuvwxyz-...[trimmed]",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-980338022b0748c5a85eebbaed726832",
+     "message_id": "msg_1c6efa5c6001kDylANoPxREdF3",
+     "namespace": null,
+     "native_id": "call_fake_0_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "big",
+     "turn_id": "turn-618207c90c5a4b219bc5d791076fa01c",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "label": "t1a"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "image t1a follows",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-4e318210f96e4aba80e11b7f81e4f425",
+     "message_id": "msg_1c6efa886001RjMBxRjwge1J7l",
+     "namespace": null,
+     "native_id": "call_fake_1_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "image",
+     "turn_id": "turn-618207c90c5a4b219bc5d791076fa01c",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "kb": 3
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "filler-line-abcdefghijklmnopqrstuvwxyz-0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ-xyz\nfiller-line-abcdefghijklmnopqrstuvwxyz-...[trimmed]",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-caccd1daa780434f83f79af79bdba5b8",
+     "message_id": "msg_1c6efa8ac001v7EBtaRwpH2aj4",
+     "namespace": null,
+     "native_id": "call_fake_2_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "big",
+     "turn_id": "turn-618207c90c5a4b219bc5d791076fa01c",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "note": "t1b"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "fast result: t1b",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-5875cc4114c1429cb8f01c90c09dc01e",
+     "message_id": "msg_1c6efa8b5001J44z9a5sdqWrby",
+     "namespace": null,
+     "native_id": "call_fake_3_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "fast",
+     "turn_id": "turn-618207c90c5a4b219bc5d791076fa01c",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "kb": 3
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "filler-line-abcdefghijklmnopqrstuvwxyz-0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ-xyz\nfiller-line-abcdefghijklmnopqrstuvwxyz-...[trimmed]",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-2db787297d1844ac940b3c05788fa39f",
+     "message_id": "msg_1c6efa8bd001fb0dJHxFNtdaFB",
+     "namespace": null,
+     "native_id": "call_fake_4_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "big",
+     "turn_id": "turn-618207c90c5a4b219bc5d791076fa01c",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "label": "t1c"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "image t1c follows",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-4c8418059bff409687a2a4d467d1a17d",
+     "message_id": "msg_1c6efa8c8001pScLRccyZ325ob",
+     "namespace": null,
+     "native_id": "call_fake_5_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "image",
+     "turn_id": "turn-618207c90c5a4b219bc5d791076fa01c",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "kb": 3
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "filler-line-abcdefghijklmnopqrstuvwxyz-0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ-xyz\nfiller-line-abcdefghijklmnopqrstuvwxyz-...[trimmed]",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-6223e1dfbec043a49e80c8a18210c00b",
+     "message_id": "msg_1c6efa8d3001grkX7JGPR3B6g0",
+     "namespace": null,
+     "native_id": "call_fake_6_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "big",
+     "turn_id": "turn-618207c90c5a4b219bc5d791076fa01c",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "note": "t1d"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "fast result: t1d",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-30b2b6f8f8f64fc1a1a4fdac649e0c90",
+     "message_id": "msg_1c6efa8da00185b4JYAaH85ona",
+     "namespace": null,
+     "native_id": "call_fake_7_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "fast",
+     "turn_id": "turn-618207c90c5a4b219bc5d791076fa01c",
+     "type": "dynamicToolCall"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6efa8ea001Ob5r0LL2yVRndq",
+     "message_id": "msg_1c6efa8e3001opTEWV9B53Lzd4",
+     "native_id": "prt_1c6efa8ea001Ob5r0LL2yVRndq",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "TURN-1-DONE",
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "turn_id": "turn-618207c90c5a4b219bc5d791076fa01c",
+     "type": "agentMessage"
+    },
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "USER-TURN-2",
+       "type": "text"
+      }
+     ],
+     "id": "item-1052d003668c409cb69c1517dfbf5d11",
+     "native_id": "msg_1c6efab74001O6EmdkLjOfV8qc",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "turn_id": "turn-d17a8a1123254175b569fb67a4160293",
+     "type": "userMessage"
+    },
+    {
+     "arguments": {
+      "kb": 3
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "filler-line-abcdefghijklmnopqrstuvwxyz-0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ-xyz\nfiller-line-abcdefghijklmnopqrstuvwxyz-...[trimmed]",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-4ca22a02721841709ea9932cc761078c",
+     "message_id": "msg_1c6efab78001V0Y9rSjAt9fxkb",
+     "namespace": null,
+     "native_id": "call_fake_9_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "big",
+     "turn_id": "turn-d17a8a1123254175b569fb67a4160293",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "label": "t2a"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "image t2a follows",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-bdf940fd50db411192afd43194d48e80",
+     "message_id": "msg_1c6efab830011ddhtZppHCiHpR",
+     "namespace": null,
+     "native_id": "call_fake_10_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "image",
+     "turn_id": "turn-d17a8a1123254175b569fb67a4160293",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "kb": 3
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "filler-line-abcdefghijklmnopqrstuvwxyz-0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ-xyz\nfiller-line-abcdefghijklmnopqrstuvwxyz-...[trimmed]",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-782dcbfef27240519a305381966db44a",
+     "message_id": "msg_1c6efab8b001Se2SQI3sluUKoY",
+     "namespace": null,
+     "native_id": "call_fake_11_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "big",
+     "turn_id": "turn-d17a8a1123254175b569fb67a4160293",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "note": "t2b"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "fast result: t2b",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-bb21e32cf8a443b5be527dfa24b6e509",
+     "message_id": "msg_1c6efab96001vyKxZ0cJ03V5i9",
+     "namespace": null,
+     "native_id": "call_fake_12_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "fast",
+     "turn_id": "turn-d17a8a1123254175b569fb67a4160293",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "kb": 3
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "filler-line-abcdefghijklmnopqrstuvwxyz-0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ-xyz\nfiller-line-abcdefghijklmnopqrstuvwxyz-...[trimmed]",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-69b6366b5c864f4f854e07708cc59a22",
+     "message_id": "msg_1c6efabad001gUI7lq8DNOAXeT",
+     "namespace": null,
+     "native_id": "call_fake_13_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "big",
+     "turn_id": "turn-d17a8a1123254175b569fb67a4160293",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "label": "t2c"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "image t2c follows",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-a9466d77a2cf4f92972d332736d57d7b",
+     "message_id": "msg_1c6efabb5001kKPwSnTfc6sq3j",
+     "namespace": null,
+     "native_id": "call_fake_14_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "image",
+     "turn_id": "turn-d17a8a1123254175b569fb67a4160293",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "kb": 3
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "filler-line-abcdefghijklmnopqrstuvwxyz-0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ-xyz\nfiller-line-abcdefghijklmnopqrstuvwxyz-...[trimmed]",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-8983075b8f74405180caeaf0f48cd778",
+     "message_id": "msg_1c6efabbe00178IdYHy7UjB7Gv",
+     "namespace": null,
+     "native_id": "call_fake_15_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "big",
+     "turn_id": "turn-d17a8a1123254175b569fb67a4160293",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "note": "t2d"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "fast result: t2d",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-f05cd6ff6a294c6d9ea9fa054932488b",
+     "message_id": "msg_1c6efabc90015vcAeytgy2rs08",
+     "namespace": null,
+     "native_id": "call_fake_16_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "fast",
+     "turn_id": "turn-d17a8a1123254175b569fb67a4160293",
+     "type": "dynamicToolCall"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6efabdd001WpdG1ePyFxtv3j",
+     "message_id": "msg_1c6efabd60011R7VuckQ2sDo2D",
+     "native_id": "prt_1c6efabdd001WpdG1ePyFxtv3j",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "TURN-2-DONE",
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "turn_id": "turn-d17a8a1123254175b569fb67a4160293",
+     "type": "agentMessage"
+    },
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "USER-TURN-3",
+       "type": "text"
+      }
+     ],
+     "id": "item-cb3ffa65bb7d47cab35dfb222beec1b0",
+     "native_id": "msg_1c6efaea6001WfqHfK9OKbHSbS",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "turn_id": "turn-30d313980fb346c99dea71562c4f7239",
+     "type": "userMessage"
+    },
+    {
+     "arguments": {
+      "kb": 3
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "filler-line-abcdefghijklmnopqrstuvwxyz-0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ-xyz\nfiller-line-abcdefghijklmnopqrstuvwxyz-...[trimmed]",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-61b6f5d469d7474ebd6f735646253f51",
+     "message_id": "msg_1c6efaea9001FePUQDb9B7hu9F",
+     "namespace": null,
+     "native_id": "call_fake_18_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "big",
+     "turn_id": "turn-30d313980fb346c99dea71562c4f7239",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "label": "t3a"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "image t3a follows",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-cab6452cf7124e748f3f436c54d690b9",
+     "message_id": "msg_1c6efaeb2001ZB5tsdGqP2QCJC",
+     "namespace": null,
+     "native_id": "call_fake_19_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "image",
+     "turn_id": "turn-30d313980fb346c99dea71562c4f7239",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "kb": 3
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "filler-line-abcdefghijklmnopqrstuvwxyz-0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ-xyz\nfiller-line-abcdefghijklmnopqrstuvwxyz-...[trimmed]",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-6b365436a1e94b4598ea333bd2508584",
+     "message_id": "msg_1c6efaebb001a2brjc710kdcIw",
+     "namespace": null,
+     "native_id": "call_fake_20_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "big",
+     "turn_id": "turn-30d313980fb346c99dea71562c4f7239",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "note": "t3b"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "fast result: t3b",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-6c0c19732d3245dd938fcd818dcafe31",
+     "message_id": "msg_1c6efaecb002glYmN0hUdtDnPL",
+     "namespace": null,
+     "native_id": "call_fake_22_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "fast",
+     "turn_id": "turn-30d313980fb346c99dea71562c4f7239",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "label": "t3c"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "image t3c follows",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-204d89ed6adb4d65a83d9a14abff821a",
+     "message_id": "msg_1c6efaed2001hMOEv8L11E2jj9",
+     "namespace": null,
+     "native_id": "call_fake_23_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "image",
+     "turn_id": "turn-30d313980fb346c99dea71562c4f7239",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "note": "t3d"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "fast result: t3d",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-dfcb822b66664104aa98224c5786f078",
+     "message_id": "msg_1c6efaee4001ib3mIOjTKh4eLv",
+     "namespace": null,
+     "native_id": "call_fake_24_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "tool": "fast",
+     "turn_id": "turn-30d313980fb346c99dea71562c4f7239",
+     "type": "dynamicToolCall"
+    },
+    {
+     "auto": true,
+     "backend": "opencode",
+     "id": "prt_1c6efaec4001e4rsaGvmojFfOM",
+     "native_id": "prt_1c6efaec4001e4rsaGvmojFfOM",
+     "overflow": false,
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "turn_id": "turn-30d313980fb346c99dea71562c4f7239",
+     "type": "contextCompaction"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6efaec8002s57KohhbhumuBo",
+     "message_id": "msg_1c6efaec60019Oh74QEU3am6Fo",
+     "native_id": "prt_1c6efaec8002s57KohhbhumuBo",
+     "parent_item_id": "prt_1c6efaec4001e4rsaGvmojFfOM",
+     "phase": null,
+     "raw_refs": [],
+     "status": "completed",
+     "text": "SUMMARY: the robot did several steps; continue with the task.",
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "turn_id": "turn-30d313980fb346c99dea71562c4f7239",
+     "type": "agentMessage"
+    },
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "Continue if you have next steps, or stop and ask for clarification if you are unsure how to proceed.",
+       "type": "text"
+      }
+     ],
+     "id": "msg_1c6efaeca001YBeMYDlxS5Tu78",
+     "native_id": "msg_1c6efaeca001YBeMYDlxS5Tu78",
+     "raw_refs": [],
+     "source": "native",
+     "status": "completed",
+     "synthetic": true,
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "turn_id": "turn-30d313980fb346c99dea71562c4f7239",
+     "type": "userMessage"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6efaef2001C5Qr62mV1WhEnV",
+     "message_id": "msg_1c6efaeed001CcwoI1KUP6wRmU",
+     "native_id": "prt_1c6efaef2001C5Qr62mV1WhEnV",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "TURN-3-DONE",
+     "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+     "turn_id": "turn-30d313980fb346c99dea71562c4f7239",
+     "type": "agentMessage"
+    }
+   ],
+   "events": [
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+      "turn_id": "turn-618207c90c5a4b219bc5d791076fa01c"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+      "turn_id": "turn-618207c90c5a4b219bc5d791076fa01c"
+     }
+    },
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+      "turn_id": "turn-d17a8a1123254175b569fb67a4160293"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+      "turn_id": "turn-d17a8a1123254175b569fb67a4160293"
+     }
+    },
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+      "turn_id": "turn-30d313980fb346c99dea71562c4f7239"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e39105b66ffeLHSb0yfo3kx5gK",
+      "turn_id": "turn-30d313980fb346c99dea71562c4f7239"
+     }
+    }
+   ]
+  },
+  "basic_anthropic_two_turns": {
+   "capture": {
+    "source": "rows and agent.turn_* events written by the 1.19.5 OpenCodeProjector/TranscriptWriter/turn_verdict of NI-RUA 25fa204 (feat/agent-harness), imported from a `git archive 25fa204` snapshot of ni_rua/, tests/, third_party/ and configs/ replaying the 1.19.5 unit-test scenario messages_basic.json:anthropic_two_turns (spike S6, two turns, registry calls incl. parallel and a refused one, native bash)"
+   },
+   "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+   "turns": [
+    "turn-a5c6c79b54e24346bf1d28dcfc5bdee3",
+    "turn-eb1267f4ee774a3599105b0a9e5bbcbe"
+   ],
+   "statuses": [
+    "completed",
+    "completed"
+   ],
+   "finals": [
+    [
+     "FINAL-ANSWER-ONE"
+    ],
+    [
+     "FINAL-ANSWER-TWO"
+    ]
+   ],
+   "rows": [
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "USER-TURN-ONE: please work.",
+       "type": "text"
+      }
+     ],
+     "id": "item-50b5b57be2f543aea0782f5407c7e764",
+     "native_id": "msg_1c6e34020001Ws20Im03x9a0NU",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+     "turn_id": "turn-a5c6c79b54e24346bf1d28dcfc5bdee3",
+     "type": "userMessage"
+    },
+    {
+     "arguments": {
+      "note": "hello"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "fast result: hello",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-a7db5a3285d7420ba2439ac0a250a7e1",
+     "message_id": "msg_1c6e3402800164I48TrH6YF9oA",
+     "namespace": null,
+     "native_id": "call_fake_0_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+     "tool": "fast",
+     "turn_id": "turn-a5c6c79b54e24346bf1d28dcfc5bdee3",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "label": "cam"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "image cam follows",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-4de3f59dad984916b9a37392a92ca770",
+     "message_id": "msg_1c6e3429c001Ba8LHom8ggz6ms",
+     "namespace": null,
+     "native_id": "call_fake_1_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+     "tool": "image",
+     "turn_id": "turn-a5c6c79b54e24346bf1d28dcfc5bdee3",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {},
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "tool failed: planted failure text",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-3aa63c38ff9f47fba2b8aa288c972a82",
+     "message_id": "msg_1c6e34311001BOpiibscc07KaX",
+     "namespace": null,
+     "native_id": "call_fake_2_0",
+     "raw_refs": [],
+     "status": "failed",
+     "success": false,
+     "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+     "tool": "fail",
+     "turn_id": "turn-a5c6c79b54e24346bf1d28dcfc5bdee3",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "note": "par1"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "fast result: par1",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-b8dbbf4fda6443ac9e6529ad73a6c243",
+     "message_id": "msg_1c6e34320001PDlLQmDuZcp3Yu",
+     "namespace": null,
+     "native_id": "call_fake_3_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+     "tool": "fast",
+     "turn_id": "turn-a5c6c79b54e24346bf1d28dcfc5bdee3",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "label": "par2"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "image par2 follows",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-a2c6902f441844e19711c716ecbeeeef",
+     "message_id": "msg_1c6e34320001PDlLQmDuZcp3Yu",
+     "namespace": null,
+     "native_id": "call_fake_3_1",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+     "tool": "image",
+     "turn_id": "turn-a5c6c79b54e24346bf1d28dcfc5bdee3",
+     "type": "dynamicToolCall"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6e3428b001CNVujjjn2PkWOh",
+     "message_id": "msg_1c6e3402800164I48TrH6YF9oA",
+     "native_id": "prt_1c6e3428b001CNVujjjn2PkWOh",
+     "phase": "commentary",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "Calling fast.",
+     "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+     "turn_id": "turn-a5c6c79b54e24346bf1d28dcfc5bdee3",
+     "type": "agentMessage"
+    },
+    {
+     "aggregatedOutput": "AGENT=1\nOPENCODE=1\n",
+     "backend": "opencode",
+     "command": "env | sort",
+     "cwd": null,
+     "exitCode": 0,
+     "id": "prt_1c6e34336001O6vIvW16MeYTVQ",
+     "message_id": "msg_1c6e34330001NUUw6tSD14eE4c",
+     "native_id": "call_fake_4_0",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+     "turn_id": "turn-a5c6c79b54e24346bf1d28dcfc5bdee3",
+     "type": "commandExecution"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6e34360001wCbBZXyfB6RdYl",
+     "message_id": "msg_1c6e34356001TTPrcyfc5r4xtk",
+     "native_id": "prt_1c6e34360001wCbBZXyfB6RdYl",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "FINAL-ANSWER-ONE",
+     "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+     "turn_id": "turn-a5c6c79b54e24346bf1d28dcfc5bdee3",
+     "type": "agentMessage"
+    },
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "USER-TURN-TWO: continue.",
+       "type": "text"
+      }
+     ],
+     "id": "item-759e297ad26545b3b4841ee85a73c967",
+     "native_id": "msg_1c6e344f2001GZvN7Lm4rcaZCD",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+     "turn_id": "turn-eb1267f4ee774a3599105b0a9e5bbcbe",
+     "type": "userMessage"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6e344fc001kuBcOMM25fdrZd",
+     "message_id": "msg_1c6e344f6001xFU2Tmh3q2mitx",
+     "native_id": "prt_1c6e344fc001kuBcOMM25fdrZd",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "FINAL-ANSWER-TWO",
+     "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+     "turn_id": "turn-eb1267f4ee774a3599105b0a9e5bbcbe",
+     "type": "agentMessage"
+    }
+   ],
+   "events": [
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+      "turn_id": "turn-a5c6c79b54e24346bf1d28dcfc5bdee3"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+      "turn_id": "turn-a5c6c79b54e24346bf1d28dcfc5bdee3"
+     }
+    },
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+      "turn_id": "turn-eb1267f4ee774a3599105b0a9e5bbcbe"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e391cbfe8ffeboNBNQV1nzPAuH",
+      "turn_id": "turn-eb1267f4ee774a3599105b0a9e5bbcbe"
+     }
+    }
+   ]
+  },
+  "basic_responses_two_turns": {
+   "capture": {
+    "source": "rows and agent.turn_* events written by the 1.19.5 OpenCodeProjector/TranscriptWriter/turn_verdict of NI-RUA 25fa204 (feat/agent-harness), imported from a `git archive 25fa204` snapshot of ni_rua/, tests/, third_party/ and configs/ replaying the 1.19.5 unit-test scenario messages_basic.json:responses_two_turns (spike S6, two turns, registry calls incl. parallel and a refused one, native bash)"
+   },
+   "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+   "turns": [
+    "turn-da51b9cbea0c4d4dab5c0e3c4cc846ed",
+    "turn-52e18b0abdb040939af4e2dcc5bdd6e0"
+   ],
+   "statuses": [
+    "completed",
+    "completed"
+   ],
+   "finals": [
+    [
+     "FINAL-ANSWER-ONE"
+    ],
+    [
+     "FINAL-ANSWER-TWO"
+    ]
+   ],
+   "rows": [
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "USER-TURN-ONE: please work.",
+       "type": "text"
+      }
+     ],
+     "id": "item-b0e28df5e986452d8f8e745c349d5d36",
+     "native_id": "msg_1c6e5628f001cwPhfRHDfe7fTq",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+     "turn_id": "turn-da51b9cbea0c4d4dab5c0e3c4cc846ed",
+     "type": "userMessage"
+    },
+    {
+     "arguments": {
+      "note": "hello"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "fast result: hello",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-3059d9aabb6e4f4990d861e9f772130d",
+     "message_id": "msg_1c6e56297001RZw9AtwLdAWVgV",
+     "namespace": null,
+     "native_id": "call_fake_0_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+     "tool": "fast",
+     "turn_id": "turn-da51b9cbea0c4d4dab5c0e3c4cc846ed",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "label": "cam"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "image cam follows",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-9075e4fc12a042ad987310c47ed4e152",
+     "message_id": "msg_1c6e565a5001gpP7d9y4Rg7AGj",
+     "namespace": null,
+     "native_id": "call_fake_1_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+     "tool": "image",
+     "turn_id": "turn-da51b9cbea0c4d4dab5c0e3c4cc846ed",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {},
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "tool failed: planted failure text",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-dac609d021dd4d86940c725ba5d2f254",
+     "message_id": "msg_1c6e5662a001KxG7hFnRnPPa74",
+     "namespace": null,
+     "native_id": "call_fake_2_0",
+     "raw_refs": [],
+     "status": "failed",
+     "success": false,
+     "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+     "tool": "fail",
+     "turn_id": "turn-da51b9cbea0c4d4dab5c0e3c4cc846ed",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "note": "par1"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "fast result: par1",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-4a32be525e7d4213922592152ff6b1d8",
+     "message_id": "msg_1c6e5664b001B5kGbWTx2owJ2i",
+     "namespace": null,
+     "native_id": "call_fake_3_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+     "tool": "fast",
+     "turn_id": "turn-da51b9cbea0c4d4dab5c0e3c4cc846ed",
+     "type": "dynamicToolCall"
+    },
+    {
+     "arguments": {
+      "label": "par2"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "image par2 follows",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-9f658339932b4cf5af8d71ebd2c0e555",
+     "message_id": "msg_1c6e5664b001B5kGbWTx2owJ2i",
+     "namespace": null,
+     "native_id": "call_fake_3_1",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+     "tool": "image",
+     "turn_id": "turn-da51b9cbea0c4d4dab5c0e3c4cc846ed",
+     "type": "dynamicToolCall"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6e5658d001crpMS39Nb5Lj8V",
+     "message_id": "msg_1c6e56297001RZw9AtwLdAWVgV",
+     "native_id": "prt_1c6e5658d001crpMS39Nb5Lj8V",
+     "phase": "commentary",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "Calling fast.",
+     "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+     "turn_id": "turn-da51b9cbea0c4d4dab5c0e3c4cc846ed",
+     "type": "agentMessage"
+    },
+    {
+     "aggregatedOutput": "AGENT=1\nOPENCODE=1\n",
+     "backend": "opencode",
+     "command": "env | sort",
+     "cwd": null,
+     "exitCode": 0,
+     "id": "prt_1c6e56668002UFsJ2kQYkRu2ze",
+     "message_id": "msg_1c6e56661001BzUn66l26RpuKg",
+     "native_id": "call_fake_4_0",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+     "turn_id": "turn-da51b9cbea0c4d4dab5c0e3c4cc846ed",
+     "type": "commandExecution"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6e566a8001MRwIqyucrakR31",
+     "message_id": "msg_1c6e56696001zb4YH1zzg95ync",
+     "native_id": "prt_1c6e566a8001MRwIqyucrakR31",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "FINAL-ANSWER-ONE",
+     "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+     "turn_id": "turn-da51b9cbea0c4d4dab5c0e3c4cc846ed",
+     "type": "agentMessage"
+    },
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "USER-TURN-TWO: continue.",
+       "type": "text"
+      }
+     ],
+     "id": "item-4059274af16b4ada8e173869cacb9570",
+     "native_id": "msg_1c6e568380010Nr1kzqRdH7v2W",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+     "turn_id": "turn-52e18b0abdb040939af4e2dcc5bdd6e0",
+     "type": "userMessage"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6e56841002xD6L6bQHwAXEkj",
+     "message_id": "msg_1c6e5683b001V4uBYvcnfWp6np",
+     "native_id": "prt_1c6e56841002xD6L6bQHwAXEkj",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "FINAL-ANSWER-TWO",
+     "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+     "turn_id": "turn-52e18b0abdb040939af4e2dcc5bdd6e0",
+     "type": "agentMessage"
+    }
+   ],
+   "events": [
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+      "turn_id": "turn-da51b9cbea0c4d4dab5c0e3c4cc846ed"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+      "turn_id": "turn-da51b9cbea0c4d4dab5c0e3c4cc846ed"
+     }
+    },
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+      "turn_id": "turn-52e18b0abdb040939af4e2dcc5bdd6e0"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e391a9d7dffeEkHeTiG0BEFnbr",
+      "turn_id": "turn-52e18b0abdb040939af4e2dcc5bdd6e0"
+     }
+    }
+   ]
+  },
+  "native_tools": {
+   "capture": {
+    "source": "rows and agent.turn_* events written by the 1.19.5 OpenCodeProjector/TranscriptWriter/turn_verdict of NI-RUA 25fa204 (feat/agent-harness), imported from a `git archive 25fa204` snapshot of ni_rua/, tests/, third_party/ and configs/ replaying the 1.19.5 unit-test scenario messages_native_tools.json:grep_glob_read_bash (spike S8)"
+   },
+   "thread_id": "ses_e390c3fd2ffeqeiEH6eV3huaEX",
+   "turns": [
+    "turn-b1c14d7a3ebb4c0db75b1a8cb1e746d9"
+   ],
+   "statuses": [
+    "completed"
+   ],
+   "finals": [
+    [
+     "CONTROL-DONE"
+    ]
+   ],
+   "rows": [
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "run tools",
+       "type": "text"
+      }
+     ],
+     "id": "item-61d392252e684850a2d3235cd00ba33a",
+     "native_id": "msg_1c6f3c03c001jafQ4r4W9pVKWm",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e390c3fd2ffeqeiEH6eV3huaEX",
+     "turn_id": "turn-b1c14d7a3ebb4c0db75b1a8cb1e746d9",
+     "type": "userMessage"
+    },
+    {
+     "arguments": {
+      "path": ".",
+      "pattern": "zzz"
+     },
+     "backend": "opencode",
+     "id": "prt_1c6f3c3b9001gNXinNu42kalhB",
+     "message_id": "msg_1c6f3c158001QhZ5GNC3uCIucP",
+     "native_id": "call_fake_0_0",
+     "raw_refs": [],
+     "result": "No files found",
+     "status": "completed",
+     "thread_id": "ses_e390c3fd2ffeqeiEH6eV3huaEX",
+     "tool": "grep",
+     "turn_id": "turn-b1c14d7a3ebb4c0db75b1a8cb1e746d9",
+     "type": "mcpToolCall"
+    },
+    {
+     "arguments": {
+      "pattern": "**/*"
+     },
+     "backend": "opencode",
+     "id": "prt_1c6f3c3df001zAAKJ5Xoh1RdbI",
+     "message_id": "msg_1c6f3c3d8001ogsyz2bsFi8jIZ",
+     "native_id": "call_fake_1_0",
+     "raw_refs": [],
+     "result": "No files found",
+     "status": "completed",
+     "thread_id": "ses_e390c3fd2ffeqeiEH6eV3huaEX",
+     "tool": "glob",
+     "turn_id": "turn-b1c14d7a3ebb4c0db75b1a8cb1e746d9",
+     "type": "mcpToolCall"
+    },
+    {
+     "arguments": {
+      "filePath": "hello.txt"
+     },
+     "backend": "opencode",
+     "error": {
+      "message": "File not found: /runs/s8-controls-C_hardened/actor/hello.txt"
+     },
+     "id": "prt_1c6f3c3ee002DSKWxfr5gp4c5q",
+     "message_id": "msg_1c6f3c3e90014witzLbhoQbuIU",
+     "native_id": "call_fake_2_0",
+     "raw_refs": [],
+     "result": null,
+     "status": "failed",
+     "thread_id": "ses_e390c3fd2ffeqeiEH6eV3huaEX",
+     "tool": "read",
+     "turn_id": "turn-b1c14d7a3ebb4c0db75b1a8cb1e746d9",
+     "type": "mcpToolCall"
+    },
+    {
+     "aggregatedOutput": "hello.txt\n",
+     "backend": "opencode",
+     "command": "echo hi > hello.txt; ls",
+     "cwd": null,
+     "exitCode": 0,
+     "id": "prt_1c6f3c3f8001f1Z3wwx9f6jkY3",
+     "message_id": "msg_1c6f3c3f4001dhmxdJyRy8m5mB",
+     "native_id": "call_fake_3_0",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e390c3fd2ffeqeiEH6eV3huaEX",
+     "turn_id": "turn-b1c14d7a3ebb4c0db75b1a8cb1e746d9",
+     "type": "commandExecution"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6f3c41a001lOFGwKVkfPt8qG",
+     "message_id": "msg_1c6f3c414001BAKwrtuAMhYqJP",
+     "native_id": "prt_1c6f3c41a001lOFGwKVkfPt8qG",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "CONTROL-DONE",
+     "thread_id": "ses_e390c3fd2ffeqeiEH6eV3huaEX",
+     "turn_id": "turn-b1c14d7a3ebb4c0db75b1a8cb1e746d9",
+     "type": "agentMessage"
+    }
+   ],
+   "events": [
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e390c3fd2ffeqeiEH6eV3huaEX",
+      "turn_id": "turn-b1c14d7a3ebb4c0db75b1a8cb1e746d9"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e390c3fd2ffeqeiEH6eV3huaEX",
+      "turn_id": "turn-b1c14d7a3ebb4c0db75b1a8cb1e746d9"
+     }
+    }
+   ]
+  },
+  "steer_during_final": {
+   "capture": {
+    "source": "rows and agent.turn_* events written by the 1.19.5 OpenCodeProjector/TranscriptWriter/turn_verdict of NI-RUA 25fa204 (feat/agent-harness), imported from a `git archive 25fa204` snapshot of ni_rua/, tests/, third_party/ and configs/ replaying the 1.19.5 unit-test scenario messages_steer_abort.json:C_steer_during_final (spike S7)"
+   },
+   "thread_id": "ses_e39132456ffeXQL18Zkmej0njs",
+   "turns": [
+    "turn-7ebf565af0c74d4d814de939cea9cf6c"
+   ],
+   "statuses": [
+    "completed"
+   ],
+   "finals": [
+    [
+     "SECOND-FINAL"
+    ]
+   ],
+   "rows": [
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "USER-ONE",
+       "type": "text"
+      }
+     ],
+     "id": "item-4ffdd76480bf49fdbb3f239d08371a63",
+     "native_id": "msg_1c6ecdbac001rBEmJJd2OFt6vG",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e39132456ffeXQL18Zkmej0njs",
+     "turn_id": "turn-7ebf565af0c74d4d814de939cea9cf6c",
+     "type": "userMessage"
+    },
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "STEER-DURING-FINAL",
+       "type": "text"
+      }
+     ],
+     "id": "item-2a1eb61edf844abb8c30775017f8421f",
+     "native_id": "msg_1c6ecdbb7001VDWaIlsQ78SMdh",
+     "raw_refs": [],
+     "status": "completed",
+     "steer": true,
+     "thread_id": "ses_e39132456ffeXQL18Zkmej0njs",
+     "turn_id": "turn-7ebf565af0c74d4d814de939cea9cf6c",
+     "type": "userMessage"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6ecdfa90019NQ1mlR94g1khS",
+     "message_id": "msg_1c6ecdbaf001pPQk0ErujaCnUZ",
+     "native_id": "prt_1c6ecdfa90019NQ1mlR94g1khS",
+     "phase": "commentary",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "FIRST-FINAL",
+     "thread_id": "ses_e39132456ffeXQL18Zkmej0njs",
+     "turn_id": "turn-7ebf565af0c74d4d814de939cea9cf6c",
+     "type": "agentMessage"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6ecdfb1002Dz8N9E70SCApqn",
+     "message_id": "msg_1c6ecdfac001Hk0wBmupys1106",
+     "native_id": "prt_1c6ecdfb1002Dz8N9E70SCApqn",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "SECOND-FINAL",
+     "thread_id": "ses_e39132456ffeXQL18Zkmej0njs",
+     "turn_id": "turn-7ebf565af0c74d4d814de939cea9cf6c",
+     "type": "agentMessage"
+    }
+   ],
+   "events": [
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e39132456ffeXQL18Zkmej0njs",
+      "turn_id": "turn-7ebf565af0c74d4d814de939cea9cf6c"
+     }
+    },
+    {
+     "type": "agent.turn_steered",
+     "payload": {},
+     "correlation": {
+      "item_id": "item-2a1eb61edf844abb8c30775017f8421f",
+      "thread_id": "ses_e39132456ffeXQL18Zkmej0njs",
+      "turn_id": "turn-7ebf565af0c74d4d814de939cea9cf6c"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e39132456ffeXQL18Zkmej0njs",
+      "turn_id": "turn-7ebf565af0c74d4d814de939cea9cf6c"
+     }
+    }
+   ]
+  },
+  "abort_tool": {
+   "capture": {
+    "source": "rows and agent.turn_* events written by the 1.19.5 OpenCodeProjector/TranscriptWriter/turn_verdict of NI-RUA 25fa204 (feat/agent-harness), imported from a `git archive 25fa204` snapshot of ni_rua/, tests/, third_party/ and configs/ replaying the 1.19.5 unit-test scenario messages_steer_abort.json:E_abort_tool+E2_after_abort_tool (spike S7)"
+   },
+   "thread_id": "ses_e3913062dffeRvLxnW5mreTScB",
+   "turns": [
+    "turn-259e2723f0714029b18d3be0689b92f5",
+    "turn-48b01650e9c249079119d1ccd0f21d21"
+   ],
+   "statuses": [
+    "interrupted",
+    "completed"
+   ],
+   "finals": [
+    [],
+    [
+     "AFTER-ABORT-TOOL-REPLY"
+    ]
+   ],
+   "rows": [
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "USER-ONE",
+       "type": "text"
+      }
+     ],
+     "id": "item-fdb3b93d97b34243af95a187700a80d9",
+     "native_id": "msg_1c6ecf9d5001TFKAJLPW6HNlSp",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e3913062dffeRvLxnW5mreTScB",
+     "turn_id": "turn-259e2723f0714029b18d3be0689b92f5",
+     "type": "userMessage"
+    },
+    {
+     "arguments": {
+      "duration_s": 60
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "Tool execution aborted",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-9b8bae21879e49769aee3dfb8a4aecdd",
+     "message_id": "msg_1c6ecf9d8001Us9Z5jB6nP7pJg",
+     "namespace": null,
+     "native_id": "call_fake_10_0",
+     "raw_refs": [],
+     "status": "failed",
+     "success": false,
+     "thread_id": "ses_e3913062dffeRvLxnW5mreTScB",
+     "tool": "slow",
+     "turn_id": "turn-259e2723f0714029b18d3be0689b92f5",
+     "type": "dynamicToolCall"
+    },
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "USER-AFTER-ABORT-TOOL",
+       "type": "text"
+      }
+     ],
+     "id": "item-b7c309d49fee4dcab19735ceadae54cc",
+     "native_id": "msg_1c6ed0e77001blIZOdq5b7IYPG",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e3913062dffeRvLxnW5mreTScB",
+     "turn_id": "turn-48b01650e9c249079119d1ccd0f21d21",
+     "type": "userMessage"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6ed0e80002fnO5fcm0RdCViH",
+     "message_id": "msg_1c6ed0e7b001EssBFfyp3ysNKR",
+     "native_id": "prt_1c6ed0e80002fnO5fcm0RdCViH",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "AFTER-ABORT-TOOL-REPLY",
+     "thread_id": "ses_e3913062dffeRvLxnW5mreTScB",
+     "turn_id": "turn-48b01650e9c249079119d1ccd0f21d21",
+     "type": "agentMessage"
+    }
+   ],
+   "events": [
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e3913062dffeRvLxnW5mreTScB",
+      "turn_id": "turn-259e2723f0714029b18d3be0689b92f5"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "interrupted"
+     },
+     "correlation": {
+      "thread_id": "ses_e3913062dffeRvLxnW5mreTScB",
+      "turn_id": "turn-259e2723f0714029b18d3be0689b92f5"
+     }
+    },
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e3913062dffeRvLxnW5mreTScB",
+      "turn_id": "turn-48b01650e9c249079119d1ccd0f21d21"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e3913062dffeRvLxnW5mreTScB",
+      "turn_id": "turn-48b01650e9c249079119d1ccd0f21d21"
+     }
+    }
+   ]
+  },
+  "error_400": {
+   "capture": {
+    "source": "rows and agent.turn_* events written by the 1.19.5 OpenCodeProjector/TranscriptWriter/turn_verdict of NI-RUA 25fa204 (feat/agent-harness), imported from a `git archive 25fa204` snapshot of ni_rua/, tests/, third_party/ and configs/ replaying the 1.19.5 unit-test scenario messages_errors.json:deny400 (spike S6, relay denial)"
+   },
+   "thread_id": "ses_e391772b1ffeVRObMtO8zhF0dr",
+   "turns": [
+    "turn-80cd7d1a8aa34375951934912e9edd38"
+   ],
+   "statuses": [
+    "failed"
+   ],
+   "finals": [
+    []
+   ],
+   "rows": [
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "scenario deny400",
+       "type": "text"
+      }
+     ],
+     "id": "item-c989933997e94b418fed2d0d74f89662",
+     "native_id": "msg_1c6e88d5e001ptfvxozcnhCo8i",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e391772b1ffeVRObMtO8zhF0dr",
+     "turn_id": "turn-80cd7d1a8aa34375951934912e9edd38",
+     "type": "userMessage"
+    },
+    {
+     "backend": "opencode",
+     "error": {
+      "message": "opencode_turn_failed:APIError:400"
+     },
+     "id": "msg_1c6e88f8b001CpvR4wSmgA6Z6n:error",
+     "native_id": "msg_1c6e88f8b001CpvR4wSmgA6Z6n",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e391772b1ffeVRObMtO8zhF0dr",
+     "turn_id": "turn-80cd7d1a8aa34375951934912e9edd38",
+     "type": "error"
+    }
+   ],
+   "events": [
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e391772b1ffeVRObMtO8zhF0dr",
+      "turn_id": "turn-80cd7d1a8aa34375951934912e9edd38"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": {
+       "message": "opencode_turn_failed:APIError:400"
+      },
+      "status": "failed"
+     },
+     "correlation": {
+      "thread_id": "ses_e391772b1ffeVRObMtO8zhF0dr",
+      "turn_id": "turn-80cd7d1a8aa34375951934912e9edd38"
+     }
+    }
+   ]
+  },
+  "restart": {
+   "capture": {
+    "source": "rows and agent.turn_* events written by the 1.19.5 OpenCodeProjector/TranscriptWriter/turn_verdict of NI-RUA 25fa204 (feat/agent-harness), imported from a `git archive 25fa204` snapshot of ni_rua/, tests/, third_party/ and configs/ replaying the 1.19.5 unit-test scenario messages_restart.json:after_crash+final (spike S8, SIGKILL during an MCP call, resume)"
+   },
+   "thread_id": "ses_e3909df63ffeUgEEDW7u2Oju14",
+   "turns": [
+    "turn-bdf53307d19e47cba31e681f02a3cb36",
+    "turn-75855391bedf4bedbae7ed72889409d3",
+    "turn-8b62ebed201949b8b62bf6a6d0542343"
+   ],
+   "statuses": [
+    "completed",
+    "failed",
+    "completed"
+   ],
+   "finals": [
+    [
+     "FIRST-TURN-DONE"
+    ],
+    [],
+    [
+     "AFTER-CRASH-REPLY"
+    ]
+   ],
+   "rows": [
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "TURN-1",
+       "type": "text"
+      }
+     ],
+     "id": "item-84eed273ae31405b8223eb0b46aec408",
+     "native_id": "msg_1c6f620aa001p2FMIbhEhwIwom",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e3909df63ffeUgEEDW7u2Oju14",
+     "turn_id": "turn-bdf53307d19e47cba31e681f02a3cb36",
+     "type": "userMessage"
+    },
+    {
+     "arguments": {
+      "note": "before restart"
+     },
+     "backend": "opencode",
+     "contentItems": [
+      {
+       "text": "fast result: before restart",
+       "type": "inputText"
+      }
+     ],
+     "durationMs": 0,
+     "id": "call-6885d52e54ff4f3dbad1bafa07f1ca5b",
+     "message_id": "msg_1c6f621ae001ZeRcPYAtjuMy5m",
+     "namespace": null,
+     "native_id": "call_fake_0_0",
+     "raw_refs": [],
+     "status": "completed",
+     "success": true,
+     "thread_id": "ses_e3909df63ffeUgEEDW7u2Oju14",
+     "tool": "fast",
+     "turn_id": "turn-bdf53307d19e47cba31e681f02a3cb36",
+     "type": "dynamicToolCall"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6f62431001bidrp7oP434Skg",
+     "message_id": "msg_1c6f62424001Obvs1X5V6oGpUD",
+     "native_id": "prt_1c6f62431001bidrp7oP434Skg",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "FIRST-TURN-DONE",
+     "thread_id": "ses_e3909df63ffeUgEEDW7u2Oju14",
+     "turn_id": "turn-bdf53307d19e47cba31e681f02a3cb36",
+     "type": "agentMessage"
+    },
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "TURN-2",
+       "type": "text"
+      }
+     ],
+     "id": "item-a93d3ecbed2147a28b6e0e79d1ae0162",
+     "native_id": "msg_1c6f6298e001obZVU5fysHI5rV",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e3909df63ffeUgEEDW7u2Oju14",
+     "turn_id": "turn-75855391bedf4bedbae7ed72889409d3",
+     "type": "userMessage"
+    },
+    {
+     "arguments": {
+      "duration_s": 120
+     },
+     "backend": "opencode",
+     "contentItems": null,
+     "id": "call-9797466b3a6a465293e09e00c3263b0a",
+     "message_id": "msg_1c6f62a85001s024aOSqlSM1TB",
+     "namespace": null,
+     "native_id": "call_fake_2_0",
+     "raw_refs": [],
+     "status": "inProgress",
+     "success": null,
+     "thread_id": "ses_e3909df63ffeUgEEDW7u2Oju14",
+     "tool": "slow",
+     "turn_id": "turn-75855391bedf4bedbae7ed72889409d3",
+     "type": "dynamicToolCall"
+    },
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "TURN-3-AFTER-CRASH",
+       "type": "text"
+      }
+     ],
+     "id": "item-4c4e47671a1145f2b8cda97d8a68a1c6",
+     "native_id": "msg_1c6f6408b001Z0u1Zy35LSD641",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_e3909df63ffeUgEEDW7u2Oju14",
+     "turn_id": "turn-8b62ebed201949b8b62bf6a6d0542343",
+     "type": "userMessage"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_1c6f641f6001UYXo4nDqXFDpkD",
+     "message_id": "msg_1c6f64185001JWfq2cvxEq0Vne",
+     "native_id": "prt_1c6f641f6001UYXo4nDqXFDpkD",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "AFTER-CRASH-REPLY",
+     "thread_id": "ses_e3909df63ffeUgEEDW7u2Oju14",
+     "turn_id": "turn-8b62ebed201949b8b62bf6a6d0542343",
+     "type": "agentMessage"
+    }
+   ],
+   "events": [
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e3909df63ffeUgEEDW7u2Oju14",
+      "turn_id": "turn-bdf53307d19e47cba31e681f02a3cb36"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e3909df63ffeUgEEDW7u2Oju14",
+      "turn_id": "turn-bdf53307d19e47cba31e681f02a3cb36"
+     }
+    },
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e3909df63ffeUgEEDW7u2Oju14",
+      "turn_id": "turn-75855391bedf4bedbae7ed72889409d3"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": {
+       "message": "opencode_turn_incomplete"
+      },
+      "status": "failed"
+     },
+     "correlation": {
+      "thread_id": "ses_e3909df63ffeUgEEDW7u2Oju14",
+      "turn_id": "turn-75855391bedf4bedbae7ed72889409d3"
+     }
+    },
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_e3909df63ffeUgEEDW7u2Oju14",
+      "turn_id": "turn-8b62ebed201949b8b62bf6a6d0542343"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_e3909df63ffeUgEEDW7u2Oju14",
+      "turn_id": "turn-8b62ebed201949b8b62bf6a6d0542343"
+     }
+    }
+   ]
+  },
+  "constructed_parts": {
+   "capture": {
+    "source": "rows and agent.turn_* events written by the 1.19.5 OpenCodeProjector/TranscriptWriter/turn_verdict of NI-RUA 25fa204 (feat/agent-harness), imported from a `git archive 25fa204` snapshot of ni_rua/, tests/, third_party/ and configs/ replaying the 1.19.5 unit-test scenario parts constructed from the 1.19.5 schemas as the 1.19.5 unit test did (edit, apply_patch, reasoning with a provider signature, retry): no spike exercised them"
+   },
+   "thread_id": "ses_constructed",
+   "turns": [
+    "turn-69473c14da2644d8ae96be62766cb212"
+   ],
+   "statuses": [
+    "completed"
+   ],
+   "finals": [
+    [
+     "CONSTRUCTED-DONE"
+    ]
+   ],
+   "rows": [
+    {
+     "backend": "opencode",
+     "content": [
+      {
+       "text": "go",
+       "type": "text"
+      }
+     ],
+     "id": "item-c5103c9c25914ff6b4d9c61ae147a953",
+     "native_id": "msg_constructed_u",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_constructed",
+     "turn_id": "turn-69473c14da2644d8ae96be62766cb212",
+     "type": "userMessage"
+    },
+    {
+     "backend": "opencode",
+     "content": [],
+     "id": "prt_4",
+     "message_id": "msg_constructed_a",
+     "native_id": "prt_4",
+     "raw_refs": [],
+     "status": "completed",
+     "summary": [
+      "think first"
+     ],
+     "thread_id": "ses_constructed",
+     "turn_id": "turn-69473c14da2644d8ae96be62766cb212",
+     "type": "reasoning"
+    },
+    {
+     "backend": "opencode",
+     "changes": [
+      {
+       "diff": "-a\n+b",
+       "kind": "update",
+       "path": "/runs/x/actor/a.py"
+      }
+     ],
+     "id": "prt_1",
+     "message_id": "msg_constructed_a",
+     "native_id": "c1",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_constructed",
+     "turn_id": "turn-69473c14da2644d8ae96be62766cb212",
+     "type": "fileChange"
+    },
+    {
+     "backend": "opencode",
+     "changes": [
+      {
+       "diff": "+x",
+       "kind": "add",
+       "path": "/runs/x/actor/c.txt"
+      }
+     ],
+     "id": "prt_3",
+     "message_id": "msg_constructed_a",
+     "native_id": "c3",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_constructed",
+     "turn_id": "turn-69473c14da2644d8ae96be62766cb212",
+     "type": "fileChange"
+    },
+    {
+     "backend": "opencode",
+     "error": {
+      "message": "opencode_retry:2:APIError:529"
+     },
+     "id": "prt_5",
+     "native_id": "prt_5",
+     "raw_refs": [],
+     "status": "completed",
+     "thread_id": "ses_constructed",
+     "turn_id": "turn-69473c14da2644d8ae96be62766cb212",
+     "type": "error"
+    },
+    {
+     "backend": "opencode",
+     "id": "prt_6",
+     "message_id": "msg_constructed_b",
+     "native_id": "prt_6",
+     "phase": "final_answer",
+     "raw_refs": [],
+     "status": "completed",
+     "text": "CONSTRUCTED-DONE",
+     "thread_id": "ses_constructed",
+     "turn_id": "turn-69473c14da2644d8ae96be62766cb212",
+     "type": "agentMessage"
+    }
+   ],
+   "events": [
+    {
+     "type": "agent.turn_started",
+     "payload": {},
+     "correlation": {
+      "thread_id": "ses_constructed",
+      "turn_id": "turn-69473c14da2644d8ae96be62766cb212"
+     }
+    },
+    {
+     "type": "agent.turn_completed",
+     "payload": {
+      "error": null,
+      "status": "completed"
+     },
+     "correlation": {
+      "thread_id": "ses_constructed",
+      "turn_id": "turn-69473c14da2644d8ae96be62766cb212"
+     }
+    }
+   ]
+  }
+ }
+}
