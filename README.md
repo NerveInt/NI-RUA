@@ -41,24 +41,25 @@ Requires **Node >= 18** and **Python >= 3.12** (or `uv`).
 npx -y @nerveint/ni-rua-plugin setup codex   # also supports: claude | opencode | all
 ```
 
-Installs the `ni_rua` MCP plugin plus isolated Python 3.12 gateway and SO-101 hardware runtimes under `~/.local/share/ni-rua/envs/` automatically (pass `--no-so101` to opt out of SO-101 hardware deps).
+Installs the `ni_rua` MCP plugin, bundled skills (`ni-rua-setup`, `ni-rua-robot`), and isolated Python 3.12 gateway & SO-101 hardware runtimes under `~/.local/share/ni-rua/envs/` (pass `--no-so101` to opt out of SO-101 hardware deps).
 
-### 2. Bind your SO-101 hardware (first time only)
+### 2. Open Codex (or Claude Code / OpenCode) and talk to it
 
-```bash
-~/.local/share/ni-rua/envs/gateway/bin/ni-rua-so101 init-config   # or `ni-rua-so101 init-config` if on PATH
-```
-
-Detects your USB serial bus and UVC cameras into `~/.config/ni-rua/so101.local.json` (or just open your agent and let the bundled **`ni-rua-setup`** skill walk you through binding, diagnostics, and S0–S6 calibration at `http://127.0.0.1:8781/calibration?lang=en`).
-
-### 3. Open Codex (or Claude Code / OpenCode) and drive the arm
+**First-time setup & calibration** — let `ni-rua-setup` walk you through environment checks, hardware binding, and S0–S6 calibration at `http://127.0.0.1:8781/calibration?lang=en`:
 
 ```text
 $ codex
-> Use NI-RUA to inspect the table, lift the SO-101 gripper 2 cm, verify, and return.
+> Use the ni-rua-setup skill to set up my SO-101 arm from scratch: check the environment, bind the USB serial port and cameras, guide me through S0-S6 calibration, and verify everything is ready.
 ```
 
-The bundled **`ni-rua-setup`** + **`ni-rua-robot`** skills let the agent handle onboarding, calibration, and execution end-to-end, while the `ni_rua` stdio MCP bridge stays silent during normal coding (zero background gateway processes or MCP errors), auto-starts the singleton local SO-101 gateway on the first `run_begin` call, and surfaces the live Web console at `http://127.0.0.1:8781/console?lang=en`.
+*(Prefer manual hardware binding? Run `~/.local/share/ni-rua/envs/gateway/bin/ni-rua-so101 init-config` first.)*
+
+**Operate the arm** — once ready, drive the SO-101 in one window via `ni-rua-robot` and the lazy stdio MCP bridge (stays silent during normal coding, auto-starts the singleton SO-101 gateway on first `run_begin`, and opens `http://127.0.0.1:8781/console?lang=en`):
+
+```text
+$ codex
+> Use the ni-rua-robot skill to inspect the table, lift the SO-101 gripper 2 cm, verify, and return.
+```
 
 > [!CAUTION]
 > **Stop, Hold, and E-STOP live in the Web console** (<http://127.0.0.1:8781/console?lang=en>). Pressing `Esc` in Codex, Claude Code, or OpenCode does **not** stop the physical arm. Always keep a physical 12 V power cutoff within reach.

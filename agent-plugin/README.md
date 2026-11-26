@@ -14,25 +14,30 @@ For full architecture and lifecycle details, see the [Agent Plugin Guide](https:
 
 Requires **Node >= 18**, macOS or Linux (Windows only through WSL), and at least one supported host CLI (`claude`, `codex`, or `opencode` 2.x).
 
+### 1. Install once
+
 ```sh
-# 1. One-line setup: installs the host plugin + isolated Python 3.12 gateway & SO-101 hardware envs
 npx -y @nerveint/ni-rua-plugin setup codex    # or: claude | opencode | all
-
-# 2. One-time SO-101 USB serial & camera setup
-ni-rua-so101 init-config
-
-# 3. Open Codex / Claude Code / OpenCode directly — no second terminal needed!
-codex
-# Ask: "Inspect the SO-101 arm and wave gently."
-# On first `run_begin`, the MCP bridge auto-starts the local SO-101 gateway
-# and prints the live Web console URL (http://127.0.0.1:8781/console).
 ```
 
-Skip SO-101 hardware dependencies if you only run remote/simulated gateways:
+Installs the host plugin, bundled skills, and isolated Python 3.12 gateway & SO-101 hardware envs (skip SO-101 hardware deps with `--no-so101`, or verify anytime with `npx -y @nerveint/ni-rua-plugin doctor`).
 
-```sh
-npx -y @nerveint/ni-rua-plugin setup codex --no-so101
-npx -y @nerveint/ni-rua-plugin doctor
+### 2. Open Codex (or Claude Code / OpenCode) and talk to it
+
+**First-time setup & calibration** (`ni-rua-setup` skill):
+
+```text
+$ codex
+> Use the ni-rua-setup skill to set up my SO-101 arm from scratch: check the environment, bind the USB serial port and cameras, guide me through S0-S6 calibration, and verify everything is ready.
+```
+
+*(Prefer manual hardware binding? Run `~/.local/share/ni-rua/envs/gateway/bin/ni-rua-so101 init-config` first.)*
+
+**Operate the arm** (`ni-rua-robot` skill — on first `run_begin`, the lazy stdio MCP bridge auto-starts the singleton SO-101 gateway and prints the live Web console URL `http://127.0.0.1:8781/console`):
+
+```text
+$ codex
+> Use the ni-rua-robot skill to inspect the table, lift the SO-101 gripper 2 cm, verify, and return.
 ```
 
 ### Manual gateway & daily CLI (`npm i -g`)

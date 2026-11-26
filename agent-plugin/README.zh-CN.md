@@ -14,24 +14,30 @@
 
 环境要求：**Node >= 18**、macOS 或 Linux（Windows 仅支持 WSL），以及至少一个宿主 CLI（`claude`、`codex` 或 `opencode` 2.x）。
 
+### 1. 一次性安装
+
 ```sh
-# 1. 一键初始化：安装宿主插件 + 隔离的 Python 3.12 网关与 SO-101 硬件运行环境（默认包含 SO-101）
 npx -y @nerveint/ni-rua-plugin setup codex    # 或：claude | opencode | all
-
-# 2. 一次性检测 SO-101 USB 串口与相机
-ni-rua-so101 init-config
-
-# 3. 直接打开 Codex / Claude Code / OpenCode —— 无需另起网关终端！
-codex
-# 对话示例：“检查 SO-101 机械臂状态并轻轻挥手。”
-# 首次调用 `run_begin` 时，MCP 桥接器会自动拉起本地 SO-101 网关并在返回顶部附带 Web 控制台地址（http://127.0.0.1:8781/console）。
 ```
 
-如果仅需连接远程/仿真网关、跳过本地 SO-101 硬件依赖：
+自动安装宿主插件、内置技能及隔离的 Python 3.12 网关与 SO-101 硬件环境（仅连远程/仿真网关可加 `--no-so101`，随时可用 `npx -y @nerveint/ni-rua-plugin doctor` 体检）。
 
-```sh
-npx -y @nerveint/ni-rua-plugin setup codex --no-so101
-npx -y @nerveint/ni-rua-plugin doctor
+### 2. 打开 Codex（或 Claude Code / OpenCode）直接对话
+
+**首次配置与标定**（`ni-rua-setup` 技能）：
+
+```text
+$ codex
+> 请使用 ni-rua-setup 技能帮我从零配置 SO-101 机械臂：检查运行环境、绑定 USB 串口与双相机、引导完成 S0–S6 标定，并验收就绪。
+```
+
+*（如偏好手动绑定硬件，可先执行 `~/.local/share/ni-rua/envs/gateway/bin/ni-rua-so101 init-config`。）*
+
+**操控机械臂**（`ni-rua-robot` 技能 —— 首次 `run_begin` 时 stdio MCP 桥接器会自动拉起本地单例 SO-101 网关，并返回实时 Web 控制台地址 `http://127.0.0.1:8781/console`）：
+
+```text
+$ codex
+> 请使用 ni-rua-robot 技能观察桌面，控制 SO-101 夹爪抬升 2 cm，确认后复位。
 ```
 
 ### 手动启动网关与日常 CLI（`npm i -g`）
