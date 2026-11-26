@@ -151,7 +151,14 @@ jobs:
       - name: Publish npm package with provenance
         working-directory: agent-plugin
         shell: bash
-        run: npm publish --provenance --access public
+        run: |
+          VER="$(node -p "require('./package.json').version")"
+          PUBLISHED="$(npm view "@nerveint/ni-rua-plugin@${VER}" version --registry=https://registry.npmjs.org --userconfig=/dev/null 2>/dev/null || true)"
+          if [ "${PUBLISHED}" = "${VER}" ]; then
+            echo "@nerveint/ni-rua-plugin@${VER} is already published on npmjs; skipping publish."
+          else
+            npm publish --provenance --access public
+          fi
 
   publish-pypi:
     name: Publish ni-rua-harness to PyPI (OIDC)
