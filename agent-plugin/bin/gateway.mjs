@@ -4,23 +4,15 @@ import { startDryRunServer } from "./dry-run-server.mjs";
 import {
   ESTOP_WARNING,
   findGatewayBinary,
+  isSo101Preset,
   resolveSo101CalibrationPath,
 } from "./runtime.mjs";
-
-function isSo101Preset(configArg) {
-  if (!configArg) return false;
-  const normalized = String(configArg).trim();
-  return normalized === "so101"
-    || normalized === "so101_standalone"
-    || normalized.endsWith("/so101_standalone.json")
-    || normalized === "so101_standalone.json";
-}
 
 function hasObservationProfileArg(args) {
   return args.some((a) => a === "--observation-profile" || a.startsWith("--observation-profile="));
 }
 
-export async function runGateway({ opts, extraArgs = [], defaultMcpPort = 8790, version = "0.1.0", out, UserError }) {
+export async function runGateway({ opts, extraArgs = [], defaultMcpPort = 8790, version = "0.1.1", out, UserError }) {
   if (opts["dry-run"]) {
     const port = opts.port ?? defaultMcpPort;
     const srv = await startDryRunServer({ port, version });

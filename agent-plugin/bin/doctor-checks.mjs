@@ -58,7 +58,7 @@ export function runStackChecks({ line, so101 = false, cwd = process.cwd() }) {
   if (so101Py) {
     line("ok", `so101 worker python: ${so101Py}`);
   } else {
-    line("warn", "so101 isolated Python 3.12 env not found (run: ni-rua-plugin setup <host> --so101)");
+    line("warn", "so101 isolated Python 3.12 env not found (run: ni-rua-plugin setup <host>)");
   }
 
   const serials = listSerialDevices();

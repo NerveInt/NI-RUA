@@ -34,7 +34,7 @@ if (argv[0] === "pip" && argv[1] === "install") {
   return uvPath;
 }
 
-test("setup installs plugin + isolated Python 3.12 gateway & so101 envs via uv, and respects --skip-gateway", () => {
+test("setup installs plugin + isolated Python 3.12 gateway & default so101 envs via uv, and respects --no-so101 / --skip-gateway", () => {
   const box = sandbox();
   try {
     const uvLog = path.join(box.root, "uv.jsonl");
@@ -49,8 +49,24 @@ test("setup installs plugin + isolated Python 3.12 gateway & so101 envs via uv, 
     assert.match(skipRes.stdout, /SAFETY: Pressing Esc/);
     assert.ok(!fs.existsSync(uvLog), "uv must not run under --skip-gateway");
 
-    // 2) setup all --so101 创建两个隔离 venv 并支持 NI_RUA_HARNESS_SPEC
-    const fullRes = box.run(["setup", "all", "--so101"], {
+    // 2) --no-so101 仅创建 gateway venv，不创建 so101 venv
+    const noSo101Res = box.run(["setup", "codex", "--no-so101"], {
+      extraEnv: {
+        PATH: `${box.bin}:/usr/bin:/bin`,
+        NI_RUA_HARNESS_SPEC: "/tmp/local-ni-rua.whl",
+      },
+    });
+    assert.equal(noSo101Res.status, 0, noSo101Res.out);
+    assert.match(noSo101Res.stdout, /Skipping SO-101 hardware env/);
+    const gwDir = path.join(box.home, ".local", "share", "ni-rua", "envs", "gateway");
+    const soDir = path.join(box.home, ".local", "share", "ni-rua", "envs", "so101");
+    assert.ok(fs.existsSync(path.join(gwDir, "bin", "ni-rua")));
+    assert.ok(!fs.existsSync(path.join(soDir, "bin", "python")), "--no-so101 must skip so101 venv");
+
+    // 3) 默认 `setup all`（不传 --so101）自动包含 SO-101 隔离环境，且 --so101 仍作为无害兼容别名可用
+    fs.rmSync(uvLog, { force: true });
+    fs.rmSync(gwDir, { recursive: true, force: true });
+    const fullRes = box.run(["setup", "all"], {
       extraEnv: {
         PATH: `${box.bin}:/usr/bin:/bin`,
         NI_RUA_HARNESS_SPEC: "/tmp/local-ni-rua.whl",
@@ -58,14 +74,19 @@ test("setup installs plugin + isolated Python 3.12 gateway & so101 envs via uv, 
     });
     assert.equal(fullRes.status, 0, fullRes.out);
     const uvCalls = fs.readFileSync(uvLog, "utf8").trim().split("\n").map((l) => JSON.parse(l));
-    const gwDir = path.join(box.home, ".local", "share", "ni-rua", "envs", "gateway");
-    const soDir = path.join(box.home, ".local", "share", "ni-rua", "envs", "so101");
     assert.ok(uvCalls.some((a) => a[0] === "venv" && a.includes("3.12") && a.includes(gwDir)), "gateway venv created with Python 3.12");
     assert.ok(uvCalls.some((a) => a[0] === "pip" && a.includes("/tmp/local-ni-rua.whl")), "NI_RUA_HARNESS_SPEC honored");
-    assert.ok(uvCalls.some((a) => a[0] === "venv" && a.includes("3.12") && a.includes(soDir)), "separate so101 venv created");
+    assert.ok(uvCalls.some((a) => a[0] === "venv" && a.includes("3.12") && a.includes(soDir)), "separate so101 venv created by default");
     assert.ok(uvCalls.some((a) => a[0] === "pip" && a.includes("lerobot==0.6.1")), "so101 deps installed in isolated env");
     assert.ok(fs.existsSync(path.join(gwDir, "bin", "ni-rua")));
     assert.ok(fs.existsSync(path.join(soDir, "bin", "python")));
+
+    // 4) --so101 作为向后兼容别名继续接受且幂等跳过已存在环境
+    const aliasRes = box.run(["setup", "codex", "--so101"], {
+      extraEnv: { PATH: `${box.bin}:/usr/bin:/bin` },
+    });
+    assert.equal(aliasRes.status, 0, aliasRes.out);
+    assert.match(aliasRes.stdout, /SO-101 hardware env already exists/);
   } finally {
     box.cleanup();
   }

@@ -55,7 +55,7 @@ function toolResponse(payload, isError = false) {
   };
 }
 
-export function startDryRunServer({ port = 8790, host = "127.0.0.1", version = "0.1.0" } = {}) {
+export function startDryRunServer({ port = 8790, host = "127.0.0.1", version = "0.1.1" } = {}) {
   const state = {
     activeTurn: false,
     turnCount: 0,

@@ -80,7 +80,9 @@ export function runSetup({ target, opts, hosts, findHostExecutable, installHost,
     }
   }
 
-  if (opts.so101) {
+  // 默认包含 SO-101 硬件运行环境；--no-so101 可跳过，--so101 保留为无害兼容别名
+  const includeSo101 = !opts["no-so101"] && (!opts["skip-gateway"] || Boolean(opts.so101));
+  if (includeSo101) {
     const so101Py = path.join(so101EnvDir(), "bin", "python");
     const deps = process.env.NI_RUA_SO101_DEPS
       ? process.env.NI_RUA_SO101_DEPS.trim().split(/\s+/).filter(Boolean)
@@ -100,18 +102,22 @@ export function runSetup({ target, opts, hosts, findHostExecutable, installHost,
       });
       out(`SO-101 hardware runtime ready: ${so101Py}`);
     }
+  } else if (opts["no-so101"]) {
+    out("== Skipping SO-101 hardware env (--no-so101)");
   }
 
+  const hostHint = targets.join(" / ");
   out("");
   out("Next steps:");
-  out(`  1. Verify setup:        ni-rua-plugin doctor${opts.so101 ? " --so101" : ""}`);
-  if (opts.so101) {
-    out("  2. Configure SO-101:    ni-rua-so101 init-config   # detect USB serial & cameras");
-    out("  3. Start local gateway: ni-rua-plugin gateway --config so101");
+  if (includeSo101) {
+    out("  1. One-time SO-101 config: ni-rua-so101 init-config   # detect USB serial & cameras");
+    out(`  2. Launch ${hostHint} directly and ask it to control your SO-101 arm`);
+    out("     (the ni_rua MCP stdio bridge auto-starts the local gateway on first `run_begin`)");
+    out("  3. Optional diagnostics:   ni-rua-plugin doctor --so101");
   } else {
-    out("  2. Zero-hardware test:  ni-rua-plugin gateway --dry-run");
-    out("  3. Or real SO-101 arm:  ni-rua-plugin gateway --config so101");
+    out(`  1. Launch ${hostHint} directly, or run a zero-hardware test: ni-rua-plugin gateway --dry-run`);
+    out("  2. Verify setup:           ni-rua-plugin doctor");
   }
-  out("  Web console (when running real gateway): http://127.0.0.1:8781/console");
+  out("  Web console (when local gateway runs): http://127.0.0.1:8781/console");
   out(ESTOP_WARNING);
 }

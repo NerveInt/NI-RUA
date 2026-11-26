@@ -45,7 +45,7 @@ tar xzf "$TGZ" -C "$T/unpacked"
 UP="$T/unpacked/package"
 say "tarball: $TGZ ($(tar tzf "$TGZ" | wc -l | tr -d ' ') files)"
 check "tarball has no test/ directory" bash -c "! tar tzf '$TGZ' | grep -q '^package/test/'"
-for f in package.json README.md LICENSE .mcp.json .codex-mcp.json codex-models.direct.json hooks/hooks.json hooks/on-compact.mjs manifest.generated.json .claude-plugin/plugin.json .claude-plugin/marketplace.json .codex-plugin/plugin.json opencode/plugin.js skills/ni-rua-robot/SKILL.md skills/ni-rua-experiments/SKILL.md bin/cli.mjs bin/runtime.mjs bin/setup.mjs bin/gateway.mjs bin/dry-run-server.mjs bin/doctor-checks.mjs; do
+for f in package.json README.md LICENSE .mcp.json .codex-mcp.json codex-models.direct.json hooks/hooks.json hooks/on-compact.mjs manifest.generated.json .claude-plugin/plugin.json .claude-plugin/marketplace.json .codex-plugin/plugin.json opencode/plugin.js skills/ni-rua-setup/SKILL.md skills/ni-rua-robot/SKILL.md skills/ni-rua-experiments/SKILL.md bin/cli.mjs bin/runtime.mjs bin/setup.mjs bin/gateway.mjs bin/mcp-bridge.mjs bin/dry-run-server.mjs bin/doctor-checks.mjs; do
   check "tarball has $f" test -f "$UP/$f"
 done
 CLI="$UP/bin/cli.mjs"
@@ -120,7 +120,7 @@ run_host() {
 
 cc_section() {
   local label=$1 bin=$2 H=$3 MPORT=$4 FPORT=$5 LOG=$6 HAVE=$7
-  cc() { env -i PATH=/usr/bin:/bin HOME="$H" CLAUDE_CONFIG_DIR="$H/.claude" ANTHROPIC_BASE_URL="http://127.0.0.1:$FPORT" \
+  cc() { env -i PATH="$(dirname "$NODE"):/usr/bin:/bin" HOME="$H" CLAUDE_CONFIG_DIR="$H/.claude" ANTHROPIC_BASE_URL="http://127.0.0.1:$FPORT" \
       ANTHROPIC_API_KEY=sk-ant-fake TERM=dumb CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 DISABLE_AUTOUPDATER=1 \
       DISABLE_TELEMETRY=1 DISABLE_ERROR_REPORTING=1 "$@"; }
   mkdir -p "$H/.claude"; snapshot "$H" > "$T/$label.before"
@@ -141,9 +141,9 @@ cc_section() {
   local list; list=$(cd "$H/work" && cc "$bin" plugin list --json)
   has "$list" '"id": "ni_rua@ni_rua"' && ok "plugin listed (ni_rua@ni_rua)" || bad "plugin listed"
   local details; details=$(cd "$H/work" && cc "$bin" plugin details ni_rua@ni_rua 2>&1)
-  has "$details" "Skills (2)  ni-rua-experiments, ni-rua-robot" && ok "skills visible: ni-rua-experiments, ni-rua-robot" || bad "skills visible"
+  has "$details" "Skills (3)" && has "$details" "ni-rua-experiments" && has "$details" "ni-rua-robot" && has "$details" "ni-rua-setup" && ok "skills visible: ni-rua-experiments, ni-rua-robot, ni-rua-setup" || { bad "skills visible"; say "$details" | sed 's/^/        /'; }
   local mcp; mcp=$(cd "$H/work" && cc "$bin" mcp list 2>&1)
-  has "$mcp" "plugin:ni_rua:ni_rua: http://127.0.0.1:$MPORT/mcp (HTTP) - ✔ Connected" && ok "claude mcp list: plugin:ni_rua:ni_rua Connected on --port $MPORT" || { bad "claude mcp list connected"; say "$mcp" | sed 's/^/        /'; }
+  has "$mcp" "plugin:ni_rua:ni_rua:" && has "$mcp" "✔ Connected" && ok "claude mcp list: plugin:ni_rua:ni_rua Connected via stdio bridge on --port $MPORT" || { bad "claude mcp list connected"; say "$mcp" | sed 's/^/        /'; }
   local S="$H/.claude/settings.json"
   check "settings: four env keys + allow entry" "$NODE" -e '
     const s = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"));
@@ -179,11 +179,11 @@ cx_section() {
   local list; list=$(cx "$bin" plugin list --json)
   has "$list" '"pluginId": "ni_rua@ni_rua"' && ok "plugin listed (ni_rua@ni_rua)" || bad "plugin listed"
   local get; get=$(cx "$bin" mcp get ni_rua --json 2>&1)
-  has "$get" "\"url\": \"http://127.0.0.1:$MPORT/mcp\"" && has "$get" '"tool_timeout_sec": 3600.0' && has "$get" '"startup_timeout_sec": 30.0' \
-    && ok "codex mcp get ni_rua: streamable_http url on --port $MPORT, tool_timeout 3600, startup 30" || { bad "codex mcp get ni_rua"; say "$get" | sed 's/^/        /'; }
+  has "$get" '"type": "stdio"' && has "$get" '"command": "node"' && has "$get" "$DUR/bin/cli.mjs" && has "$get" '"tool_timeout_sec": 3600.0' && has "$get" '"startup_timeout_sec": 30.0' \
+    && ok "codex mcp get ni_rua: stdio bridge to durable cli.mjs, tool_timeout 3600, startup 30" || { bad "codex mcp get ni_rua"; say "$get" | sed 's/^/        /'; }
   local CACHE="$H/codex/plugins/cache/ni_rua/ni_rua/$VERSION"
-  check "skills in the Codex cache" test -f "$CACHE/skills/ni-rua-robot/SKILL.md" -a -f "$CACHE/skills/ni-rua-experiments/SKILL.md"
-  check "cached .codex-mcp.json has output_token_limit and the port" bash -c "grep -q output_token_limit '$CACHE/.codex-mcp.json' && grep -q ':$MPORT/mcp' '$CACHE/.codex-mcp.json'"
+  check "skills in the Codex cache" test -f "$CACHE/skills/ni-rua-setup/SKILL.md" -a -f "$CACHE/skills/ni-rua-robot/SKILL.md" -a -f "$CACHE/skills/ni-rua-experiments/SKILL.md"
+  check "cached .codex-mcp.json has output_token_limit and durable manifest has the port" bash -c "grep -q output_token_limit '$CACHE/.codex-mcp.json' && grep -q ':$MPORT/mcp' '$DUR/manifest.generated.json'"
   local doc; doc=$(cx "$NODE" "$CLI" doctor --port "$MPORT" --claude-bin /nonexistent --codex-bin "$bin" --opencode-bin /nonexistent 2>&1)
   has "$doc" "codex: ni_rua@ni_rua listed" && ok "doctor sees the plugin" || bad "doctor sees the plugin"
   if [ "$HAVE" = 1 ]; then
@@ -219,7 +219,7 @@ JS
 
 oc_section() {
   local label=$1 bin=$2 H=$3 MPORT=$4 FPORT=$5 LOG=$6 HAVE=$7
-  oc() { env -i PATH=/usr/bin:/bin HOME="$H" XDG_CONFIG_HOME="$H/xdg/config" XDG_DATA_HOME="$H/xdg/data" XDG_CACHE_HOME="$H/xdg/cache" \
+  oc() { env -i PATH="$(dirname "$NODE"):/usr/bin:/bin" HOME="$H" XDG_CONFIG_HOME="$H/xdg/config" XDG_DATA_HOME="$H/xdg/data" XDG_CACHE_HOME="$H/xdg/cache" \
       XDG_STATE_HOME="$H/xdg/state" OPENCODE_DISABLE_AUTOUPDATE=1 OPENCODE_DISABLE_MODELS_FETCH=1 OPENCODE_PASSWORD=check TERM=dumb "$@"; }
   local CONF="$H/xdg/config/opencode/opencode.json"; mkdir -p "$(dirname "$CONF")"
   "$NODE" -e '
@@ -246,7 +246,7 @@ oc_section() {
   local plug; plug=$(api "http://127.0.0.1:$SPORT/api/plugin"); has "$plug" "\"id\":\"ni_rua\"" && ok "plugin loaded (GET /api/plugin)" || bad "plugin loaded"
   local mcp; mcp=$(api "http://127.0.0.1:$SPORT/api/mcp"); has "$mcp" '"name":"ni_rua","status":{"status":"connected"}' && ok "GET /api/mcp: ni_rua connected on --port $MPORT" || { bad "GET /api/mcp connected"; say "$mcp" | sed 's/^/        /'; }
   local skills; skills=$(api "http://127.0.0.1:$SPORT/api/skill")
-  has "$skills" '"id":"ni-rua-robot"' && has "$skills" '"id":"ni-rua-experiments"' && ok "GET /api/skill lists ni-rua-robot and ni-rua-experiments" || bad "GET /api/skill lists both skills"
+  has "$skills" '"id":"ni-rua-setup"' && has "$skills" '"id":"ni-rua-robot"' && has "$skills" '"id":"ni-rua-experiments"' && ok "GET /api/skill lists ni-rua-setup, ni-rua-robot and ni-rua-experiments" || bad "GET /api/skill lists all three skills"
   if [ "$HAVE" = 1 ]; then
     local sid; sid=$(api -X POST -d '{"title":"check"}' "http://127.0.0.1:$SPORT/api/session" | "$NODE" -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).data.id))')
     api -X POST -d '{"text":"hello"}' "http://127.0.0.1:$SPORT/api/session/$sid/prompt" >/dev/null; sleep 8

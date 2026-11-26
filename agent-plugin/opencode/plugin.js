@@ -54,11 +54,11 @@ export default {
   id: "ni_rua",
   setup: async (ctx) => {
     const manifest = await loadManifest();
+    const cliPath = fileURLToPath(new URL("../bin/cli.mjs", import.meta.url));
     await ctx.mcp.transform((entries) =>
       entries.set(manifest.server_name, {
-        type: "remote",
-        url: manifest.mcp_url,
-        oauth: false,
+        type: "local",
+        command: ["node", cliPath, "mcp"],
         codemode: false,
         timeout: { ...manifest.opencode_timeout_ms },
       }),

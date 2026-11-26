@@ -34,49 +34,84 @@ NI-RUA 提供两种使用方式，同一份代码仓库和同一套安装可同�
 
 ## 插件包内容与 `setup` 安装项
 
-npm 包 [`agent-plugin/`](../../agent-plugin/README.zh-CN.md)（已发布为 `@nerveint/ni-rua-plugin`，CLI 命令 `ni-rua-plugin`，零 npm 依赖）包含指向 `http://127.0.0.1:8790/mcp` 的各宿主 HTTP MCP 清单、两项技能（面向执行者的 `ni-rua-robot` 与面向运维者的 `ni-rua-experiments`）以及命令行工具（`setup`、`gateway`、`install`、`uninstall`、`doctor`）。npm 包本身不含 Python 二进制。
+npm 包 [`agent-plugin/`](../../agent-plugin/README.zh-CN.md)（已发布为 `@nerveint/ni-rua-plugin`，CLI 命令 `ni-rua-plugin`，零 npm 依赖）包含指向**按需启动 stdio MCP 桥接（`ni-rua-plugin mcp`）**的各宿主清单、三项技能（负责安装引导、硬件绑定、S0–S6 标定与排障的 `ni-rua-setup`、面向执行者的 `ni-rua-robot` 与面向运维者的 `ni-rua-experiments`）以及命令行工具（`setup`、`mcp`、`gateway`、`install`、`uninstall`、`doctor`）。npm 包本身不含 Python 二进制。
 
-- **一行命令零 clone 安装**：执行 `npx -y @nerveint/ni-rua-plugin setup <claude|codex|opencode|all> [--so101]` 会同时安装宿主插件，并在 `~/.local/share/ni-rua/envs/gateway` 下自动创建隔离的 Python 3.12 `ni-rua-harness` 网关环境（优先使用 `uv`，回退至 `python3.12 -m venv`）。附加 `--so101` 时，会额外创建隔离的 `~/.local/share/ni-rua/envs/so101` 硬件 Worker 环境。
-- **全局 CLI（日常推荐）**：`npm i -g @nerveint/ni-rua-plugin` 将 `ni-rua-plugin` 装入 `PATH`，方便日常执行 `gateway`、`doctor`、`install` 与 `uninstall`。
-- **运行要求**：Node 18 或更新版本、Python 3.12（或 `uv`）、你要使用的宿主 CLI，以及 macOS / Linux（Windows 仅支持通过 WSL 运行，网关依赖 `fcntl`）。
-- **源码开发模式**：仍可在仓库根目录直接运行 `node agent-plugin/bin/cli.mjs` 搭配 `mamba` 的 `ni-rua` 环境。
+- **一行命令零 clone 安装（默认包含 SO-101 硬件环境）：** 执行 `npx -y @nerveint/ni-rua-plugin setup <codex|claude|opencode|all>` 会安装宿主插件，并默认自动创建两个隔离的 Python 3.12 环境：`~/.local/share/ni-rua/envs/gateway`（`ni-rua-harness`，优先使用 `uv`，回退至 `python3.12 -m venv`）与 `~/.local/share/ni-rua/envs/so101`（SO-101 硬件依赖）。传入 `--no-so101` 可跳过 SO-101 硬件依赖（`--so101` 仍作为向后兼容别名保留）；传入 `--skip-gateway` 可仅安装宿主插件清单。
+- **全局 CLI（便于手动启动网关与自检）：** `npm i -g @nerveint/ni-rua-plugin` 将 `ni-rua-plugin` 装入 `PATH`，方便日常执行 `gateway`、`doctor`、`install` 与 `uninstall`。（宿主插件始终指向持久副本 `~/.local/share/ni-rua/agent-plugin/<version>/bin/cli.mjs mcp`，因此仅用 `npx` 安装也完全稳定可靠。）
+- **运行要求：** Node 18 或更新版本、Python 3.12（或 `uv`）、你要使用的宿主 CLI，以及 macOS / Linux（Windows 仅支持通过 WSL 运行，网关依赖 `fcntl`）。
+- **源码开发模式：** 仍可在仓库根目录直接运行 `node agent-plugin/bin/cli.mjs` 搭配 `mamba` 的 `ni-rua` 环境。
 
 ## 快速开始
 
-1. 一次性安装插件与网关运行时，并执行自检：
+### 默认单窗口 SO-101 流程（按需 stdio MCP 桥接）
+
+1. 一次性安装插件与隔离的 Python 3.12 网关及 SO-101 运行时：
 
    ```sh
-   npx -y @nerveint/ni-rua-plugin setup claude        # 或：codex | opencode | all（SO-101 真机加 --so101）
-   npm i -g @nerveint/ni-rua-plugin                   # 可选：全局保留 `ni-rua-plugin` 命令
-   ni-rua-plugin doctor                               # 真机加 --so101 核查串口、相机与标定状态
+   npx -y @nerveint/ni-rua-plugin setup codex         # 或：claude | opencode | all（跳过 SO-101 可加 --no-so101）
    ```
 
-2. 先启动网关，再开启智能体会话（任务仅来源于 `--prompt`；见[生命周期门控：`run_begin` 与 `run_finish`](#the-bracket-run_begin-and-run_finish)）。外部模式绝不可带 `--benchmark`：
+2. 首次绑定 SO-101 串口与相机（写入 `~/.config/ni-rua/so101.local.json`）：
 
    ```sh
-   # 零硬件 MCP 试运行（内置轻量 dry-run MCP 服务，监听 127.0.0.1:8790/mcp）
-   ni-rua-plugin gateway --dry-run
-
-   # SO-101 机械臂 —— 单机本地纯 CPU 默认配置（冷启动缺标定时自动补全 --observation-profile rgb_proprio_v1）
-   ni-rua-plugin gateway --config so101 --port 8781 --run-dir runs/my-external --prompt "<task>"
-
-   # 源码仓库内运行 RoboDojo 仿真（需 1 张空闲 GPU；见 running.zh-CN.md）
-   mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external \
-     --task stack_bowls --gpu 0 --port 8767 --run-dir runs/my-external --prompt "<task>"
+   ~/.local/share/ni-rua/envs/gateway/bin/ni-rua-so101 init-config   # 若已在 PATH 中可直接运行 `ni-rua-so101 init-config`
    ```
 
-   首次搭建 SO-101 且尚未生成 `camera_calibration.json` 时，`ni-rua-plugin gateway --config so101` 会自动检测并附加 `--observation-profile rgb_proprio_v1`，直接打开 `http://127.0.0.1:8781/calibration` 即可进入引导标定（若直接调用 `ni-rua`，需手动附加 `--observation-profile rgb_proprio_v1`）；标定应用完成后，日常单机纯 CPU 运行直接使用 `--config so101`（内置 `so101_standalone.json`）即可。仅在对接可选远程 VGGT/SAM/cuRobo GPU 服务时改用 `--config configs/so101_gateway.json`。机台部署文件默认读取 `~/.config/ni-rua/so101.local.json`（可通过 `ni-rua-so101 init-config` 生成）或仓库内 `./configs/so101.local.json`；详见 [SO-101 真机快速上手指南](../guides/so101-quickstart.zh-CN.md)、[SO-101 标定指南](../guides/so101-calibration.zh-CN.md)、[SO-101 配置说明](so101-configuration.md) 与 [SO-101 集成指南第 6.3 节](so101-integration.md)。打开 `http://127.0.0.1:<port>/console`（`<port>` 为上方 `--port`）；`--run-dir` 必须是一个尚不存在的新目录。
+3. 直接打开 `codex`（或 `claude` / `opencode`）并让它完成配置、标定或操控机械臂，无需另开第二个网关终端：
 
-   网关会在 `http://127.0.0.1:8790/mcp` 上提供 MCP 服务（对应 `agent.external.mcp_port`，可用 `--external-mcp-port` 覆盖，见[配置指南](configuration.zh-CN.md)中的 Agent Backend 配置节），并在启动时打印端点地址。若端口已被占用，启动会拒绝并输出一行指明该端口的提示。对于 RoboDojo 运行，`run_begin` 还会通过 `native_task` 和 `task_notes` 透传环境原生的 `task_instruction`（含 `task_instruction_override`）、`public_task_rules` 与 `default_task_notes`。
+   ```text
+   $ codex
+   > Use NI-RUA to inspect the table, lift the SO-101 gripper 2 cm, verify, and return.
+   ```
 
-3. 启动你自己的智能体会话并让它执行任务。`ni_rua` 工具列表会出现；智能体调用 `run_begin`、开展操作，最后调用 `run_finish`。
+   内置 **`ni-rua-setup`** 与 **`ni-rua-robot`** 技能配合工作，可由智能体端到端引导硬件绑定（`ni-rua-so101 init-config` / `cameras` / `commission`）、S0–S6 标定、故障排查（`ni-rua-plugin doctor`）及真机任务执行。首次调用 `run_begin` 时，`ni-rua-plugin mcp` 会自动拉起本地单例 SO-101 网关（若尚未存在 `camera_calibration.json`，会自动附加 `--observation-profile rgb_proprio_v1`），并在返回开头提示实时 Web 控制台急停地址（`http://127.0.0.1:8781/console`，未标定时同时提示 `/calibration`）。
 
-请始终通过 NI-RUA 控制台（即网关的 `--port`）执行停止（stop）、保持（hold）或紧急停止（estop）。
+### 按需 stdio MCP 桥接（`ni-rua-plugin mcp`）工作原理
+
+- **日常写代码零开销、零报错：** `initialize` 会立即返回，不拉起任何网关进程也不触碰硬件。`tools/list` 快速探测 `NI_RUA_MCP_URL`（默认 `http://127.0.0.1:8790/mcp`，约 300 ms）；若尚未启动网关，直接返回内置静态工具定义，因此 Codex、Claude Code 与 OpenCode 日常启动零 MCP 连接报错。
+- **自动透明代理手动网关：** 在 `tools/list` 或 `tools/call` 时，若 `NI_RUA_MCP_URL` 上已有手动启动的 HTTP 网关（如 `ni-rua-plugin gateway --dry-run`、手动 SO-101 网关、RoboDojo 或 LIBERO），桥接会直接透明转发 JSON-RPC over HTTP（完整保留 `Mcp-Session-Id` 并兼容 JSON 与 `text/event-stream` SSE 响应）。
+- **单例按需自启：** 若发起 `tools/call` 时网关未运行且 `NI_RUA_AUTO_START` 不为 `"0"`，桥接会获取单例锁 `~/.local/share/ni-rua/gateway.lock`，后台拉起本地网关（`--agent-backend external --config <NI_RUA_GATEWAY_CONFIG || "so101"> --port 8781 --external-mcp-port 8790 --run-dir ~/.local/share/ni-rua/runs/run-<timestamp>`，并更新 `~/.local/share/ni-rua/runs/latest` 软链，日志写入 `~/.local/share/ni-rua/logs/gateway.log`），初始化上游 MCP 会话、下发 `notifications/tools/list_changed` 并转发该次调用。若启动失败（例如缺少运行时或 `so101.local.json`），立即快速失败并返回包含精确修复命令（`setup` 或 `ni-rua-so101 init-config`）的 MCP 工具错误。
+
+| 环境变量 | 默认值 | 说明 |
+| --- | --- | --- |
+| `NI_RUA_MCP_URL` | `http://127.0.0.1:8790/mcp` | 探测与代理的上游 HTTP MCP 网关端点。 |
+| `NI_RUA_AUTO_START` | 默认开启（未设置） | 设为 `0` 可禁用本地 SO-101 网关自动拉起（仅代理模式；若未手动启动网关则快速报错）。 |
+| `NI_RUA_GATEWAY_CONFIG` | `so101` | 桥接自动拉起本地网关时使用的配置预设或文件路径。 |
+
+### 手动网关模式（Dry Run、RoboDojo、LIBERO 与自定义 `--run-dir` / `--prompt`）
+
+当你需要零硬件试运行、指定 `--run-dir` / `--prompt`、连接远程 GPU 感知服务，或运行仿真（RoboDojo / LIBERO）时，可先手动启动网关（外部模式绝不可带 `--benchmark`）；stdio 桥接会自动探测 `http://127.0.0.1:8790/mcp` 并透明代理过去：
+
+```sh
+# 可选：全局保留 `ni-rua-plugin` 命令并执行自检
+npm i -g @nerveint/ni-rua-plugin
+ni-rua-plugin doctor --so101
+
+# 1. 零硬件 MCP 试运行（内置轻量 dry-run MCP 服务，监听 127.0.0.1:8790/mcp）
+ni-rua-plugin gateway --dry-run
+
+# 2. 手动启动 SO-101 网关 —— 单机本地纯 CPU 默认配置（冷启动缺标定时自动补全 --observation-profile rgb_proprio_v1）
+ni-rua-plugin gateway --config so101 --port 8781 --run-dir runs/my-external --prompt "<task>"
+
+# 3. 源码仓库内运行 RoboDojo 仿真（需 1 张空闲 GPU；见 running.zh-CN.md）
+mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external \
+  --task stack_bowls --gpu 0 --port 8767 --run-dir runs/my-external --prompt "<task>"
+
+# 4. 源码仓库内运行 LIBERO 仿真（仅仿真 Franka Emika Panda）
+mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external \
+  --config configs/libero.example.json --port 8768 --run-dir runs/my-libero --prompt "<task>"
+```
+
+首次搭建 SO-101 且尚未生成 `camera_calibration.json` 时，按需桥接自动启动与 `ni-rua-plugin gateway --config so101` 都会自动检测并附加 `--observation-profile rgb_proprio_v1`，直接打开 `http://127.0.0.1:8781/calibration` 即可进入引导标定（若直接调用 `ni-rua`，需手动附加 `--observation-profile rgb_proprio_v1`）；标定应用完成后，日常单机纯 CPU 运行直接使用 `--config so101`（内置 `so101_standalone.json`）即可。仅在对接可选远程 VGGT/SAM/cuRobo GPU 服务时改用 `--config configs/so101_gateway.json`。机台部署文件默认读取 `~/.config/ni-rua/so101.local.json`（可通过 `ni-rua-so101 init-config` 生成）或仓库内 `./configs/so101.local.json`；详见 [SO-101 真机快速上手指南](../guides/so101-quickstart.zh-CN.md)、[SO-101 标定指南](../guides/so101-calibration.zh-CN.md)、[SO-101 配置说明](so101-configuration.md) 与 [SO-101 集成指南第 6.3 节](so101-integration.md)。打开 `http://127.0.0.1:<port>/console`（`<port>` 为上方 `--port`）；`--run-dir` 必须是一个尚不存在的新目录。
+
+网关会在 `http://127.0.0.1:8790/mcp` 上提供 HTTP MCP 服务（对应 `agent.external.mcp_port`，可用 `--external-mcp-port` 覆盖并配合 `NI_RUA_MCP_URL` 对齐，见[配置指南](configuration.zh-CN.md)中的 Agent Backend 配置节），并在启动时打印端点地址。若端口已被占用，启动会拒绝并输出一行指明该端口的提示。对于 RoboDojo 运行，`run_begin` 还会通过 `native_task` 和 `task_notes` 透传环境原生的 `task_instruction`（含 `task_instruction_override`）、`public_task_rules` 与 `default_task_notes`。
+
+请始终通过 NI-RUA 控制台（即网关的 `--port`，默认 `http://127.0.0.1:8781/console?lang=zh-CN`）执行停止（stop）、保持（hold）或紧急停止（estop）。
 
 <a id="dry-run-without-hardware-checkout-only"></a>
 ## 无硬件试运行
 
-- **内置 CLI dry-run（无需源码仓库与 Python）：** 运行 `ni-rua-plugin gateway --dry-run` 即可在 `http://127.0.0.1:8790/mcp` 启动轻量级本地 MCP 服务，暴露 `run_begin`、`robot_observe`、`robot_action` 与 `run_finish`，几秒内验证 `Agent ↔ MCP` 端到端链路。
+- **内置 CLI dry-run（无需源码仓库与 Python）：** 运行 `ni-rua-plugin gateway --dry-run` 即可在 `http://127.0.0.1:8790/mcp` 启动轻量级本地 MCP 服务，暴露 `run_begin`、`robot_observe`、`robot_action` 与 `run_finish`，几秒内验证 `Agent ↔ MCP` 端到端链路；`ni-rua-plugin mcp` 会自动代理过去。
 - **完整 SO-101 场景替身（仅限源码仓库）：** 测试套件中的场景替身（scene double）在模拟舵机总线与渲染相机之上运行真实的 SO-101 后端与适配器（无需串口，也无需实体机械臂）。它属于测试辅助模块，不包含在发行的 wheel 中。在源码仓库根目录执行：
 
 ```sh
@@ -105,14 +140,14 @@ PYTHONPATH=tests:. NI_RUA_SO101_SCENE="$D/scene/scene.json" mamba run -n ni-rua 
 
 | 选项 | 含义 |
 | --- | --- |
-| `--port N` | 写入副本三个宿主入口的 MCP 端口（默认 `8790` = `agent.external.mcp_port`）。所有已安装宿主共用同一副本，因此共用同一端口；若已有其他宿主安装记录，尝试改用不同 `--port` 会被拒绝。 |
+| `--port N` | 写入持久副本 stdio 桥接配置的上游 HTTP MCP 端口（默认 `8790` = `agent.external.mcp_port`，运行时可通过 `NI_RUA_MCP_URL` 覆盖）。所有已安装宿主共用同一副本，因此共用同一端口；若已有其他宿主安装记录，尝试改用不同 `--port` 会被拒绝。 |
 | `--scope user\|project\|local` | 仅限 Claude Code（`install` 与 `uninstall` 均适用）；默认 `user`。`project` 与 `local` 作用于当前目录（工作区须已在 Claude Code 中获信任）。 |
 | `--no-host-env`、`--no-allow` | Claude Code 选项：跳过写入 `env` 键或跳过写入 `permissions.allow`。 |
 | `--no-direct-catalog` | Codex 选项：跳过向 `$CODEX_HOME/config.toml` 写入 `model_catalog_json`。 |
 | `--force` | 强制覆盖同版本号但内容不同的持久副本（默认拒绝覆盖）。 |
 | `--claude-bin`、`--codex-bin`、`--opencode-bin` | 指定宿主可执行文件路径，取代 `PATH` 中的首个匹配项。 |
 
-**Claude Code。**（使用默认 `--scope user` 时，该配置对该用户的**所有** Claude Code 会话与任意项目生效，而不仅限于 NI-RUA 会话：MCP 服务会在启动时自动加载且机器人工具默认放行。如果你还用 Claude Code 做其他项目开发，请在 NI-RUA 仓库目录下改用 `--scope project`；另见[已知余项（已记录，未加固）](#residuals-documented-not-hardened)。注意：在未受信任的工作区中，Claude Code 会忽略项目/本地级 `.claude/settings.json`——包括 `permissions.allow` 与 `env`——并且当当前目录不含独立 `.git` 时会沿上层 `.git` 根目录解析信任状态；请在该工作区中启动一次交互式 `claude` 确认信任，或运行 `ni-rua-plugin doctor` 核查。）安装器会执行 `claude plugin marketplace add <copy>` 与 `claude plugin install ni_rua@ni_rua -s <scope>`；插件的 `.mcp.json` 条目为 `{"type": "http", "url": ..., "alwaysLoad": true}`。在对应作用域的 `settings.json`（`user` 为 `<CLAUDE_CONFIG_DIR 或 ~/.claude>/settings.json`，`project` 为 `.claude/settings.json`，`local` 为 `.claude/settings.local.json`）中，会添加以下四个 `env` 键与一条权限：
+**Claude Code。**（使用默认 `--scope user` 时，该配置对该用户的**所有** Claude Code 会话与任意项目生效，而不仅限于 NI-RUA 会话：按需 stdio 桥接会安静加载、不拉起任何网关进程，且机器人工具默认放行。如果你希望将其限制在单个仓库目录，请在 NI-RUA 仓库目录下改用 `--scope project`；另见[已知余项（已记录，未加固）](#residuals-documented-not-hardened)。注意：在未受信任的工作区中，Claude Code 会忽略项目/本地级 `.claude/settings.json`——包括 `permissions.allow` 与 `env`——并且当当前目录不含独立 `.git` 时会沿上层 `.git` 根目录解析信任状态；请在该工作区中启动一次交互式 `claude` 确认信任，或运行 `ni-rua-plugin doctor` 核查。）安装器会执行 `claude plugin marketplace add <copy>` 与 `claude plugin install ni_rua@ni_rua -s <scope>`；插件的 `.mcp.json` 启动本地 stdio 桥接（`{"command": "node", "args": ["${CLAUDE_PLUGIN_ROOT}/bin/cli.mjs", "mcp"]}`）。在对应作用域的 `settings.json`（`user` 为 `<CLAUDE_CONFIG_DIR 或 ~/.claude>/settings.json`，`project` 为 `.claude/settings.json`，`local` 为 `.claude/settings.local.json`）中，会添加以下四个 `env` 键与一条权限：
 
 | 键 | 值 | 原因 |
 | --- | --- | --- |
@@ -124,9 +159,9 @@ PYTHONPATH=tests:. NI_RUA_SO101_SCENE="$D/scene/scene.json" mamba run -n ni-rua 
 
 这些键与 [`claude_code/options.py`](../../ni_rua/cortex/agents/claude_code/options.py) 托管模式使用的配置一致，唯一刻意未写入的是 `CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT=0`：正常调用期间的进度保活（progress keepalive）已经能维持连接，若写入该键，网关在调用中途崩溃时会一直挂起直到手动 `/mcp` 重连，而不会在 300 秒后超时失败。你原先已设置的键会被保留；若保留值低于表格要求或启用了自动转后台，导致插件失效，`install` 和 `doctor` 会输出警告。
 
-**Codex。** 执行 `codex plugin marketplace add <copy>` 与 `codex plugin add ni_rua@ni_rua`。升级或更换端口时会先移除旧插件与 marketplace（Codex 不支持原地重指）。与 Claude Code 类似，安装后的插件对该用户的 Codex 会话可见且工具默认放行。自动生成的 [`.codex-mcp.json`](../../agent-plugin/.codex-mcp.json) 包含 `default_tools_approval_mode: "approve"`、`tool_timeout_sec: 3600`（硬上限，进度通知不会延长它）、`startup_timeout_sec: 30`，以及针对注册表中每个 Actor 工具的 `output_token_limit: 100000`：缺少该上限时 Codex 会将所有长结果截断到约 12,000 字符（SO-101 的开场 briefing 长达 60,091 字符）。该工具映射表与直连模型目录 [`codex-models.direct.json`](../../agent-plugin/codex-models.direct.json) 均由 [`scripts/gen_agent_plugin_codex_mcp.py`](../../scripts/gen_agent_plugin_codex_mcp.py) 生成，切勿手工编辑。由于 Codex 0.160.0/0.169.0 将 `gpt-6.1-sol` 等内置模型标记为 `tool_mode="code_mode_only"`（在 Linux 上会导致 `code-mode host` 以 `SIGSEGV`/gRPC `BrokenPipe` 崩溃）及 `supports_search_tool=true`（会将 MCP 工具隐藏到 Responses `tool_search` 后方，在不支持 `tool_search` 的供应商上报错），`codex-models.direct.json` 将所有模型设为 `tool_mode="direct"` 与 `supports_search_tool=false`；除非 `$CODEX_HOME/config.toml` 已存在该配置或传入 `--no-direct-catalog`，`install codex` 会在顶层添加 `model_catalog_json = "<copy>/codex-models.direct.json"`，并在 `uninstall codex` 时精确删除该行。
+**Codex。** 执行 `codex plugin marketplace add <copy>` 与 `codex plugin add ni_rua@ni_rua`。升级或更换端口时会先移除旧插件与 marketplace（Codex 不支持原地重指）。与 Claude Code 类似，安装后的插件通过本地 stdio 桥接（`node <copy>/bin/cli.mjs mcp`）对该用户的 Codex 会话可见且工具默认放行。自动生成的 [`.codex-mcp.json`](../../agent-plugin/.codex-mcp.json) 包含 `default_tools_approval_mode: "approve"`、`tool_timeout_sec: 3600`（硬上限，进度通知不会延长它）、`startup_timeout_sec: 30`，以及针对注册表中每个 Actor 工具的 `output_token_limit: 100000`：缺少该上限时 Codex 会将所有长结果截断到约 12,000 字符（SO-101 的开场 briefing 长达 60,091 字符）。该工具映射表与直连模型目录 [`codex-models.direct.json`](../../agent-plugin/codex-models.direct.json) 均由 [`scripts/gen_agent_plugin_codex_mcp.py`](../../scripts/gen_agent_plugin_codex_mcp.py) 生成，切勿手工编辑。由于 Codex 0.160.0/0.169.0 将 `gpt-6.1-sol` 等内置模型标记为 `tool_mode="code_mode_only"`（在 Linux 上会导致 `code-mode host` 以 `SIGSEGV`/gRPC `BrokenPipe` 崩溃）及 `supports_search_tool=true`（会将 MCP 工具隐藏到 Responses `tool_search` 后方，在不支持 `tool_search` 的供应商上报错），`codex-models.direct.json` 将所有模型设为 `tool_mode="direct"` 与 `supports_search_tool=false`；除非 `$CODEX_HOME/config.toml` 已存在该配置或传入 `--no-direct-catalog`，`install codex` 会在顶层添加 `model_catalog_json = "<copy>/codex-models.direct.json"`，并在 `uninstall codex` 时精确删除该行。
 
-**OpenCode。** 要求 OpenCode **2.x**（已验证 `2.2.7`）；`install opencode` 在写入任何内容前会拒绝 OpenCode 1.x 二进制，因为 1.x 不接受顶层 `plugins` 和 `tool_output`。[`opencode/plugin.js`](../../agent-plugin/opencode/plugin.js) 注册了远程 MCP 入口（`oauth: false`、`codemode: false` 以保持注册表工具作为直接 `ni_rua_<tool>` 调用、`timeout.execution: 3600000` ms，因为在 2.2.7 中进度通知不会顺延超时）、两项技能，以及一个 `compaction` 会话 Hook（防止活跃的 NI-RUA 回合把内部压缩提示误当成用户请求，并要求压缩摘要优先重新调用 `run_begin`）。由于 `opencode plugin add` 不接受本地路径，安装器直接写入全局 `opencode.json`（位于 `$OPENCODE_CONFIG_DIR` 或 `$XDG_CONFIG_HOME/opencode/`，仅接受严格 JSON；遇到 JSONC 或无法解析的文件时会拒绝修改并打印手工编辑片段）：向 `plugins` 添加副本绝对路径；若未配置则写入 `tool_output: {"max_lines": 100000, "max_bytes": 16000000}`（与托管模式一致，否则约 50 KB 以上结果会被截断，SO-101 的 60,091 字符 briefing 会被砍成 50,135 字符）；若未配置则写入 `media.image: {"auto_resize": false, "max_width": 1000000, "max_height": 1000000, "max_base64_bytes": 1073741824}`（防止大型 PNG 工具图像被有损重编码为 JPEG）。
+**OpenCode。** 要求 OpenCode **2.x**（已验证 `2.2.7`）；`install opencode` 在写入任何内容前会拒绝 OpenCode 1.x 二进制，因为 1.x 不接受顶层 `plugins` 和 `tool_output`。[`opencode/plugin.js`](../../agent-plugin/opencode/plugin.js) 注册了本地 stdio MCP 桥接（`node <copy>/bin/cli.mjs mcp`，`codemode: false` 以保持注册表工具作为直接 `ni_rua_<tool>` 调用、`timeout.execution: 3600000` ms，因为在 2.2.7 中进度通知不会顺延超时）、三项技能（`ni-rua-setup`、`ni-rua-robot`、`ni-rua-experiments`），以及一个 `compaction` 会话 Hook（防止活跃的 NI-RUA 回合把内部压缩提示误当成用户请求，并要求压缩摘要优先重新调用 `run_begin`）。由于 `opencode plugin add` 不接受本地路径，安装器直接写入全局 `opencode.json`（位于 `$OPENCODE_CONFIG_DIR` 或 `$XDG_CONFIG_HOME/opencode/`，仅接受严格 JSON；遇到 JSONC 或无法解析的文件时会拒绝修改并打印手工编辑片段）：向 `plugins` 添加副本绝对路径；若未配置则写入 `tool_output: {"max_lines": 100000, "max_bytes": 16000000}`（与托管模式一致，否则约 50 KB 以上结果会被截断，SO-101 的 60,091 字符 briefing 会被砍成 50,135 字符）；若未配置则写入 `media.image: {"auto_resize": false, "max_width": 1000000, "max_height": 1000000, "max_base64_bytes": 1073741824}`（防止大型 PNG 工具图像被有损重编码为 JPEG）。
 
 **记录、卸载与升级。** 安装器在 `~/.local/share/ni-rua/agent-plugin/installed.json`（schema 2）中记录所有操作：按宿主与配置目录分条记录（Claude Code 按 `CLAUDE_CONFIG_DIR` + `scope`，`project`/`local` 还包含工作目录；Codex 按 `CODEX_HOME`；OpenCode 按配置文件路径），确保不同 profile 或项目互不覆盖。`uninstall <host>` 仅撤销对应记录添加的条目，并保留你后续自行修改的值；卸载时需使用与安装时一致的 `CLAUDE_CONFIG_DIR`、`CODEX_HOME`、`XDG_CONFIG_HOME` 与 `scope`。如果宿主命令因“未安装”以外的原因失败，安装器会保留记录与副本、打印手动命令并以非零状态退出。安装器绝不删除非自身创建的内容，保留符号链接配置文件及其权限位，并通过锁目录（`<data>/.lock`）串行化并发执行。重新运行 `install` 即为升级路径；版本目录不可变，同一版本号下内容变化时需升级版本号或传入 `--force`。所有拒绝校验都在首次写入前完成，因此被拒绝的重装不会破坏现有可用配置。相关逻辑由 [`agent-plugin/test/installer.test.mjs`](../../agent-plugin/test/installer.test.mjs) 回归测试覆盖。
 
@@ -159,13 +194,12 @@ PYTHONPATH=tests:. NI_RUA_SO101_SCENE="$D/scene/scene.json" mamba run -n ni-rua 
 <a id="recovery"></a>
 ## 故障恢复
 
-基于 HTTP-first 专项验证的实测结论（报告见 [Agent Plugin Spikes 第 3 节](reports/agent-plugin-spikes.md#3-http-first-gono-go)；脚本化模型、无头模式）：
+在 `v0.1.1` 按需 stdio 桥接（`ni-rua-plugin mcp`）下，先启动智能体再启动网关不会再导致连接失败：日常会话会干净加载静态工具定义，SO-101 在首次 `run_begin` 时自动拉起，稍后手动启动在 `NI_RUA_MCP_URL` 上的网关也会在下次调用时自动接管。HTTP-first 专项验证中记录的上游重启与中途崩溃行为（报告见 [Agent Plugin Spikes 第 3 节](reports/agent-plugin-spikes.md#3-http-first-gono-go)；脚本化模型、无头模式）仍适用于以下场景：
 
-- **务必先启动网关，再启动智能体会话。** 若智能体先启动：Claude Code 执行 `/mcp` → `ni_rua` → Reconnect（或开启新会话）；OpenCode 重启或重载；Codex 开启新会话。
-- **在两次工具调用之间重启网关**无需在任何宿主做额外操作；MCP 服务端是无状态的。
-- **重启网关并切换了另一台机器人**（工具目录变化）时，必须按上述方式重连或开启新会话，因为没有宿主会自动重新拉取 `tools/list`；长生命周期会话会保留旧的工具目录与说明。若发现工具描述与 briefing 不一致，请重新连接。
+- **重启网关并切换了另一台机器人**（工具目录变化）时，仍建议通过 `notifications/tools/list_changed` 或手动重连/开启新会话（Claude Code `/mcp` → `ni_rua` → Reconnect、OpenCode 重载、Codex 开启新会话），因为部分旧客户端会缓存初始工具目录。若发现工具描述与 briefing 不一致，请重新连接。
+- **在两次工具调用之间重启网关**无需在任何宿主做额外操作；stdio 桥接与无状态 HTTP MCP 服务端均可自动恢复。
 - **单次调用期间网关崩溃。** Codex 会立即报错（"Transport closed"）。Claude Code 与 OpenCode 会持续等待，直到你按 Esc 或手动重连；Claude Code 随后会告知模型该工具可能已经执行。机械臂当时可能仍在运动：再次发起运动前请先用只读工具检查状态。（使用 Claude Code 默认空闲超时会在 300 秒后报错；安装器正是为此刻意保留了该默认值。）
-- **网关晚启动导致 `ni_rua` 服务状态为 `failed`。** 按上述步骤重连即可。Claude Code 自身仅在约 1 秒内重试数次便会放弃。
+- **仅代理模式（`NI_RUA_AUTO_START=0`）。** 若 `NI_RUA_MCP_URL` 上没有运行中的网关，`tools/call` 会直接返回包含启动提示（`ni-rua-plugin gateway`）的 MCP 错误；启动网关后无需重启智能体，直接重试即可。
 
 ## 信息边界与基准有效性
 
@@ -201,7 +235,7 @@ PYTHONPATH=tests:. NI_RUA_SO101_SCENE="$D/scene/scene.json" mamba run -n ni-rua 
 - 客户端在单次模型步骤中并发发出的有状态调用会按到达顺序执行，可能与模型输出的顺序不一致（见[单步内多次调用的顺序](#order-of-one-steps-calls)）。
 - 安装器会修改用户配置文件（Claude Code `settings.json`、OpenCode `opencode.json`）及宿主插件注册表；所有修改都会先打印并记录供 `uninstall` 精确撤销。
 - 每个端口仅允许一个外部网关；第二个同端口实例会在启动时被拒绝。
-- **默认安装会影响当前用户的全部会话。** 使用默认 `--scope user` 时，该用户在任何项目下的每一次 Claude Code 会话都会加载 `ni_rua` 服务（`alwaysLoad`）且调用机器人工具无需权限弹窗（`permissions.allow`）。网关未运行时这会表现为一个失败的服务条目，网关运行时则会暴露完整机器人工具目录。Codex 通过 `default_tools_approval_mode: "approve"` 具有同样效果。如果你还用 Claude Code 从事其他开发工作，请在 NI-RUA 仓库目录中改用 `--scope project` 安装。安装器默认值保持不变。
+- **默认安装会影响当前用户的全部会话。** 使用默认 `--scope user` 时，该用户在任何项目下的每一次 Claude Code 会话都会安静加载按需 `ni_rua` stdio 桥接（无后台网关进程、无连接报错），且机器人工具默认放行（`permissions.allow`）。Codex 通过 `default_tools_approval_mode: "approve"` 具有同样效果。由于桥接仅在智能体显式调用 `ni_rua` 工具时才会拉起本地 SO-101 网关，日常编程会话完全无感；若希望杜绝非机器人会话意外触发自启，可设置 `NI_RUA_AUTO_START=0`，或对 Claude Code 在专用目录改用 `--scope project` 安装。
 
 <a id="verification-status"></a>
 ## 验证状态
@@ -294,4 +328,4 @@ PYTHONPATH=tests:. NI_RUA_SO101_SCENE="$D/scene/scene.json" mamba run -n ni-rua 
 
 ## 暂缓项（不在当前版本中）
 
-stdio 桥接、服务发现记录、`ni_rua_status` 工具、工具描述拆分、调用者身份与单一驱动者规则、基准风格的外部运行、`--wake-command`、PreCompact Hook 与对应路由、面向外部智能体的模型中继、外部模式下的证据辅助工具（evidence helpers）以及 `ni-rua-library` 命令行入口。更长的真实模型任务、更多真机 SO-101 会话与正式发布 npm 包待维护者后续推进。
+服务发现记录、`ni_rua_status` 工具、工具描述拆分、调用者身份与单一驱动者规则、基准风格的外部运行、`--wake-command`、PreCompact Hook 与对应路由、面向外部智能体的模型中继、外部模式下的证据辅助工具（evidence helpers）以及 `ni-rua-library` 命令行入口。更长的真实模型任务与更多真机 SO-101 场景验证仍在持续推进。

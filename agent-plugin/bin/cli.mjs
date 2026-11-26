@@ -14,6 +14,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { runStackChecks } from "./doctor-checks.mjs";
 import { runGateway } from "./gateway.mjs";
+import { runMcpBridge } from "./mcp-bridge.mjs";
 import { ESTOP_WARNING } from "./runtime.mjs";
 import { runSetup } from "./setup.mjs";
 
@@ -23,7 +24,8 @@ const MANIFEST = JSON.parse(fs.readFileSync(path.join(PACKAGE_ROOT, "manifest.ge
 const HOSTS = ["claude", "codex", "opencode"];
 const DEFAULT_PORT = MANIFEST.default_port;
 const MCP_URL_RE = /http:\/\/127\.0\.0\.1:\d+\/mcp/g;
-const PORT_FILES = [".mcp.json", ".codex-mcp.json", "manifest.generated.json"];
+const PORT_FILES = ["manifest.generated.json"];
+const SERVER_NAME = MANIFEST.server_name;
 const PLUGIN_ID = MANIFEST.plugin_id;
 const MARKETPLACE = MANIFEST.marketplace;
 const CLAUDE_ALLOW = MANIFEST.claude_allow;
@@ -59,7 +61,7 @@ function parseArgs(argv) {
   ]);
   const flags = new Set([
     "no-host-env", "no-allow", "no-direct-catalog", "force", "help",
-    "so101", "skip-gateway", "dry-run", "json",
+    "so101", "no-so101", "skip-gateway", "dry-run", "json",
   ]);
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -275,8 +277,8 @@ function listFiles(root) {
   return files.sort();
 }
 
-// The package's files set (package.json "files" + package.json), with `port` written into the three MCP entries.
-function packageContent(port) {
+// 构造持久副本内容：重写 manifest.generated.json 的端口，并将 .codex-mcp.json 指向持久副本内的绝对 cli.mjs 路径（无需全局安装）
+function packageContent(port, targetDir) {
   const map = new Map();
   for (const item of [...PKG.files, "package.json"]) {
     const full = path.join(PACKAGE_ROOT, item);
@@ -289,6 +291,16 @@ function packageContent(port) {
     const text = map.get(name).toString("utf8");
     if (!text.match(MCP_URL_RE)) throw new UserError(`${name} has no MCP URL to rewrite`);
     map.set(name, Buffer.from(text.replace(MCP_URL_RE, `http://127.0.0.1:${port}/mcp`)));
+  }
+  if (map.has(".codex-mcp.json") && targetDir) {
+    const doc = JSON.parse(map.get(".codex-mcp.json").toString("utf8"));
+    const entry = doc?.mcpServers?.[SERVER_NAME];
+    if (entry && typeof entry === "object") {
+      delete entry.url;
+      entry.command = "node";
+      entry.args = [path.join(targetDir, "bin", "cli.mjs"), "mcp"];
+      map.set(".codex-mcp.json", Buffer.from(`${JSON.stringify(doc, null, 2)}\n`));
+    }
   }
   return map;
 }
@@ -310,7 +322,7 @@ function resolvePort(opts, record, key) {
 // Check (no writes): same version with different content, other than the port, is refused unless --force.
 function planCopy(port, force) {
   const target = path.join(dataRoot(), PKG.version);
-  const content = packageContent(port);
+  const content = packageContent(port, target);
   let replace = false;
   if (fs.existsSync(target)) {
     const existing = listFiles(target);
@@ -789,8 +801,8 @@ function installClaude(opts, record) {
       out(`WARNING: workspace ${cwd} is not trusted by Claude Code (${trust.stateFile} has no hasTrustDialogAccepted=true for ${trust.requiredKey})${rootHint}. Claude Code ignores project/local permissions.allow and env in untrusted workspaces; open interactive \`claude\` there once to accept trust, or install with --scope user.`);
     }
   }
-  out(`Claude Code: installed ${PLUGIN_ID} (scope ${scope}). Start the gateway first, then a Claude Code session.`);
-  out("Next: run `ni-rua-plugin doctor` and `ni-rua-plugin gateway --dry-run` (or `--config so101`).");
+  out(`Claude Code: installed ${PLUGIN_ID} (scope ${scope}). Open \`claude\` directly — the local gateway auto-starts on first \`run_begin\`.`);
+  out("Next: run `ni-rua-plugin doctor` (or start a manual gateway with `ni-rua-plugin gateway --dry-run` / `--config so101`).");
   out(ESTOP_WARNING);
 }
 
@@ -843,8 +855,8 @@ function installCodex(opts, record) {
   const codexChange = commitCodexConfig(codexPlan);
   if (codexChange) { entry.config = codexChange; saveRecord(record); }
   else if (entry.config) { delete entry.config; saveRecord(record); }
-  out(`Codex: installed ${PLUGIN_ID}. Start the gateway before the Codex session: Codex does not retry a session that started without it.`);
-  out("Next: run `ni-rua-plugin doctor` and `ni-rua-plugin gateway --dry-run` (or `--config so101`).");
+  out(`Codex: installed ${PLUGIN_ID}. Open \`codex\` directly — the local gateway auto-starts on first \`run_begin\`.`);
+  out("Next: run `ni-rua-plugin doctor` (or start a manual gateway with `ni-rua-plugin gateway --dry-run` / `--config so101`).");
   out(ESTOP_WARNING);
 }
 
@@ -872,8 +884,8 @@ function installOpencode(opts, record) {
   writeJson(plan.change.path, plan.config);
   record.installs[key] = { host: "opencode", version: PKG.version, dir, config: plan.change };
   saveRecord(record);
-  out("OpenCode: configured. The plugin loads at the first session in a project; restart OpenCode if it was running.");
-  out("Next: run `ni-rua-plugin doctor` and `ni-rua-plugin gateway --dry-run` (or `--config so101`).");
+  out("OpenCode: configured. Open `opencode` directly — the local gateway auto-starts on first `run_begin` (restart OpenCode if it was already running).");
+  out("Next: run `ni-rua-plugin doctor` (or start a manual gateway with `ni-rua-plugin gateway --dry-run` / `--config so101`).");
   out(ESTOP_WARNING);
 }
 
@@ -1154,7 +1166,7 @@ async function doctor(opts) {
     line("ok", `gateway on ${gatewayLabel}: MCP initialize + tools/list answered, ${probe.names.length} tools${probe.instructions ? ", instructions present" : ""}`);
     line(probe.names.includes("run_begin") ? "ok" : "warn", probe.names.includes("run_begin") ? "gateway offers run_begin (external backend)" : "gateway has no run_begin tool: it was not started with --agent-backend external");
   } catch (error) {
-    line("warn", `no MCP gateway answered on ${gatewayLabel} (${error.cause?.code ?? error.message}). Start one before the agent session:\n       ${GATEWAY_HINT}\n       (the MCP port is agent.external.mcp_port / --external-mcp-port, default ${DEFAULT_PORT})`);
+    line("warn", `no MCP gateway answered on ${gatewayLabel} (${error.cause?.code ?? error.message}). The stdio MCP bridge auto-starts the local SO-101 gateway on first \`run_begin\`, or you can start one manually:\n       ${GATEWAY_HINT}\n       (the MCP port is agent.external.mcp_port / --external-mcp-port, default ${DEFAULT_PORT})`);
   }
   if (jsonMode) {
     out(JSON.stringify({ ok: !failed, package: PKG.name, version: PKG.version, gateway_url: gatewayUrl, checks }, null, 2));
@@ -1165,12 +1177,14 @@ async function doctor(opts) {
 // ---------------------------------------------------------------- main
 const USAGE = `ni-rua-plugin ${PKG.version} (${PKG.name})
 usage:
-  ni-rua-plugin setup <claude|codex|opencode|all> [--so101] [--skip-gateway] [--scope user|project|local] [--port N] [--force]
+  ni-rua-plugin setup <claude|codex|opencode|all> [--no-so101] [--skip-gateway] [--scope user|project|local] [--port N] [--force]
+  ni-rua-plugin mcp [--port N] [--gateway-url URL]
   ni-rua-plugin gateway [--dry-run] [--config <preset|path>] [--port N] [--run-dir D] [--prompt T] [-- ...extra]
   ni-rua-plugin install <claude|codex|opencode> [--scope user|project|local] [--port N] [--no-host-env] [--no-allow] [--no-direct-catalog] [--force]
   ni-rua-plugin uninstall <claude|codex|opencode> [--scope user|project|local]
   ni-rua-plugin doctor [--port N] [--gateway-url URL] [--so101] [--json]
   host executables: --claude-bin P, --codex-bin P, --opencode-bin P (default: first on PATH)
+  setup installs the isolated SO-101 hardware env by default (--no-so101 skips it; --so101 is accepted as an alias).
   --scope applies to Claude Code only; --no-host-env skips the four Claude Code env keys; --no-allow skips the
   permissions.allow entry; --no-direct-catalog skips writing model_catalog_json into Codex config.toml; --force
   replaces a durable copy or recreates managed Python envs.`;
@@ -1179,6 +1193,9 @@ async function main(argv) {
   const opts = parseArgs(argv);
   const [command, host] = opts._;
   if (opts.help || !command) { out(USAGE); return opts.help ? 0 : 1; }
+  if (command === "mcp") {
+    return runMcpBridge({ opts, manifest: MANIFEST, pkg: PKG });
+  }
   if (command === "doctor") return doctor(opts);
   if (command === "gateway") {
     return runGateway({ opts, extraArgs: opts.extra, defaultMcpPort: DEFAULT_PORT, version: PKG.version, out, UserError });

@@ -21,9 +21,10 @@ CLAUDE_ALLOW = "mcp__plugin_ni_rua_ni_rua"
 # Codex cuts long MCP text outputs unless per-tool output_token_limit >= 100,000 (~4 bytes/token vs 120k max).
 OUTPUT_TOKEN_LIMIT = 100_000
 LARGEST_KNOWN_RESULT_CHARS = 120_000
+DEFAULT_WEB_PORT = 8781
 CODEX_TIMEOUTS = {"tool_timeout_sec": 3600, "startup_timeout_sec": 30}
 OPENCODE_TIMEOUT_MS = {"startup": 30000, "catalog": 30000, "execution": 3600000}
-SKILLS = ("ni-rua-robot", "ni-rua-experiments")
+SKILLS = ("ni-rua-setup", "ni-rua-robot", "ni-rua-experiments")
 
 _VERIFIED_HOSTS = {
     "claude": ("2.1.321", "2.1.325", "2.1.328"),
@@ -35,6 +36,11 @@ _VERIFIED_HOSTS = {
 def default_port() -> int:
     """Return the default external-backend loopback MCP port from ``ExternalConfig``."""
     return int(ExternalConfig().mcp_port)
+
+
+def default_web_port() -> int:
+    """返回默认本地 Web 控制台端口（与 SO-101 独立预设一致）。"""
+    return DEFAULT_WEB_PORT
 
 
 def default_mcp_url(port: int | None = None) -> str:
@@ -87,8 +93,25 @@ def verified_hosts() -> dict[str, list[str]]:
     return {host: list(versions) for host, versions in _VERIFIED_HOSTS.items()}
 
 
-def build_manifest(*, version: str, tool_names) -> dict:
+def _normalize_tool_definitions(tool_names, tool_definitions=None) -> list[dict]:
+    """规范化静态 MCP 工具目录定义（供 stdio 桥接器在网关未启动时返回合法 tools/list）。"""
+    sorted_names = sorted(set(tool_names))
+    if tool_definitions is None:
+        return [
+            {
+                "name": name,
+                "description": f"NI-RUA robot tool `{name}` (local gateway starts automatically on first call).",
+                "inputSchema": {"type": "object", "properties": {}},
+            }
+            for name in sorted_names
+        ]
+    by_name = {str(item["name"]): dict(item) for item in tool_definitions}
+    return [by_name[name] for name in sorted_names if name in by_name]
+
+
+def build_manifest(*, version: str, tool_names, tool_definitions=None) -> dict:
     """Assemble the complete machine-readable ``agent-plugin`` manifest dictionary."""
+    sorted_names = sorted(set(tool_names))
     return {
         "schema": SCHEMA,
         "version": str(version),
@@ -97,6 +120,7 @@ def build_manifest(*, version: str, tool_names) -> dict:
         "marketplace": MARKETPLACE,
         "claude_allow": CLAUDE_ALLOW,
         "default_port": default_port(),
+        "web_port": default_web_port(),
         "mcp_url": default_mcp_url(),
         "claude_env": claude_env(),
         "opencode_tool_output": opencode_tool_output(),
@@ -109,22 +133,31 @@ def build_manifest(*, version: str, tool_names) -> dict:
         "largest_known_result_chars": LARGEST_KNOWN_RESULT_CHARS,
         "skills": list(SKILLS),
         "verified_hosts": verified_hosts(),
-        "tool_names": sorted(set(tool_names)),
+        "tool_names": sorted_names,
+        "tool_definitions": _normalize_tool_definitions(sorted_names, tool_definitions),
     }
 
 
-def render_files(*, version: str, tool_names) -> dict[str, str]:
+def render_files(*, version: str, tool_names, tool_definitions=None) -> dict[str, str]:
     """Render generated ``agent-plugin/`` artifacts keyed by package-relative path."""
-    manifest = build_manifest(version=version, tool_names=tool_names)
-    mcp_url = manifest["mcp_url"]
+    manifest = build_manifest(version=version, tool_names=tool_names, tool_definitions=tool_definitions)
     codex_entry = {
-        "url": mcp_url,
+        "command": "ni-rua-plugin",
+        "args": ["mcp"],
         "default_tools_approval_mode": "approve",
         **CODEX_TIMEOUTS,
         "tools": {name: {"output_token_limit": OUTPUT_TOKEN_LIMIT} for name in manifest["tool_names"]},
     }
     codex_doc = {"mcpServers": {SERVER_NAME: codex_entry}}
-    claude_doc = {"mcpServers": {SERVER_NAME: {"type": "http", "url": mcp_url, "alwaysLoad": True}}}
+    claude_doc = {
+        "mcpServers": {
+            SERVER_NAME: {
+                "command": "node",
+                "args": ["${CLAUDE_PLUGIN_ROOT}/bin/cli.mjs", "mcp"],
+                "alwaysLoad": True,
+            }
+        }
+    }
     return {
         ".codex-mcp.json": json.dumps(codex_doc, indent=2) + "\n",
         ".mcp.json": json.dumps(claude_doc, indent=2) + "\n",

@@ -5,7 +5,7 @@
     {
       "name": "ni_rua",
       "source": "./",
-      "description": "NI-RUA robot tools (MCP over loopback HTTP) and skills."
+      "description": "NI-RUA robot tools (stdio MCP bridge to local gateway) and skills."
     }
   ]
 }

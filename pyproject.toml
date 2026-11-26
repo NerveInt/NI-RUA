@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ni-rua-harness"
-version = "0.1.0"
+version = "0.1.1"
 description = "Agent harness for embodied manipulation: a model-led Codex session with one robot execution gateway"
 license = "MIT"
 license-files = ["LICENSE"]

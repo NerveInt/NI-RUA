@@ -1,7 +1,10 @@
 {
   "mcpServers": {
     "ni_rua": {
-      "url": "http://127.0.0.1:8790/mcp",
+      "command": "ni-rua-plugin",
+      "args": [
+        "mcp"
+      ],
       "default_tools_approval_mode": "approve",
       "tool_timeout_sec": 3600,
       "startup_timeout_sec": 30,

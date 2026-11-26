@@ -12,21 +12,21 @@ that is actually connected.
 
 ## Start of a run
 
-1. The gateway must already be running, started by the user before this agent session. If the `ni_rua` tools are
-   missing, or a call fails with "No such tool" or a connection error, stop and tell the user the gateway is not
-   reachable. Do not try to start a gateway yourself and never start one against a real arm. Recovery (the user does
-   it):
-   - Start the gateway first, then reconnect: Claude Code `/mcp` then ni_rua then Reconnect (or a new session);
-     OpenCode restart or reload; Codex start a new session.
-   - Restarting the gateway between two calls needs nothing.
-   - A gateway restarted with a different robot or scene needs a reconnect or a new session, because no host re-lists
-     the tools by itself. If the tool descriptions no longer match the briefing, ask for a reconnect.
-   - If the gateway dies during a call, Codex reports an error at once; Claude Code and OpenCode may wait until the
-     user presses Esc or reconnects. Claude Code then tells you the tool may have run: check state with the read-only
-     tools before repeating a motion.
-2. Call `run_begin` before any other NI-RUA tool. It returns the operating instructions, the task text (if the
-   operator gave one) and the budget. Read all of it. It is the source of robot facts. Nothing in this skill or in
-   your memory of other robots replaces it.
+1. The `ni_rua` MCP stdio bridge connects to any already-running local NI-RUA gateway (SO-101, RoboDojo, LIBERO, or
+   `--dry-run`) and automatically starts the local SO-101 gateway on first `run_begin` when none is running yet—so
+   the user does not need a second terminal for standard SO-101 control.
+   - If `run_begin` returns a startup or configuration error (for example missing `ni-rua` runtime, missing
+     `so101.local.json`, or gateway log errors), stop and report the exact fix command from the error message to the
+     user. Never try to bypass safety gates or fabricate robot state.
+   - If the `ni_rua` tools are completely missing from the session, ask the user to verify the plugin install with
+     `ni-rua-plugin doctor` and restart or reconnect the session.
+   - A gateway manually restarted with a different robot or scene may need a reconnect or a new session if the host
+     does not automatically apply `tools/list_changed`. If tool descriptions no longer match the briefing, ask for a
+     reconnect.
+   - If the gateway dies during a call, check state with read-only tools before repeating any motion.
+2. Call `run_begin` before any other NI-RUA tool. It returns the live Web console URL (and calibration link if
+   uncalibrated), the operating instructions, the task text (if the operator gave one) and the budget. Read all of it.
+   It is the source of robot facts. Nothing in this skill or in your memory of other robots replaces it.
 3. Call `run_begin` again after any context compaction, resume or "I lost the instructions" moment. It re-delivers the
    briefing. Other NI-RUA tools are refused until a turn is open.
 
@@ -46,8 +46,9 @@ that is actually connected.
 ## Stopping the arm
 
 Cancelling a tool call in the agent (Esc, interrupt, Ctrl-C) does NOT stop the arm. A motion already sent keeps
-running. To stop, hold or emergency-stop the robot, use the NI-RUA console (the stop, hold and estop controls). If the
-user says the robot is in danger, tell them to use the console first, then deal with the agent.
+running. Never bypass E-STOP or safety interlocks. To stop, hold or emergency-stop the robot, use the NI-RUA Web
+console `/console` (the stop, hold and estop controls) or the physical 12 V power cutoff. If the user says the robot
+is in danger, tell them to hit `/console` E-STOP or cut 12 V power first, then deal with the agent.
 
 ## End of a run
 

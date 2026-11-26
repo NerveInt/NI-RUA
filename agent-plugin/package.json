@@ -1,6 +1,6 @@
 {
   "name": "@nerveint/ni-rua-plugin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "NI-RUA robot tools and skills for Claude Code, Codex and OpenCode, served by a local NI-RUA gateway over MCP.",
   "author": "Nerve Intelligence",
   "homepage": "https://github.com/NerveInt/NI-RUA#readme",

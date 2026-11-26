@@ -27,10 +27,10 @@
 
 ### 方式 A — 一键零克隆安装（推荐）
 
-需要 **Node >= 18** 与 **Python >= 3.12**（或 `uv`）。命令会自动安装 `@nerveint/ni-rua-plugin` 并在 `~/.local/share/ni-rua/envs/{gateway,so101}` 下创建两个隔离的 Python 3.12 环境（规避 `openai-codex` 与 `lerobot` 上游的 `packaging`/`numpy` 版本冲突）：
+需要 **Node >= 18** 与 **Python >= 3.12**（或 `uv`）。命令会自动安装 `@nerveint/ni-rua-plugin`（含按需 stdio MCP 桥接 `ni-rua-plugin mcp` 及内置 **`ni-rua-setup`** / **`ni-rua-robot`** 技能），并**默认**在 `~/.local/share/ni-rua/envs/{gateway,so101}` 下创建两个隔离的 Python 3.12 环境（规避 `openai-codex` 与 `lerobot` 上游的 `packaging`/`numpy` 版本冲突；如无需 SO-101 硬件依赖可加 `--no-so101`）：
 
 ```bash
-npx -y @nerveint/ni-rua-plugin setup claude --so101   # 或：codex | opencode | all
+npx -y @nerveint/ni-rua-plugin setup codex            # 或：claude | opencode | all
 npm i -g @nerveint/ni-rua-plugin                      # 可选：全局保留 `ni-rua-plugin` 命令
 ni-rua-plugin doctor --so101
 ```
@@ -207,22 +207,30 @@ PYTHONPATH=. mamba run -n so101 python scripts/so101_commission.py \
 
 该脚本会按真机相同安全链路执行：上电自检 → 移至预备姿态 → 各关节 `±0.1 rad` 步进（对比无/有下垂补偿）→ `shoulder_pan` 速度扫描 → 夹爪开合（`1.0 → 0.0 → 0.5`）→ X/Y/Z `±2 cm` 笛卡尔闭环运动 → 停靠预备姿态，并输出 `commissioning.json` 与双摄快照。任一步骤未达标会立即确认保持并停止。
 
-### 5.2 运行方式 A：Agent 插件模式（`--agent-backend external`）
+### 5.2 运行方式 A：Agent 插件模式（零摩擦单窗口默认 / 手动网关）
 
-1. 安装插件并核验整套依赖（仅需执行一次）：
+**推荐单窗口流程（按需 stdio MCP 桥接 `ni-rua-plugin mcp`）：**
+
+1. 一次性安装（默认同时包含隔离的网关与 SO-101 硬件运行时）并自检：
    ```bash
-   npx -y @nerveint/ni-rua-plugin setup claude --so101   # 或：codex | opencode | all
+   npx -y @nerveint/ni-rua-plugin setup codex         # 或：claude | opencode | all
    ni-rua-plugin doctor --so101
    ```
-2. 启动 NI-RUA 网关（`--config so101` 使用内置 `so101_standalone.json` 纯 CPU 运行；若尚未生成 `camera_calibration.json`，会自动补全 `--observation-profile rgb_proprio_v1`）：
-   ```bash
-   ni-rua-plugin gateway --config so101 \
-     --port 8781 --run-dir runs/so101-demo \
-     --prompt "Describe the table, move the gripper straight up 2 cm, verify it, and move it back."
+2. 直接打开 `codex`（或 `claude` / `opencode`）——内置 **`ni-rua-setup`** 技能可全程引导 `ni-rua-so101 init-config`、`doctor`、`commission` 与 S0–S6 `/calibration`，完成后由 **`ni-rua-robot`** 直接操控机械臂，无需另开第二个网关终端：
+   ```text
+   $ codex
+   > Use NI-RUA to inspect the table, lift the SO-101 gripper 2 cm, verify, and return.
    ```
-   *（在源码仓库中也可运行 `mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external --config configs/so101_standalone.json ...`。）*
-3. 在另一个终端启动你的智能体（`claude`、`codex` 或 `opencode`）并输入：
-   `Operate the robot through the ni_rua MCP tools.`
+   日常写代码时零后台网关进程、零 MCP 报错。首次调用 `run_begin` 时，`ni-rua-plugin mcp` 会自动拉起本地单例 SO-101 网关（若尚未生成 `camera_calibration.json`，会自动启用 `--observation-profile rgb_proprio_v1`；日志位于 `~/.local/share/ni-rua/logs/gateway.log`），并提示实时 Web 控制台地址（`http://127.0.0.1:8781/console?lang=zh-CN`，未标定时同时提示 `/calibration`）。
+
+**可选手动网关模式**（需要自定义 `--run-dir`、显式 `--prompt`、`--dry-run`、远程 GPU 配置，或设置 `NI_RUA_AUTO_START=0` / 自定义 `NI_RUA_MCP_URL` 时使用）：
+
+```bash
+ni-rua-plugin gateway --config so101 \
+  --port 8781 --run-dir runs/so101-demo \
+  --prompt "Describe the table, move the gripper straight up 2 cm, verify it, and move it back."
+```
+*（在源码仓库中也可运行 `mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external --config configs/so101_standalone.json ...`。当手动网关已在 `NI_RUA_MCP_URL`（默认 `http://127.0.0.1:8790/mcp`）监听时，stdio 桥接会自动透明代理，不会重复拉起第二个网关。）*
 
 ### 5.3 运行方式 B：完整托管 Harness 模式
 
@@ -256,7 +264,7 @@ mamba run -n ni-rua python -u -m ni_rua.apps.gateway \
 
 在依赖 3D 坐标、`pixel_plane`、`triangulate` 或桌面抓取任务之前，请先完成引导式标定：
 
-1. 启动网关。**首次尚未生成 `camera_calibration.json` 时**，`ni-rua-plugin gateway --config so101` 会自动补全 `--observation-profile rgb_proprio_v1`（若直接调用 `ni-rua`，需显式附加该参数）：
+1. 启动网关。**首次尚未生成 `camera_calibration.json` 时**，按需 MCP 桥接自动拉起与 `ni-rua-plugin gateway --config so101` 都会自动补全 `--observation-profile rgb_proprio_v1`（若直接调用 `ni-rua`，需显式附加该参数）：
    ```bash
    ni-rua-plugin gateway --config so101 --port 8781 --run-dir runs/so101-calib
    ```

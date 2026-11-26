@@ -32,7 +32,7 @@ test("claude install: host commands, four env keys, allow entry, record", withBo
   const record = box.read(path.join(box.durable, "installed.json"));
   assert.equal(Object.values(record.installs)[0].dir, durable);
   assert.deepEqual(record.copies, [version]);
-  for (const file of ["package.json", ".mcp.json", ".codex-mcp.json", "manifest.generated.json", ".claude-plugin/plugin.json", "opencode/plugin.js", "skills/ni-rua-robot/SKILL.md", "bin/cli.mjs"]) {
+  for (const file of ["package.json", ".mcp.json", ".codex-mcp.json", "manifest.generated.json", ".claude-plugin/plugin.json", "opencode/plugin.js", "skills/ni-rua-setup/SKILL.md", "skills/ni-rua-robot/SKILL.md", "skills/ni-rua-experiments/SKILL.md", "bin/cli.mjs", "bin/mcp-bridge.mjs"]) {
     assert.ok(fs.existsSync(path.join(durable, file)), file);
   }
   assert.ok(!fs.existsSync(path.join(durable, "test")), "tests are not part of the package");
@@ -179,12 +179,20 @@ test("opencode refuses JSONC and unparsable config, with the manual edit", withB
   assert.match(sibling.stderr, /opencode\.jsonc exists/);
 }));
 
-test("--port rewrites the URL of the three entries in the durable copy only", withBox(async (box) => {
+test("--port rewrites manifest mcp_url and wires durable stdio bridge in the durable copy only", withBox(async (box) => {
   assert.equal(box.run(["install", "codex", "--port", "9123"], { extraEnv: { FAKE_FAIL: "plugin remove,plugin marketplace remove" } }).status, 0);
   const durable = path.join(box.durable, version);
+  const durableCli = path.join(durable, "bin", "cli.mjs");
   const url = "http://127.0.0.1:9123/mcp";
-  assert.equal(box.read(path.join(durable, ".mcp.json")).mcpServers.ni_rua.url, url);
-  assert.equal(box.read(path.join(durable, ".codex-mcp.json")).mcpServers.ni_rua.url, url);
+  assert.deepEqual(box.read(path.join(durable, ".mcp.json")).mcpServers.ni_rua, {
+    command: "node",
+    args: ["${CLAUDE_PLUGIN_ROOT}/bin/cli.mjs", "mcp"],
+    alwaysLoad: true,
+  });
+  const codexEntry = box.read(path.join(durable, ".codex-mcp.json")).mcpServers.ni_rua;
+  assert.equal(codexEntry.command, "node");
+  assert.deepEqual(codexEntry.args, [durableCli, "mcp"]);
+  assert.equal(codexEntry.url, undefined);
   assert.equal(box.read(path.join(durable, "manifest.generated.json")).mcp_url, url);
   const loaded = await import(pathToFileURL(path.join(durable, "opencode", "plugin.js")).href);
   const mcpEntries = new Map();
@@ -193,14 +201,16 @@ test("--port rewrites the URL of the three entries in the durable copy only", wi
     mcp: { transform: async (fn) => fn(mcpEntries) },
     skill: { transform: async (fn) => fn({ add: (s) => addedSkills.push(s.id) }) },
   });
-  assert.equal(mcpEntries.get("ni_rua").url, url);
-  assert.deepEqual(addedSkills, ["ni-rua-robot", "ni-rua-experiments"]);
-  assert.equal(box.read(new URL("../.mcp.json", import.meta.url).pathname).mcpServers.ni_rua.url, "http://127.0.0.1:8790/mcp", "the source package is not modified");
+  assert.equal(mcpEntries.get("ni_rua").type, "local");
+  assert.deepEqual(mcpEntries.get("ni_rua").command, ["node", durableCli, "mcp"]);
+  assert.deepEqual(addedSkills, ["ni-rua-setup", "ni-rua-robot", "ni-rua-experiments"]);
+  assert.equal(box.read(new URL("../.codex-mcp.json", import.meta.url).pathname).mcpServers.ni_rua.command, "ni-rua-plugin", "the source package is not modified");
+  assert.equal(box.read(new URL("../manifest.generated.json", import.meta.url).pathname).mcp_url, "http://127.0.0.1:8790/mcp", "the source manifest is not modified");
   // a reinstall without --port keeps the recorded port; an explicit --port is not a content conflict
   assert.equal(box.run(["install", "codex"], { extraEnv: { FAKE_FAIL: "plugin remove" } }).status, 0);
-  assert.equal(box.read(path.join(durable, ".mcp.json")).mcpServers.ni_rua.url, url);
+  assert.equal(box.read(path.join(durable, "manifest.generated.json")).mcp_url, url);
   assert.equal(box.run(["install", "codex", "--port", "8790"], { extraEnv: { FAKE_FAIL: "plugin remove" } }).status, 0);
-  assert.equal(box.read(path.join(durable, ".mcp.json")).mcpServers.ni_rua.url, "http://127.0.0.1:8790/mcp");
+  assert.equal(box.read(path.join(durable, "manifest.generated.json")).mcp_url, "http://127.0.0.1:8790/mcp");
   assert.equal(box.run(["install", "codex", "--port", "70000"]).status, 2);
 }));
 
@@ -221,13 +231,13 @@ test("upgrade N to N+1 replaces the host entries and drops the old copy", withBo
   assert.equal(box.run(["install", "claude"]).status, 0);
   assert.equal(box.run(["install", "codex"], { extraEnv: failing }).status, 0);
   assert.equal(box.run(["install", "opencode"]).status, 0);
-  const next = copyPackage(path.join(box.root, "pkg-next"), "0.1.1", (dir) => fs.appendFileSync(path.join(dir, "skills", "ni-rua-robot", "SKILL.md"), "\nnext release\n"));
+  const next = copyPackage(path.join(box.root, "pkg-next"), "0.2.0", (dir) => fs.appendFileSync(path.join(dir, "skills", "ni-rua-robot", "SKILL.md"), "\nnext release\n"));
   box.clearCalls();
   for (const host of ["claude", "codex", "opencode"]) {
     const result = box.run(["install", host], { cli: next, extraEnv: failing });
     assert.equal(result.status, 0, result.out);
   }
-  const newDir = path.join(box.durable, "0.1.1");
+  const newDir = path.join(box.durable, "0.2.0");
   assert.deepEqual(box.commands(), [
     `claude plugin marketplace add ${newDir}`,
     "claude plugin install ni_rua@ni_rua -s user",
@@ -240,8 +250,8 @@ test("upgrade N to N+1 replaces the host entries and drops the old copy", withBo
   assert.deepEqual(box.read(box.opencodeConfig).plugins, [newDir]);
   assert.equal(box.read(box.claudeSettings).permissions.allow.length, 1);
   const record = box.read(path.join(box.durable, "installed.json"));
-  assert.deepEqual(Object.values(record.installs).map((h) => h.version), ["0.1.1", "0.1.1", "0.1.1"]);
-  assert.deepEqual(record.copies, ["0.1.1"]);
+  assert.deepEqual(Object.values(record.installs).map((h) => h.version), ["0.2.0", "0.2.0", "0.2.0"]);
+  assert.deepEqual(record.copies, ["0.2.0"]);
   for (const host of ["claude", "codex", "opencode"]) assert.equal(box.run(["uninstall", host], { cli: next }).status, 0);
   assert.ok(!fs.existsSync(box.durable));
   assert.ok(!fs.existsSync(box.opencodeConfig));
@@ -393,7 +403,7 @@ test("M5: directories the installer did not create are never deleted", withBox((
   fs.writeFileSync(path.join(box.durable, "my-notes", "a.txt"), "keep");
   fs.symlinkSync(path.join(box.root, "nowhere"), path.join(box.durable, "dangling"));
   assert.equal(box.run(["install", "opencode"]).status, 0);
-  const next = copyPackage(path.join(box.root, "pkg-next"), "0.1.1");
+  const next = copyPackage(path.join(box.root, "pkg-next"), "0.2.0");
   assert.equal(box.run(["install", "opencode"], { cli: next }).status, 0);
   assert.ok(!fs.existsSync(path.join(box.durable, version)), "its own old copy is dropped");
   assert.equal(fs.readFileSync(path.join(box.durable, "my-notes", "a.txt"), "utf8"), "keep");

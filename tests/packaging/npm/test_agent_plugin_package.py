@@ -74,7 +74,15 @@ class HostEntryAgreementTests(unittest.TestCase):
         manifest = read_json("manifest.generated.json")
         self.assertEqual(manifest["schema"], plugin_contract.SCHEMA)
         self.assertEqual(manifest["default_port"], plugin_contract.default_port())
+        self.assertEqual(manifest["web_port"], plugin_contract.default_web_port())
         self.assertEqual(manifest["mcp_url"], f"http://127.0.0.1:{manifest['default_port']}/mcp")
+        self.assertEqual([item["name"] for item in manifest["tool_definitions"]], manifest["tool_names"])
+        for item in manifest["tool_definitions"]:
+            self.assertTrue(item["description"])
+            self.assertIsInstance(item["inputSchema"], dict)
+            self.assertEqual(item["inputSchema"].get("type"), "object")
+            for forbidden in ("anyOf", "oneOf", "allOf", "if", "then", "else"):
+                self.assertNotIn(forbidden, item["inputSchema"], item["name"])
         expected_env = {k: v for k, v in _MCP_FLAGS.items() if k != "CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT"}
         self.assertEqual(manifest["claude_env"], expected_env)
         self.assertEqual(manifest["opencode_tool_output"], TOOL_OUTPUT)
@@ -94,8 +102,13 @@ class HostEntryAgreementTests(unittest.TestCase):
         codex = read_json(".codex-mcp.json")["mcpServers"]
         self.assertEqual(list(claude), [manifest["server_name"]])
         self.assertEqual(list(codex), [manifest["server_name"]])
-        self.assertEqual(claude["ni_rua"], {"type": "http", "url": manifest["mcp_url"], "alwaysLoad": True})
-        self.assertEqual(codex["ni_rua"]["url"], manifest["mcp_url"])
+        self.assertEqual(
+            claude["ni_rua"],
+            {"command": "node", "args": ["${CLAUDE_PLUGIN_ROOT}/bin/cli.mjs", "mcp"], "alwaysLoad": True},
+        )
+        self.assertEqual(codex["ni_rua"]["command"], "ni-rua-plugin")
+        self.assertEqual(codex["ni_rua"]["args"], ["mcp"])
+        self.assertNotIn("url", codex["ni_rua"])
         for key, value in manifest["codex_timeouts"].items():
             self.assertEqual(codex["ni_rua"][key], value, key)
         self.assertEqual(codex["ni_rua"]["default_tools_approval_mode"], "approve")
@@ -140,12 +153,31 @@ class HostEntryAgreementTests(unittest.TestCase):
         self.assertNotIn("dependencies", package)
 
     def test_skills_carry_the_frontmatter_each_host_requires(self):
-        for name in ("ni-rua-robot", "ni-rua-experiments"):
+        for name in ("ni-rua-setup", "ni-rua-robot", "ni-rua-experiments"):
             text = (PLUGIN / "skills" / name / "SKILL.md").read_text()
             match = re.match(r"---\nname: (.+)\ndescription: (.+)\n---\n", text)
             self.assertIsNotNone(match, name)
             self.assertEqual(match.group(1), name)
             self.assertGreater(len(match.group(2)), 40)
+
+    def test_setup_skill_covers_onboarding_calibration_and_safety_guardrails(self):
+        text = (PLUGIN / "skills" / "ni-rua-setup" / "SKILL.md").read_text()
+        for needle in (
+            "ni-rua-plugin doctor",
+            "ni-rua-so101 init-config",
+            "ni-rua-so101 cameras",
+            "ni-rua-so101 charuco-board",
+            "ni-rua-so101 commission",
+            "/calibration",
+            "/console",
+            "--dry-run",
+            "12V",
+            "Missing motor IDs",
+            "dialout",
+            "gateway.log",
+            "ni-rua-robot",
+        ):
+            self.assertIn(needle, text)
 
     def test_actor_skill_states_the_required_rules_and_no_robot_numbers(self):
         text = (PLUGIN / "skills" / "ni-rua-robot" / "SKILL.md").read_text()

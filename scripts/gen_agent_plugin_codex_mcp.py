@@ -59,42 +59,71 @@ def _feature_overrides():
 
 
 @functools.lru_cache(maxsize=None)
-def _registry_actor_tools():
-    """Union of actor-role tool names the central registry can register across profiles/features."""
+def _registry_actor_catalog():
+    """收集中央工具注册表在全部具身与特性组合下的 Actor 工具名与静态便携 MCP 定义。"""
     from ni_rua.core.config import Config
+    from ni_rua.core.schema_guide import strip_guided_schema_descriptions
     from ni_rua.core.tool_errors import ToolInputError
+    from ni_rua.cortex.agents.mcp_server import (
+        DEFAULT_RESULT_SIZE_HINT_CHARS,
+        RESULT_SIZE_META_KEY,
+        portable_input_schema,
+    )
     from ni_rua.runtime.tools.builtins import create_registry
     from ni_rua.runtime.tools.plugins import configured_tool_specs
 
-    names = set()
-    for profile in _profiles():
+    # 优先采集 SO-101 具身定义作为默认冷启动目录，再补齐其他具身/特性独有工具
+    profiles = list(_profiles())
+    ordered_profiles = profiles[1:] + profiles[:1] if len(profiles) > 1 else profiles
+    tools = {}
+    for profile in ordered_profiles:
         for overrides in _feature_overrides():
             try:
                 config = Config().with_overrides(overrides)
             except ValueError as error:
                 raise RuntimeError(f"feature or backend override rejected: {overrides}") from error
-            runtime = SimpleNamespace(config=config, embodiment=profile)
+            runtime = SimpleNamespace(config=config, embodiment=profile, disabled_tools=frozenset())
             registry = create_registry(configured_tool_specs(config), runtime=runtime)
             for name in registry.names:
                 try:
-                    registry.spec(name, role="actor")
+                    spec = registry.spec(name, role="actor")
                 except ToolInputError:
                     continue
-                names.add(name)
-    return frozenset(names)
+                if name in tools:
+                    continue
+                defn = spec.definition
+                desc = str(defn["description"]).strip()
+                first_line = desc.splitlines()[0] if desc else f"NI-RUA tool {name}"
+                stripped = strip_guided_schema_descriptions(defn["inputSchema"], desc)
+                tools[name] = {
+                    "name": name,
+                    "description": first_line,
+                    "inputSchema": portable_input_schema(stripped),
+                    "annotations": {"readOnlyHint": spec.parallel is True},
+                    "_meta": {RESULT_SIZE_META_KEY: DEFAULT_RESULT_SIZE_HINT_CHARS},
+                }
+    return tuple(tools[name] for name in sorted(tools))
 
 
 def registry_actor_tools():
-    return set(_registry_actor_tools())
+    return {item["name"] for item in _registry_actor_catalog()}
 
 
 def actor_tool_names():
     return sorted(registry_actor_tools())
 
 
+def actor_tool_definitions():
+    return list(_registry_actor_catalog())
+
+
 def render_files():
     """Return ``{relative_path: content}`` for all generated files under ``agent-plugin/``."""
-    return plugin_contract.render_files(version=package_version(), tool_names=actor_tool_names())
+    return plugin_contract.render_files(
+        version=package_version(),
+        tool_names=actor_tool_names(),
+        tool_definitions=actor_tool_definitions(),
+    )
 
 
 def build_document():

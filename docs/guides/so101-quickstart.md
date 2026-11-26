@@ -27,10 +27,10 @@ Before touching software, verify the physical setup:
 
 ### Option A — One-Line Zero-Clone Setup (Recommended)
 
-Requires **Node >= 18** and **Python >= 3.12** (or `uv`). This installs `@nerveint/ni-rua-plugin` and creates two isolated Python 3.12 environments under `~/.local/share/ni-rua/envs/{gateway,so101}` (avoiding upstream `packaging`/`numpy` dependency conflicts between `openai-codex` and `lerobot`):
+Requires **Node >= 18** and **Python >= 3.12** (or `uv`). This installs `@nerveint/ni-rua-plugin` with the lazy stdio MCP bridge (`ni-rua-plugin mcp`) and bundled **`ni-rua-setup`** / **`ni-rua-robot`** skills, and **by default** creates two isolated Python 3.12 environments under `~/.local/share/ni-rua/envs/{gateway,so101}` (avoiding upstream `packaging`/`numpy` dependency conflicts between `openai-codex` and `lerobot`; pass `--no-so101` to skip SO-101 hardware deps):
 
 ```bash
-npx -y @nerveint/ni-rua-plugin setup claude --so101   # or: codex | opencode | all
+npx -y @nerveint/ni-rua-plugin setup codex            # or: claude | opencode | all
 npm i -g @nerveint/ni-rua-plugin                      # optional: keep `ni-rua-plugin` on PATH
 ni-rua-plugin doctor --so101
 ```
@@ -209,22 +209,30 @@ PYTHONPATH=. mamba run -n so101 python scripts/so101_commission.py \
 
 This runs the real `SO101Adapter` through preflight, moves to the ready pose, steps each joint (`±0.1 rad`) with and without sag correction, sweeps `shoulder_pan`, exercises the gripper (`1.0 → 0.0 → 0.5`), tests `±2 cm` Cartesian moves in X/Y/Z, and writes `commissioning.json` plus camera snapshots. Any failure halts immediately with a confirmed hold.
 
-### 5.2 Run Mode A: Agent Plugin Mode (`--agent-backend external`)
+### 5.2 Run Mode A: Agent Plugin Mode (Zero-Friction Single Window or Manual Gateway)
 
-1. Install the plugin and verify the stack once:
+**Recommended single-window flow (lazy stdio MCP bridge `ni-rua-plugin mcp`):**
+
+1. Install once (includes the isolated gateway and SO-101 runtimes by default) and verify:
    ```bash
-   npx -y @nerveint/ni-rua-plugin setup claude --so101   # or: codex | opencode | all
+   npx -y @nerveint/ni-rua-plugin setup codex         # or: claude | opencode | all
    ni-rua-plugin doctor --so101
    ```
-2. Start the NI-RUA gateway (`--config so101` uses the bundled `so101_standalone.json` on pure CPU and automatically enables `--observation-profile rgb_proprio_v1` if `camera_calibration.json` does not exist yet):
-   ```bash
-   ni-rua-plugin gateway --config so101 \
-     --port 8781 --run-dir runs/so101-demo \
-     --prompt "Describe the table, move the gripper straight up 2 cm, verify it, and move it back."
+2. Open `codex` (or `claude` / `opencode`) directly — the bundled **`ni-rua-setup`** skill can walk you through `ni-rua-so101 init-config`, `doctor`, `commission`, and S0–S6 `/calibration`, and **`ni-rua-robot`** drives the arm directly with no second gateway terminal needed:
+   ```text
+   $ codex
+   > Use NI-RUA to inspect the table, lift the SO-101 gripper 2 cm, verify, and return.
    ```
-   *(From a checkout, you can also run `mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external --config configs/so101_standalone.json ...`.)*
-3. Launch your agent (`claude`, `codex`, or `opencode`) in another terminal and tell it:
-   `Operate the robot through the ni_rua MCP tools.`
+   Normal coding sessions have zero background gateway processes and zero MCP errors. On the first `run_begin` call, `ni-rua-plugin mcp` automatically spawns the singleton local SO-101 gateway (auto-enabling `--observation-profile rgb_proprio_v1` if `camera_calibration.json` does not exist yet; logs under `~/.local/share/ni-rua/logs/gateway.log`) and surfaces the live Web console URL (`http://127.0.0.1:8781/console?lang=en`, plus `/calibration` if uncalibrated).
+
+**Optional manual gateway mode** (for custom `--run-dir`, explicit `--prompt`, `--dry-run`, remote GPU configs, or proxy-only `NI_RUA_AUTO_START=0` / custom `NI_RUA_MCP_URL`):
+
+```bash
+ni-rua-plugin gateway --config so101 \
+  --port 8781 --run-dir runs/so101-demo \
+  --prompt "Describe the table, move the gripper straight up 2 cm, verify it, and move it back."
+```
+*(From a checkout, you can also run `mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external --config configs/so101_standalone.json ...`. When a manual gateway is already listening on `NI_RUA_MCP_URL`, default `http://127.0.0.1:8790/mcp`, the stdio bridge transparently proxies to it without starting a second gateway.)*
 
 ### 5.3 Run Mode B: Full Hosted Harness Mode
 
@@ -258,7 +266,7 @@ Open **<http://127.0.0.1:8781/console?lang=en>** in your browser during any run:
 
 Before trusting 3D coordinates, `pixel_plane`, `triangulate`, or `robot_action` table tasks, complete the guided S0–S6 calibration:
 
-1. Start the gateway. On a **first uncalibrated run** (no `camera_calibration.json` yet), `ni-rua-plugin gateway --config so101` automatically enables `--observation-profile rgb_proprio_v1` (pass it explicitly when invoking `ni-rua` directly):
+1. Start the gateway. On a **first uncalibrated run** (no `camera_calibration.json` yet), both the lazy MCP bridge auto-start and `ni-rua-plugin gateway --config so101` automatically enable `--observation-profile rgb_proprio_v1` (pass it explicitly when invoking `ni-rua` directly):
    ```bash
    ni-rua-plugin gateway --config so101 --port 8781 --run-dir runs/so101-calib
    ```

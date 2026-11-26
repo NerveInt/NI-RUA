@@ -34,48 +34,83 @@ An external run is interactive-only and not queueable: the queue refuses `agent_
 
 ## What the package contains and what `setup` installs
 
-The npm package [`agent-plugin/`](../../agent-plugin/README.md) (published as `@nerveint/ni-rua-plugin`, CLI binary `ni-rua-plugin`, zero npm dependencies) holds the per-host manifests with HTTP MCP entries to `http://127.0.0.1:8790/mcp`, two skills (`ni-rua-robot` for the actor, `ni-rua-experiments` for the operator), and the CLI (`setup`, `gateway`, `install`, `uninstall`, `doctor`). The npm tarball itself contains no Python binaries.
+The npm package [`agent-plugin/`](../../agent-plugin/README.md) (published as `@nerveint/ni-rua-plugin`, CLI binary `ni-rua-plugin`, zero npm dependencies) holds the per-host manifests wired to the **lazy-loading stdio MCP bridge (`ni-rua-plugin mcp`)**, three skills (`ni-rua-setup` for end-to-end install, hardware binding, S0–S6 calibration, and diagnostics; `ni-rua-robot` for the actor; and `ni-rua-experiments` for the operator), and the CLI (`setup`, `mcp`, `gateway`, `install`, `uninstall`, `doctor`). The npm tarball itself contains no Python binaries.
 
-- **One-line zero-clone install**: `npx -y @nerveint/ni-rua-plugin setup <claude|codex|opencode|all> [--so101]` installs the host plugin AND bootstraps an isolated Python 3.12 runtime for `ni-rua-harness` under `~/.local/share/ni-rua/envs/gateway` (preferring `uv`, falling back to `python3.12 -m venv`). Adding `--so101` creates a separate isolated `~/.local/share/ni-rua/envs/so101` environment for SO-101 hardware dependencies.
-- **Global CLI (recommended for daily use)**: `npm i -g @nerveint/ni-rua-plugin` exposes `ni-rua-plugin` on `PATH` for `gateway`, `doctor`, `install`, and `uninstall`.
-- **Requirements**: Node 18 or newer, Python 3.12 (or `uv`), the host CLI you want to use, and macOS or Linux (Windows only through WSL, because the gateway uses `fcntl`).
-- **From a source checkout**: you can still run `node agent-plugin/bin/cli.mjs` directly against the `mamba` `ni-rua` environment.
+- **One-line zero-clone install (SO-101 included by default):** `npx -y @nerveint/ni-rua-plugin setup <codex|claude|opencode|all>` installs the host plugin AND bootstraps two isolated Python 3.12 runtimes by default: `~/.local/share/ni-rua/envs/gateway` (`ni-rua-harness`, preferring `uv` and falling back to `python3.12 -m venv`) and `~/.local/share/ni-rua/envs/so101` (SO-101 hardware dependencies). Pass `--no-so101` to skip SO-101 hardware dependencies (`--so101` remains accepted as a backwards-compatible alias), or `--skip-gateway` to install only the host plugin manifests.
+- **Global CLI (recommended for manual gateway / doctor use):** `npm i -g @nerveint/ni-rua-plugin` exposes `ni-rua-plugin` on `PATH` for `gateway`, `doctor`, `install`, and `uninstall`. (The installed host plugin always invokes the durable copy under `~/.local/share/ni-rua/agent-plugin/<version>/bin/cli.mjs mcp`, so `npx`-only installs work reliably without global install.)
+- **Requirements:** Node 18 or newer, Python 3.12 (or `uv`), the host CLI you want to use, and macOS or Linux (Windows only through WSL, because the gateway uses `fcntl`).
+- **From a source checkout:** you can still run `node agent-plugin/bin/cli.mjs` directly against the `mamba` `ni-rua` environment.
 
 ## Quick start
 
-1. Install the plugin and gateway runtime once, then verify with `doctor`:
+### Default single-window SO-101 workflow (lazy stdio MCP bridge)
+
+1. Install the plugin and isolated Python 3.12 gateway + SO-101 runtimes once:
 
    ```sh
-   npx -y @nerveint/ni-rua-plugin setup claude        # or: codex | opencode | all (add --so101 for SO-101 arm)
-   npm i -g @nerveint/ni-rua-plugin                   # optional: keep `ni-rua-plugin` on PATH
-   ni-rua-plugin doctor                               # add --so101 for serial/camera/calibration checks
+   npx -y @nerveint/ni-rua-plugin setup codex         # or: claude | opencode | all (--no-so101 to opt out)
    ```
 
-2. Start the gateway first, before the agent session (the task comes only from `--prompt`; see [The bracket](#the-bracket-run_begin-and-run_finish)). An external run is never `--benchmark`:
+2. Bind your SO-101 serial port and cameras once (writes `~/.config/ni-rua/so101.local.json`):
 
    ```sh
-   # Zero-hardware smoke test (lightweight local dry-run MCP server on 127.0.0.1:8790/mcp)
-   ni-rua-plugin gateway --dry-run
-
-   # SO-101 arm — standalone local CPU-only default (auto-adds --observation-profile rgb_proprio_v1 on cold start before calibration)
-   ni-rua-plugin gateway --config so101 --port 8781 --run-dir runs/my-external --prompt "<task>"
-
-   # RoboDojo simulation from a checkout (one idle GPU; see running.md)
-   mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external \
-     --task stack_bowls --gpu 0 --port 8767 --run-dir runs/my-external --prompt "<task>"
+   ~/.local/share/ni-rua/envs/gateway/bin/ni-rua-so101 init-config   # or `ni-rua-so101 init-config` if on PATH
    ```
 
-   For first-time SO-101 setup before `camera_calibration.json` exists, `ni-rua-plugin gateway --config so101` automatically detects the missing calibration file and appends `--observation-profile rgb_proprio_v1` so you can open `http://127.0.0.1:8781/calibration?lang=en` immediately (when invoking `ni-rua` directly, pass `--observation-profile rgb_proprio_v1` explicitly). Once calibration is applied, daily local CPU-only runs use `--config so101` (bundled `so101_standalone.json`) directly. Use `--config configs/so101_gateway.json` only when connecting optional remote VGGT/SAM/cuRobo GPU services. Deployment configuration is read from `~/.config/ni-rua/so101.local.json` (generated via `ni-rua-so101 init-config`) or `./configs/so101.local.json` inside a checkout; see [SO-101 Quickstart](../guides/so101-quickstart.md), [SO-101 Calibration Guide](../guides/so101-calibration.md), [SO-101 configuration](so101-configuration.md), and [SO-101 integration, section 6.3](so101-integration.md). Open `http://127.0.0.1:<port>/console?lang=en` (the `--port` above); `--run-dir` must be a new directory.
+3. Open `codex` (or `claude` / `opencode`) directly and ask it to set up, calibrate, or operate the arm — no second gateway terminal is required:
 
-   The gateway serves MCP on `http://127.0.0.1:8790/mcp` (`agent.external.mcp_port`, overridable via `--external-mcp-port`, see [Configuration](configuration.md#agent-backend-agent)) and prints the endpoint at start. A taken port refuses the launch with one sentence naming the port. For RoboDojo runs, `run_begin` also delivers the native `task_instruction` (with any `task_instruction_override`), `public_task_rules` and `default_task_notes` in `native_task` and `task_notes`.
+   ```text
+   $ codex
+   > Use NI-RUA to inspect the table, lift the SO-101 gripper 2 cm, verify, and return.
+   ```
 
-3. Start your own agent session and ask it to do the task. The `ni_rua` tools appear; the agent calls `run_begin`, works, and calls `run_finish`.
+   Together, the bundled **`ni-rua-setup`** and **`ni-rua-robot`** skills let your agent guide hardware binding (`ni-rua-so101 init-config` / `cameras` / `commission`), S0–S6 calibration, troubleshooting (`ni-rua-plugin doctor`), and robot execution end-to-end. On the first `run_begin` call, `ni-rua-plugin mcp` automatically launches the singleton local SO-101 gateway (adding `--observation-profile rgb_proprio_v1` automatically if no `camera_calibration.json` exists yet) and prepends the live Web console E-STOP URL (`http://127.0.0.1:8781/console`, plus `/calibration` if uncalibrated).
 
-Use the NI-RUA console (the gateway's `--port`) to stop, hold or emergency-stop the arm.
+### How the lazy stdio MCP bridge (`ni-rua-plugin mcp`) works
+
+- **Zero overhead during normal coding sessions:** `initialize` responds immediately without starting a gateway or touching hardware. `tools/list` probes `NI_RUA_MCP_URL` (default `http://127.0.0.1:8790/mcp`, ~300 ms); if no gateway is running yet, it returns the bundled static tool definitions so Codex, Claude Code, and OpenCode show zero MCP connection errors.
+- **Transparent proxy to manual gateways:** On `tools/list` or `tools/call`, if an upstream HTTP gateway is already reachable at `NI_RUA_MCP_URL` (such as `ni-rua-plugin gateway --dry-run`, a manual SO-101 gateway, RoboDojo, or LIBERO), the bridge transparently proxies JSON-RPC over HTTP (preserving `Mcp-Session-Id` and handling both JSON and `text/event-stream` SSE responses).
+- **Singleton lazy auto-start:** If no gateway is running on `tools/call` and `NI_RUA_AUTO_START` is not `"0"`, the bridge acquires `~/.local/share/ni-rua/gateway.lock`, spawns a detached local gateway (`--agent-backend external --config <NI_RUA_GATEWAY_CONFIG || "so101"> --port 8781 --external-mcp-port 8790 --run-dir ~/.local/share/ni-rua/runs/run-<timestamp>`, updating `~/.local/share/ni-rua/runs/latest` symlink and logging to `~/.local/share/ni-rua/logs/gateway.log`), initializes the upstream MCP session, emits `notifications/tools/list_changed`, and forwards the call. If startup fails (e.g., missing runtime or `so101.local.json`), it fails fast with an actionable MCP tool error pointing to `setup` or `ni-rua-so101 init-config`.
+
+| Environment variable | Default | Meaning |
+| --- | --- | --- |
+| `NI_RUA_MCP_URL` | `http://127.0.0.1:8790/mcp` | Upstream HTTP MCP gateway endpoint to probe and proxy. |
+| `NI_RUA_AUTO_START` | enabled (unset) | Set to `0` to disable automatic local SO-101 gateway startup (proxy-only mode; fails fast unless a manual gateway is running). |
+| `NI_RUA_GATEWAY_CONFIG` | `so101` | Config preset or file path used when the bridge auto-starts a local gateway. |
+
+### Manual gateway mode (dry run, RoboDojo, LIBERO, custom `--run-dir` / `--prompt`)
+
+Start a gateway manually before (or alongside) your agent session whenever you want dry-run testing, explicit `--run-dir` / `--prompt`, remote GPU perception, or simulation (RoboDojo / LIBERO). An external run is never `--benchmark`; the stdio bridge automatically detects the running gateway on `http://127.0.0.1:8790/mcp` and proxies to it:
+
+```sh
+# Optional: keep `ni-rua-plugin` on PATH and run diagnostics
+npm i -g @nerveint/ni-rua-plugin
+ni-rua-plugin doctor --so101
+
+# 1. Zero-hardware smoke test (lightweight local dry-run MCP server on 127.0.0.1:8790/mcp)
+ni-rua-plugin gateway --dry-run
+
+# 2. Manual SO-101 gateway — standalone local CPU-only default (auto-adds --observation-profile rgb_proprio_v1 on cold start before calibration)
+ni-rua-plugin gateway --config so101 --port 8781 --run-dir runs/my-external --prompt "<task>"
+
+# 3. RoboDojo simulation from a checkout (one idle GPU; see running.md)
+mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external \
+  --task stack_bowls --gpu 0 --port 8767 --run-dir runs/my-external --prompt "<task>"
+
+# 4. LIBERO simulation (simulation-only Franka Emika Panda) from a checkout
+mamba run -n ni-rua python -u -m ni_rua.apps.gateway --agent-backend external \
+  --config configs/libero.example.json --port 8768 --run-dir runs/my-libero --prompt "<task>"
+```
+
+For first-time SO-101 setup before `camera_calibration.json` exists, both the lazy bridge auto-start and `ni-rua-plugin gateway --config so101` automatically detect the missing calibration file and append `--observation-profile rgb_proprio_v1` so you can open `http://127.0.0.1:8781/calibration?lang=en` immediately (when invoking `ni-rua` directly, pass `--observation-profile rgb_proprio_v1` explicitly). Once calibration is applied, daily local CPU-only runs use `--config so101` (bundled `so101_standalone.json`) directly. Use `--config configs/so101_gateway.json` only when connecting optional remote VGGT/SAM/cuRobo GPU services. Deployment configuration is read from `~/.config/ni-rua/so101.local.json` (generated via `ni-rua-so101 init-config`) or `./configs/so101.local.json` inside a checkout; see [SO-101 Quickstart](../guides/so101-quickstart.md), [SO-101 Calibration Guide](../guides/so101-calibration.md), [SO-101 configuration](so101-configuration.md), and [SO-101 integration, section 6.3](so101-integration.md). Open `http://127.0.0.1:<port>/console?lang=en` (the `--port` above); `--run-dir` must be a new directory.
+
+The gateway serves HTTP MCP on `http://127.0.0.1:8790/mcp` (`agent.external.mcp_port`, overridable via `--external-mcp-port` and matched via `NI_RUA_MCP_URL`, see [Configuration](configuration.md#agent-backend-agent)) and prints the endpoint at start. A taken port refuses the launch with one sentence naming the port. For RoboDojo runs, `run_begin` also delivers the native `task_instruction` (with any `task_instruction_override`), `public_task_rules` and `default_task_notes` in `native_task` and `task_notes`.
+
+Use the NI-RUA console (the gateway's `--port`, default `http://127.0.0.1:8781/console?lang=en`) to stop, hold or emergency-stop the arm.
 
 ## Dry run without hardware
 
-- **Built-in CLI dry run (no checkout, no Python needed):** `ni-rua-plugin gateway --dry-run` starts a lightweight local MCP server on `http://127.0.0.1:8790/mcp` exposing `run_begin`, `robot_observe`, `robot_action`, and `run_finish` so you can verify `Agent ↔ MCP` end to end in seconds.
+- **Built-in CLI dry run (no checkout, no Python needed):** `ni-rua-plugin gateway --dry-run` starts a lightweight local MCP server on `http://127.0.0.1:8790/mcp` exposing `run_begin`, `robot_observe`, `robot_action`, and `run_finish` so you can verify `Agent ↔ MCP` end to end in seconds; `ni-rua-plugin mcp` proxies to it automatically.
 - **Full SO-101 scene double (checkout only):** The test suite's scene double serves the real SO-101 backend and adapter over a simulated servo bus and rendered cameras (no serial port, no arm). It is test support, not part of the wheel. From the checkout:
 
 ```sh
@@ -104,14 +139,14 @@ The installer first copies the package to `~/.local/share/ni-rua/agent-plugin/<v
 
 | Option | Meaning |
 | --- | --- |
-| `--port N` | MCP port written into the copy's three entries (default 8790 = `agent.external.mcp_port`). One port is shared by all installs, because they load the same copy; a different `--port` while other installs exist is refused. |
+| `--port N` | Upstream HTTP MCP port written into the durable copy's stdio bridge configuration (default 8790 = `agent.external.mcp_port`, overridable at runtime via `NI_RUA_MCP_URL`). One port is shared by all installs, because they load the same copy; a different `--port` while other installs exist is refused. |
 | `--scope user\|project\|local` | Claude Code only (`install` and `uninstall`); default `user`. `project` and `local` act on the current directory (workspace must be trusted in Claude Code). |
 | `--no-host-env`, `--no-allow` | Claude Code opt-outs for the `env` keys and the `permissions.allow` entry. |
 | `--no-direct-catalog` | Codex opt-out for writing `model_catalog_json` into `$CODEX_HOME/config.toml`. |
 | `--force` | Replace a durable copy of the same version that has different content (refused otherwise). |
 | `--claude-bin`, `--codex-bin`, `--opencode-bin` | Host executable instead of the first one on `PATH`. |
 
-**Claude Code.** (With the default `--scope user` this is for every Claude Code session of that user, in any project, not only NI-RUA sessions: the server is loaded at start and its robot tools are pre-approved. Use `--scope project`, run from the NI-RUA checkout, if you use Claude Code for other work; see [Residuals](#residuals-documented-not-hardened). Note that Claude Code ignores project/local `.claude/settings.json` — including `permissions.allow` and `env` — in an untrusted workspace, and resolves workspace trust at the enclosing `.git` root when the directory has no `.git` of its own; open interactive `claude` once in that workspace to accept trust, or check with `ni-rua-plugin doctor`.) `claude plugin marketplace add <copy>` and `claude plugin install ni_rua@ni_rua -s <scope>`; the plugin's `.mcp.json` entry is `{"type": "http", "url": ..., "alwaysLoad": true}`. In that scope's `settings.json` (`<CLAUDE_CONFIG_DIR or ~/.claude>/settings.json` for `user`, `.claude/settings.json` for `project`, `.claude/settings.local.json` for `local`) it adds four `env` keys and one permission:
+**Claude Code.** (With the default `--scope user` this is for every Claude Code session of that user, in any project, not only NI-RUA sessions: the lazy stdio bridge loads cleanly with zero gateway process and its robot tools are pre-approved. Use `--scope project`, run from the NI-RUA checkout, if you prefer scoping to one repo; see [Residuals](#residuals-documented-not-hardened). Note that Claude Code ignores project/local `.claude/settings.json` — including `permissions.allow` and `env` — in an untrusted workspace, and resolves workspace trust at the enclosing `.git` root when the directory has no `.git` of its own; open interactive `claude` once in that workspace to accept trust, or check with `ni-rua-plugin doctor`.) `claude plugin marketplace add <copy>` and `claude plugin install ni_rua@ni_rua -s <scope>`; the plugin's `.mcp.json` launches the local stdio bridge (`{"command": "node", "args": ["${CLAUDE_PLUGIN_ROOT}/bin/cli.mjs", "mcp"]}`). In that scope's `settings.json` (`<CLAUDE_CONFIG_DIR or ~/.claude>/settings.json` for `user`, `.claude/settings.json` for `project`, `.claude/settings.local.json` for `local`) it adds four `env` keys and one permission:
 
 | Key | Value | Why |
 | --- | --- | --- |
@@ -123,9 +158,9 @@ The installer first copies the package to `~/.local/share/ni-rua/agent-plugin/<v
 
 These are the host-mode keys of [`claude_code/options.py`](../../ni_rua/cortex/agents/claude_code/options.py) minus `CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT=0`: progress keepalives already keep healthy calls alive, and with that key a gateway crash mid-call hangs until a `/mcp` reconnect instead of failing after 300 s. Keys you already set are kept. A kept value that defeats the plugin (a numeric key below the table's value, or auto-backgrounding on) is reported as a warning by `install` and `doctor`.
 
-**Codex.** `codex plugin marketplace add <copy>` and `codex plugin add ni_rua@ni_rua`. An upgrade or a changed port removes the plugin and marketplace first (Codex cannot repoint one). Codex is the same: the installed plugin is available to the Codex sessions of that user and its tools are pre-approved. The generated [`.codex-mcp.json`](../../agent-plugin/.codex-mcp.json) carries `default_tools_approval_mode: "approve"`, `tool_timeout_sec: 3600` (a hard bound; progress does not extend it), `startup_timeout_sec: 30` and, for every actor tool of the registry, `output_token_limit: 100000`: without that limit Codex cuts every long result to about 12,000 characters (the SO-101 briefing is 60,091). The map and the direct model catalog [`codex-models.direct.json`](../../agent-plugin/codex-models.direct.json) are generated by [`scripts/gen_agent_plugin_codex_mcp.py`](../../scripts/gen_agent_plugin_codex_mcp.py); do not edit them by hand. Because Codex 0.160.0/0.169.0 marks built-in models such as `gpt-6.1-sol` as `tool_mode="code_mode_only"` (which crashes `code-mode host` on Linux with `SIGSEGV`/gRPC `BrokenPipe`) and `supports_search_tool=true` (which hides MCP tools behind Responses `tool_search` and fails on providers without `tool_search`), `codex-models.direct.json` sets `tool_mode="direct"` and `supports_search_tool=false` on every model; `install codex` adds a top-level `model_catalog_json = "<copy>/codex-models.direct.json"` line to `$CODEX_HOME/config.toml` unless already set or `--no-direct-catalog` is passed, and `uninstall codex` removes that exact line.
+**Codex.** `codex plugin marketplace add <copy>` and `codex plugin add ni_rua@ni_rua`. An upgrade or a changed port removes the plugin and marketplace first (Codex cannot repoint one). Codex is the same: the installed plugin is available to the Codex sessions of that user via the local stdio bridge (`node <copy>/bin/cli.mjs mcp`) and its tools are pre-approved. The generated [`.codex-mcp.json`](../../agent-plugin/.codex-mcp.json) carries `default_tools_approval_mode: "approve"`, `tool_timeout_sec: 3600` (a hard bound; progress does not extend it), `startup_timeout_sec: 30` and, for every actor tool of the registry, `output_token_limit: 100000`: without that limit Codex cuts every long result to about 12,000 characters (the SO-101 briefing is 60,091). The map and the direct model catalog [`codex-models.direct.json`](../../agent-plugin/codex-models.direct.json) are generated by [`scripts/gen_agent_plugin_codex_mcp.py`](../../scripts/gen_agent_plugin_codex_mcp.py); do not edit them by hand. Because Codex 0.160.0/0.169.0 marks built-in models such as `gpt-6.1-sol` as `tool_mode="code_mode_only"` (which crashes `code-mode host` on Linux with `SIGSEGV`/gRPC `BrokenPipe`) and `supports_search_tool=true` (which hides MCP tools behind Responses `tool_search` and fails on providers without `tool_search`), `codex-models.direct.json` sets `tool_mode="direct"` and `supports_search_tool=false` on every model; `install codex` adds a top-level `model_catalog_json = "<copy>/codex-models.direct.json"` line to `$CODEX_HOME/config.toml` unless already set or `--no-direct-catalog` is passed, and `uninstall codex` removes that exact line.
 
-**OpenCode.** Requires OpenCode **2.x** (verified `2.2.7`); `install opencode` refuses OpenCode 1.x binaries before writing anything because 1.x rejects top-level `plugins` and `tool_output`. [`opencode/plugin.js`](../../agent-plugin/opencode/plugin.js) registers the remote MCP entry (`oauth: false`, `codemode: false` so registry tools stay direct `ni_rua_<tool>` calls, `timeout.execution: 3600000` ms because progress does not extend it in 2.2.7), both skills, and a `compaction` session hook that keeps active NI-RUA turns from mistaking internal compaction prompts for user requests and tells the summary to call `run_begin` first after compaction. `opencode plugin add` accepts no local path, so the installer writes the global `opencode.json` (`$OPENCODE_CONFIG_DIR` or `$XDG_CONFIG_HOME/opencode/`, strict JSON only; JSONC or an unparsable file is refused with the exact edit to make by hand): `plugins` gets the absolute path of the copy, `tool_output` gets `{"max_lines": 100000, "max_bytes": 16000000}` unless you set it (the host-mode value; without it results over about 50 KB are cut, and the SO-101 briefing arrives as 50,135 of 60,091 characters), and `media.image` gets `{"auto_resize": false, "max_width": 1000000, "max_height": 1000000, "max_base64_bytes": 1073741824}` unless you set it (prevents lossy JPEG re-encoding of large PNG tool images).
+**OpenCode.** Requires OpenCode **2.x** (verified `2.2.7`); `install opencode` refuses OpenCode 1.x binaries before writing anything because 1.x rejects top-level `plugins` and `tool_output`. [`opencode/plugin.js`](../../agent-plugin/opencode/plugin.js) registers the local stdio MCP bridge (`node <copy>/bin/cli.mjs mcp`, `codemode: false` so registry tools stay direct `ni_rua_<tool>` calls, `timeout.execution: 3600000` ms because progress does not extend it in 2.2.7), all three skills (`ni-rua-setup`, `ni-rua-robot`, `ni-rua-experiments`), and a `compaction` session hook that keeps active NI-RUA turns from mistaking internal compaction prompts for user requests and tells the summary to call `run_begin` first after compaction. `opencode plugin add` accepts no local path, so the installer writes the global `opencode.json` (`$OPENCODE_CONFIG_DIR` or `$XDG_CONFIG_HOME/opencode/`, strict JSON only; JSONC or an unparsable file is refused with the exact edit to make by hand): `plugins` gets the absolute path of the copy, `tool_output` gets `{"max_lines": 100000, "max_bytes": 16000000}` unless you set it (the host-mode value; without it results over about 50 KB are cut, and the SO-101 briefing arrives as 50,135 of 60,091 characters), and `media.image` gets `{"auto_resize": false, "max_width": 1000000, "max_height": 1000000, "max_base64_bytes": 1073741824}` unless you set it (prevents lossy JPEG re-encoding of large PNG tool images).
 
 **Records, uninstall, upgrade.** The installer records what it did in `~/.local/share/ni-rua/agent-plugin/installed.json` (schema 2): one entry per host and config home (Claude Code: `CLAUDE_CONFIG_DIR` + scope, plus the directory for `project` and `local`; Codex: `CODEX_HOME`; OpenCode: the config file), so two profiles or projects never overwrite each other. `uninstall <host>` removes exactly what that entry added and leaves values you changed since; run it with the same `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, `XDG_CONFIG_HOME` and scope as the install. If a host command fails for a reason other than "not installed", the record and the copy are kept, the manual commands are printed and the exit code is non-zero. It never removes what it did not create, keeps symlinked settings files and their mode, and a lock directory (`<data>/.lock`) serialises runs. Re-running `install` is the upgrade path; a version directory is immutable, so changed content under the same version needs a new version or `--force`. Every refusal runs before the first write, so a refused reinstall leaves the working configuration untouched. Covered by [`agent-plugin/test/installer.test.mjs`](../../agent-plugin/test/installer.test.mjs).
 
@@ -157,13 +192,12 @@ The console works as in every mode, with these differences ([`session.py`](../..
 
 ## Recovery
 
-Observed in the HTTP-first spike (report [Agent Plugin Spikes, section 3](reports/agent-plugin-spikes.md#3-http-first-gono-go); scripted model, headless):
+With the `v0.1.1` lazy stdio bridge (`ni-rua-plugin mcp`), agents no longer fail to connect when started before a gateway: normal sessions receive bundled static tool definitions cleanly, SO-101 auto-starts on first `run_begin`, and a manual gateway started later on `NI_RUA_MCP_URL` is picked up transparently on the next call. Historical HTTP-first spike behaviour (report [Agent Plugin Spikes, section 3](reports/agent-plugin-spikes.md#3-http-first-gono-go); scripted model, headless) still applies to upstream HTTP restarts and mid-call crashes:
 
-- **Start the gateway before the agent session.** If the agent came first: Claude Code `/mcp`, ni_rua, Reconnect (or a new session); OpenCode restart or reload; Codex start a new session.
-- **Restarting the gateway between two calls** needs nothing on any host; the server is stateless.
-- **A gateway restart with another robot** (another catalogue) needs the same reconnect or a new session, because no host re-lists tools by itself; a long-lived session keeps the old catalogue and instructions. If the tool descriptions no longer match the briefing, ask for a reconnect.
+- **Switching to a different robot** (different tool catalogue) after a gateway restart still benefits from `notifications/tools/list_changed` or a reconnect/new session (Claude Code `/mcp` → `ni_rua` → Reconnect, OpenCode reload, Codex new session), because older clients may cache initial tool schemas. If tool descriptions no longer match the briefing, reconnect.
+- **Restarting the gateway between two calls** needs nothing on any host; both the stdio bridge proxy and the HTTP server recover cleanly.
 - **A gateway crash during a call.** Codex errors at once ("Transport closed"). Claude Code and OpenCode wait until you press Esc or reconnect; Claude Code then tells the model the tool may have run. The arm may still have been moving: check state with read-only tools before repeating a motion. (With the Claude Code default idle timeout the call fails after 300 s; the installer leaves that default for this reason.)
-- **The `ni_rua` server is `failed` after a late gateway.** Reconnect as above. Claude Code retries by itself only within about a second and gives up after a few attempts.
+- **Manual proxy-only mode (`NI_RUA_AUTO_START=0`).** If no gateway is listening on `NI_RUA_MCP_URL`, `tools/call` returns an actionable MCP error telling you to start `ni-rua-plugin gateway`; once started, retry the call without restarting the agent.
 
 ## Information boundary and benchmark validity
 
@@ -198,7 +232,7 @@ Observed in the HTTP-first spike (report [Agent Plugin Spikes, section 3](report
 - Ordered calls that a client sends concurrently within one model step execute in arrival order, which can differ from the order the model wrote them in ([Order of one step's calls](#order-of-one-steps-calls)).
 - The installer edits user settings (Claude Code `settings.json`, OpenCode `opencode.json`) and the host's plugin registries; everything is printed first and recorded for `uninstall`.
 - One external gateway per port; a second one is refused at launch.
-- **The default install reaches every session of your user.** With the default `--scope user`, every Claude Code session of that user, in any project, loads the `ni_rua` server (`alwaysLoad`) and may call its robot tools with no permission prompt (the `permissions.allow` entry). That is a failed server entry when no gateway runs and the full tool catalogue when one does. Codex is the same through `default_tools_approval_mode: "approve"`. If you use Claude Code for other work, install with `--scope project` from the NI-RUA checkout. The installer's default is unchanged.
+- **The default install reaches every session of your user.** With the default `--scope user`, every Claude Code session of that user loads the lazy `ni_rua` stdio bridge cleanly with zero background gateway process and pre-approved robot tools (`permissions.allow`). Codex is the same through `default_tools_approval_mode: "approve"`. Because the bridge auto-starts the local SO-101 gateway only when the agent explicitly invokes an `ni_rua` tool, normal coding sessions stay silent; if you want to prevent accidental robot auto-start from non-robot sessions, set `NI_RUA_AUTO_START=0` or install Claude Code with `--scope project` from a dedicated directory.
 
 ## Verification status
 
@@ -288,4 +322,4 @@ See [Experiment Completion Hook](experiment-completion-hook.md#waking-the-agent-
 
 ## Deferred, not in this release
 
-A stdio bridge, discovery records, an `ni_rua_status` tool, description splitting, caller identity and a one-driver rule, benchmark-style external runs, `--wake-command`, PreCompact hooks and the hook route, a relay for external agents, evidence helpers in external mode, and an `ni-rua-library` console script. Longer real-model tasks, a real SO-101 session and npm publishing wait for the maintainer.
+Discovery records, an `ni_rua_status` tool, description splitting, caller identity and a one-driver rule, benchmark-style external runs, `--wake-command`, PreCompact hooks and the hook route, a relay for external agents, evidence helpers in external mode, and an `ni-rua-library` console script. Longer real-model tasks and expanded real SO-101 validation remain ongoing.

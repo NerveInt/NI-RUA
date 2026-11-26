@@ -27,7 +27,19 @@ export const DEFAULT_SO101_DEPS = [
 export const niRuaShareRoot = () => path.join(os.homedir(), ".local", "share", "ni-rua");
 export const gatewayEnvDir = () => path.join(niRuaShareRoot(), "envs", "gateway");
 export const so101EnvDir = () => path.join(niRuaShareRoot(), "envs", "so101");
+export const gatewayLockPath = () => path.join(niRuaShareRoot(), "gateway.lock");
+export const gatewayLogPath = () => path.join(niRuaShareRoot(), "logs", "gateway.log");
+export const gatewayRunsDir = () => path.join(niRuaShareRoot(), "runs");
 export const niRuaConfigDir = () => path.join(process.env.XDG_CONFIG_HOME || path.join(os.homedir(), ".config"), "ni-rua");
+
+export function isSo101Preset(configArg) {
+  if (!configArg) return false;
+  const normalized = String(configArg).trim();
+  return normalized === "so101"
+    || normalized === "so101_standalone"
+    || normalized.endsWith("/so101_standalone.json")
+    || normalized === "so101_standalone.json";
+}
 
 export function findOnPath(name, pathEnv = process.env.PATH) {
   for (const dir of (pathEnv || "").split(path.delimiter)) {
